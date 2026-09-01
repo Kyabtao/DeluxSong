@@ -1,0 +1,30 @@
+{
+  "name": "deluxsong",
+  "version": "1.1.0",
+  "description": "Deluxe Saloon — 2000s Indian retro ambient saloon radio (multi-page, mobile-first). Working clone of deluxsalon.in.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kyabtao/DeluxSong.git"
+  },
+  "keywords": [
+    "retro",
+    "radio",
+    "bollywood",
+    "2000s",
+    "saloon"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kyabtao/DeluxSong/issues"
+  },
+  "homepage": "https://github.com/Kyabtao/DeluxSong",
+  "dependencies": {
+    "express": "^5.2.1",
+    "ws": "^8.21.3"
+  }
+}
