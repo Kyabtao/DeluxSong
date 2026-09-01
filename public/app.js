@@ -272,7 +272,7 @@ $("#installBtn").onclick = async () => {
   deferred.prompt(); await deferred.userChoice; deferred = null; $("#install").hidden = true;
 };
 $("#installClose").onclick = () => { $("#install").hidden = true; localStorage.setItem("ds_install_x", "1"); };
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 
 /* ---------------- live chat (websocket) ---------------- */
 let ws = null, myName = localStorage.getItem("ds_name") || "", pending = null, unread = 0, chatOpen = false;
@@ -291,17 +291,40 @@ function addMsg(m) {
 }
 function esc(s) { return String(s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c])); }
 
+// Chat needs the Node server (server.js). On a static host (e.g. GitHub Pages) there is no
+// WebSocket endpoint, so the room degrades to a read-only "offline" state instead of erroring.
+// Point CHAT_URL at a hosted chat server to switch it back on from a static deployment.
+const CHAT_URL = window.DELUX_CHAT_URL ||
+  (location.protocol.startsWith("http") && !/github\.io$/.test(location.hostname)
+    ? `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws`
+    : null);
+let chatTries = 0;
+
+function chatOffline() {
+  $("#liveDot").style.background = "#c2321f";
+  $("#online").textContent = "offline";
+  $("#chatInput").disabled = true;
+  $("#chatInput").placeholder = "Live chat is offline on this build";
+  if (!$("#msgs").querySelector(".sys")) {
+    addMsg({ sys: true, text: "Live chat needs the Deluxe Saloon server (npm start). Everything else works right here.", ts: Date.now() });
+  }
+}
+
 function connect() {
-  const proto = location.protocol === "https:" ? "wss" : "ws";
-  ws = new WebSocket(`${proto}://${location.host}/ws`);
+  if (!CHAT_URL) { chatOffline(); return; }
+  try { ws = new WebSocket(CHAT_URL); } catch { chatOffline(); return; }
   ws.onmessage = (ev) => {
     const d = JSON.parse(ev.data);
     if (d.type === "history") { $("#msgs").innerHTML = ""; d.messages.forEach(addMsg); }
     else if (d.type === "msg") addMsg(d.message);
     else if (d.type === "online") $("#online").textContent = d.count + " online";
   };
-  ws.onclose = () => { $("#liveDot").style.background = "#c2321f"; setTimeout(connect, 3000); };
-  ws.onopen = () => { $("#liveDot").style.background = "#3fbf6a"; };
+  ws.onopen = () => { chatTries = 0; $("#liveDot").style.background = "#3fbf6a"; $("#chatInput").disabled = false; };
+  ws.onclose = () => {
+    $("#liveDot").style.background = "#c2321f";
+    if (++chatTries > 3) { chatOffline(); return; }
+    setTimeout(connect, 3000);
+  };
 }
 connect();
 

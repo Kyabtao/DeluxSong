@@ -48,3 +48,27 @@ public/img/               Banner artwork, app icons, UPI QR
 - Songs stream from YouTube and remain the property of their respective owners (Ishtar Music etc.).
 - Chat history is in-memory; restarting the server clears it. Swap the `messages` array in
   `server.js` for Redis/SQLite for persistence.
+
+## Deploying
+
+### GitHub Pages (static — no live chat)
+
+A ready-made workflow is provided at `deploy/github-pages.yml`. Copy it to `.github/workflows/pages.yml`
+(this has to be done by a human account — app tokens can't create workflow files). It publishes the `public/` folder to GitHub Pages on every
+push to `main`. Enable it once under **Settings → Pages → Build and deployment → Source: GitHub Actions**,
+then the site is live at `https://<user>.github.io/DeluxSong/`.
+
+All asset paths are relative, so it works from a project sub-path. Everything runs on Pages except
+the live chat, which needs a WebSocket server — it degrades to a read-only "offline" state there.
+
+To re-enable chat from the static build, host `server.js` somewhere (Render, Railway, Fly.io) and set
+the endpoint before `app.js` loads:
+
+```html
+<script>window.DELUX_CHAT_URL = "wss://your-chat-host.example.com/ws";</script>
+```
+
+### Full site (with live chat)
+
+Any Node host that supports WebSockets works — deploy the repo and run `npm start`
+(the server binds `0.0.0.0` and honours `PORT`).

@@ -2,12 +2,12 @@
   "name": "Deluxe Saloon — 2000s Indian Retro Radio",
   "short_name": "Deluxe Saloon",
   "description": "A 2000s Indian saloon, rebuilt in sound. Free nonstop Bollywood ambient radio.",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#140c07",
   "theme_color": "#140c07",
   "icons": [
-    { "src": "/img/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "img/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }
