@@ -1,79 +1,74 @@
-# DeluxSong
+# DeluxSong — a working clone of [deluxsalon.in](https://deluxsalon.in/)
 
-**Deluxe Saloon** (डीलक्स सैलून) — a 2000s Indian saloon, rebuilt in sound. Free nonstop
-Bollywood ambient radio: a working clone of [deluxsalon.in](https://deluxsalon.in/).
+**Deluxe Saloon** — a 2000s Indian neighbourhood barbershop, rebuilt in sound. A free ambient
+radio that streams nonstop Bollywood nostalgia, with barber one-liners, rain ambience and a
+live chat room, exactly in the spirit of the original site.
 
-The site is a **multi-page static site at the repo root** — visiting the site serves
-`index.html` (the landing page), not this README. Built **mobile-first**: thumb-sized
-controls, hamburger nav, full-screen playlist/chat on phones, and a bottom mini-player
-that carries your song across pages.
-
-## Pages
-
-| Page | File | What's on it |
-| --- | --- | --- |
-| **Home** | `index.html` | Hero, rotating barber quotes, "in the saloon now" preview, features, about + FAQ teasers |
-| **Radio** | `radio.html` | The full player: YouTube IFrame radio, play/prev/next, seek, volume, shuffle, video toggle, playlist drawer, 🌧️ Baarish rain ambience, keyboard shortcuts |
-| **Tracks** | `tracks.html` | All 12 curated 2000s Bollywood tracks — tap any to play it on the radio |
-| **About** | `about.html` | The story, the experience, how it works under the hood, fair-use notes |
-| **FAQ** | `faq.html` | Full question & answer accordion |
-| **Support** | `support.html` | UPI QR support card, part-time earning, other ways to help |
-| *404* | `404.html` | Theme-matched page-not-found |
-
-## Features
-
-- 📻 **Radio player** (YouTube IFrame API) — shuffle by default, auto-advance, seek with
-  timings, volume, show/hide video, keyboard shortcuts (Space / ← / →), spinning record.
-- 📋 **Playlist** — 12 curated 2000s Bollywood tracks; drawer on the radio page, grid on
-  the Tracks page; click-to-play anywhere.
-- 🌧️ **Baarish** — rain ambience synthesized in-browser with the Web Audio API
-  (filtered noise + distant thunder) with its own volume slider.
-- 💬 **Live Chat** — WebSocket room when served by the local server (`npm start`):
-  200-message history, online counter, rate limiting, unread badge. On static hosting
-  (e.g. GitHub Pages) it degrades to a read-only "offline" note; everything else works.
-- 📲 **PWA** — manifest + service worker; installable to the home screen, offline shell.
-- 📱 **Mobile-first** — responsive from 320px up, safe-area aware, install banner,
-  Web Share with clipboard fallback.
-- 📄 **SEO** — per-page meta/OG tags, `robots.txt`, `sitemap.xml`.
-
-## Run locally
+## Run it
 
 ```bash
 npm install
-npm start        # http://localhost:3000  (static site + live chat at /ws)
+npm start          # http://localhost:3000
 ```
 
-Or serve the static files any way you like — the site needs no build step:
+## What's implemented
 
-```bash
-npx serve .      # or: python3 -m http.server
-```
-
-## Deploy
-
-`deploy/github-pages.yml` publishes the **repo root** to GitHub Pages on push to `main`.
-Enable Pages → "Deploy from a branch" → `main` / (root). Visiting the site then shows
-`index.html`.
+| Feature | Notes |
+| --- | --- |
+| Retro saloon hero | Full-bleed illustrated storefront banner, Devanagari wordmark, rotating barber quotes |
+| Radio player | YouTube IFrame API — play/pause, next/prev, seek, volume, shuffle, autoplay-next, keyboard shortcuts (Space / ← / →) |
+| Playlist drawer | 12 curated 2000s Bollywood tracks, click to play, shuffle-aware ordering |
+| 🌧️ Baarish | Rain ambience synthesized in the browser with the Web Audio API (filtered noise + distant thunder), with its own volume slider |
+| 💬 Live Chat | Real WebSocket chat (`ws`), server-side history of the last 200 messages, online counter, "what's your name?" prompt before the first message, rate limiting |
+| 💰 Part Time Earning | Modal with WhatsApp channel link |
+| ❤️ Support | UPI QR modal with downloadable QR, auto-shown once per session |
+| Share | Web Share API with clipboard fallback |
+| PWA | Manifest, icons, service worker (offline shell), install prompt banner |
+| Content | About section, three feature cards, FAQ accordion, footer — mirroring the original copy |
+| SEO | Title/description/OG tags, `robots.txt`, generated `sitemap.xml` |
 
 ## Layout
 
 ```
-index.html / radio.html / tracks.html / about.html / faq.html / support.html / 404.html
-css/style.css          Mobile-first retro saloon theme (amber / cream / deep red)
-js/app.js              Player, playlist, quotes, rain synth, chat, PWA, page logic
-img/                   Banner artwork, app icons, UPI QR
-sw.js                  Service worker (offline shell)
-manifest.webmanifest   PWA manifest
-server.js              Optional Express static server + /ws chat + /api/health
-deploy/                GitHub Pages workflow
+server.js                 Express static server + /ws chat WebSocket + /api/health, /sitemap.xml
+public/index.html         Page markup
+public/style.css          Retro saloon theme (amber / cream / deep red)
+public/app.js             Player, playlist, quotes, rain synth, modals, PWA, chat client
+public/sw.js              Service worker
+public/manifest.webmanifest
+public/img/               Banner artwork, app icons, UPI QR
 ```
 
-## Note on assets
+## Notes
 
-Outbound network in the build sandbox was allowlisted, so the original site's HTML/CSS/JS
-and images could not be downloaded. The page was rebuilt from the site's fully-rendered
-content, with freshly generated banner/icon artwork in the same golden-hour barbershop
-style and a locally generated placeholder UPI QR. Swap the files in `img/` to use the
-originals.
+- The sandbox this was built in had no outbound access to `deluxsalon.in`, so the original binary
+  assets could not be downloaded. The banner and app icon here are freshly generated artwork in the
+  same style, and the UPI QR is a placeholder generated locally — swap the files in `public/img/`
+  to use the real ones.
+- Songs stream from YouTube and remain the property of their respective owners (Ishtar Music etc.).
+- Chat history is in-memory; restarting the server clears it. Swap the `messages` array in
+  `server.js` for Redis/SQLite for persistence.
 
-Songs stream from YouTube and belong to their respective owners.
+## Deploying
+
+### GitHub Pages (static — no live chat)
+
+A ready-made workflow is provided at `deploy/github-pages.yml`. Copy it to `.github/workflows/pages.yml`
+(this has to be done by a human account — app tokens can't create workflow files). It publishes the `public/` folder to GitHub Pages on every
+push to `main`. Enable it once under **Settings → Pages → Build and deployment → Source: GitHub Actions**,
+then the site is live at `https://<user>.github.io/DeluxSong/`.
+
+All asset paths are relative, so it works from a project sub-path. Everything runs on Pages except
+the live chat, which needs a WebSocket server — it degrades to a read-only "offline" state there.
+
+To re-enable chat from the static build, host `server.js` somewhere (Render, Railway, Fly.io) and set
+the endpoint before `app.js` loads:
+
+```html
+<script>window.DELUX_CHAT_URL = "wss://your-chat-host.example.com/ws";</script>
+```
+
+### Full site (with live chat)
+
+Any Node host that supports WebSockets works — deploy the repo and run `npm start`
+(the server binds `0.0.0.0` and honours `PORT`).

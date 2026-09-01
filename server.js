@@ -1,9 +1,6 @@
 /**
- * Deluxe Saloon — DeluxSong local server
- * Serves the static site from the repo root + live chat over WebSockets
- * (in-memory, last 200 messages). The site also works as pure static
- * files (e.g. GitHub Pages); live chat is the only server-side feature
- * and degrades to an "offline" note without this server.
+ * Deluxe Saloon — server
+ * Static site + live chat over WebSockets (in-memory, last 200 messages).
  */
 const path = require('path');
 const http = require('http');
@@ -13,11 +10,18 @@ const { WebSocketServer } = require('ws');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static(__dirname, { extensions: ['html'] }));
+app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
+
+app.get('/sitemap.xml', (req, res) => {
+  const base = `${req.protocol}://${req.get('host')}`;
+  res.type('application/xml').send(
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${base}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>\n</urlset>\n`
+  );
+});
 
 app.get('/api/health', (_req, res) => res.json({ ok: true, listeners: wss ? wss.clients.size : 0 }));
 
-app.use((_req, res) => res.status(404).sendFile(path.join(__dirname, '404.html')));
+app.use((_req, res) => res.status(404).sendFile(path.join(__dirname, 'public', 'index.html')));
 
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server, path: '/ws' });

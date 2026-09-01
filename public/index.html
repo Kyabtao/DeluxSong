@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Deluxe Salon | Delux Salon 2000s Indian Retro Ambient Radio – deluxsalon.in</title>
+<meta name="description" content="Deluxe Saloon is a free 2000s Indian retro ambient radio — nonstop Bollywood hits, barber chatter and the sound of a neighbourhood saloon. Press play, no sign-up." />
+<meta name="theme-color" content="#1a0f0a" />
+<link rel="icon" href="img/favicon.png" />
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+<link rel="manifest" href="manifest.webmanifest" />
+<meta property="og:title" content="Deluxe Saloon — 2000s Indian Retro Ambient Saloon Radio" />
+<meta property="og:description" content="A 2000s Indian saloon, rebuilt in sound. Free nonstop Bollywood radio." />
+<meta property="og:image" content="img/newbanner.jpg" />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://www.youtube.com" />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<a class="skip" href="#about">Skip to content</a>
+
+<!-- ============ HERO / PLAYER ============ -->
+<header class="hero" id="top">
+  <img class="hero-bg" src="img/newbanner.jpg" alt="Illustrated 2000s Indian saloon storefront at golden hour, the visual theme of Deluxe Saloon" />
+  <div class="hero-shade"></div>
+
+  <div class="topbar">
+    <button class="pill" id="chatOpen">💬 Live Chat <span class="badge" id="chatCount">0</span></button>
+    <div class="topbar-right">
+      <button class="pill" id="rainBtn" title="Toggle rain ambience">🌧️ Baarish?</button>
+      <button class="pill" id="earnBtn">💰 Part Time Earning</button>
+      <button class="pill" id="shareBtn">Share</button>
+    </div>
+  </div>
+
+  <div class="hero-inner">
+    <h1 class="brand">डीलक्स <span>सैलून</span></h1>
+    <p class="tagline" id="quote">हमारे यहाँ हर स्टाइल की कटिंग की जाती है!</p>
+
+    <div class="player" id="player">
+      <div class="yt-holder" id="ytHolder"><div id="ytplayer"></div></div>
+      <div class="np">
+        <div class="disc" id="disc">
+          <div class="disc-hole"></div>
+        </div>
+        <div class="np-text">
+          <div class="np-title" id="npTitle">Nostalgia Loading...</div>
+          <div class="np-credit">Credits: <span id="npCredit">YouTube</span></div>
+        </div>
+      </div>
+
+      <div class="seek">
+        <span class="time" id="cur">0:00</span>
+        <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Seek" />
+        <span class="time" id="dur">0:00</span>
+      </div>
+
+      <div class="controls">
+        <button class="ctl" id="prev" title="Previous" aria-label="Previous">⏮</button>
+        <button class="ctl play" id="play" title="Play" aria-label="Play">▶</button>
+        <button class="ctl" id="next" title="Next" aria-label="Next">⏭</button>
+        <button class="ctl small" id="shuffle" title="Shuffle" aria-label="Shuffle">🔀</button>
+        <div class="vol">
+          <span id="volIcon">🔊</span>
+          <input type="range" id="vol" min="0" max="100" value="70" aria-label="Volume" />
+        </div>
+        <button class="ctl small" id="listBtn" title="Playlist" aria-label="Playlist">☰</button>
+        <button class="ctl small" id="videoBtn" title="Show / hide video" aria-label="Toggle video">📺</button>
+      </div>
+
+      <div class="rainrow" id="rainRow" hidden>
+        <span>🌧️ Baarish</span>
+        <input type="range" id="rainVol" min="0" max="100" value="45" aria-label="Rain volume" />
+      </div>
+    </div>
+
+    <a class="scroll" href="#about">Scroll <span>▾</span></a>
+  </div>
+</header>
+
+<!-- ============ PLAYLIST DRAWER ============ -->
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <h3>Aaj ka Playlist</h3>
+    <button class="x" id="drawerClose" aria-label="Close">×</button>
+  </div>
+  <ol class="tracks" id="tracks"></ol>
+  <p class="drawer-note">Shuffles forever. Songs stream from YouTube.</p>
+</aside>
+
+<!-- ============ ABOUT ============ -->
+<main>
+<section class="about" id="about">
+  <p class="eyebrow">Welcome to</p>
+  <h2>Deluxe Saloon — a 2000s Indian Saloon, Rebuilt in Sound</h2>
+  <p class="lede">
+    Deluxe Saloon (also spelled <strong>Deluxe Salon</strong> or <strong>Delux Salon</strong>) is a free ambient
+    radio built to recreate one very specific memory: the neighbourhood hair-cutting saloon of 2000s India, with a
+    battered radio in the corner playing Bollywood hits between the buzz of clippers and the snip of scissors.
+    Press play, and Deluxe Saloon streams a nonstop mix of 2000s Bollywood radio nostalgia, styled around the
+    sights, sounds and one-liners of a classic Indian barbershop.
+  </p>
+
+  <div class="cards">
+    <article class="card">
+      <div class="ico">📻</div>
+      <h3>2000s Bollywood Radio</h3>
+      <p>A curated playlist of the era's biggest saloon-radio staples, tuned to keep playing in the background all day.</p>
+    </article>
+    <article class="card">
+      <div class="ico">✂️</div>
+      <h3>Barber Chatter &amp; Quotes</h3>
+      <p>Rotating one-liners from Deluxe Saloon's cast of barbers, woven into the retro soundtrack.</p>
+    </article>
+    <article class="card">
+      <div class="ico">🕰️</div>
+      <h3>Always Open</h3>
+      <p>Deluxe Saloon is free, streams straight from your browser, and never closes — no sign-up, no app.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq" id="faq">
+  <p class="eyebrow">FAQ</p>
+  <h2>Deluxe Saloon, Explained</h2>
+  <div class="acc" id="acc"></div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="foot-brand">डीलक्स सैलून</div>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://www.youtube.com/@IshtarMusic" target="_blank" rel="noopener">YouTube Playlist</a>
+    <a href="#" id="supportLink">Support ❤️</a>
+  </nav>
+  <p>Made with ❤️ for everyone who grew up with a radio in the corner of the saloon.</p>
+  <p class="small">A working clone of deluxsalon.in — built for demonstration. All songs stream from YouTube and belong to their respective owners.</p>
+</footer>
+
+<!-- ============ SUPPORT MODAL ============ -->
+<div class="modal" id="supportModal" hidden>
+  <div class="sheet">
+    <button class="x" data-close aria-label="Close">×</button>
+    <div class="big">❤️</div>
+    <h2>No ads - Just memories. Support the Platform to Stay FOREVER</h2>
+    <p>With over 1 Lac daily visitors, We promise never to put ads and ruin your experience. But web server costs
+      are high to keep this website smooth, Please send any amount you wish. Thank you in advance! ❤️️</p>
+    <img class="qr" src="img/qr.jpg" alt="QR code to support Deluxe Saloon" />
+    <a class="btn" href="img/qr.jpg" download>Download QR Code</a>
+    <p class="small">Save it and scan with any UPI app.<br />(GPay / PhonePe / Paytm)</p>
+    <button class="link" data-close>Dismiss</button>
+  </div>
+</div>
+
+<!-- ============ EARN MODAL ============ -->
+<div class="modal" id="earnModal" hidden>
+  <div class="sheet">
+    <button class="x" data-close aria-label="Close">×</button>
+    <div class="big">💰</div>
+    <h2>Part Time Earning</h2>
+    <p>We provide simple tasks you can do in your free time and get instant UPI payment. Amount won't be big, but
+      it's enough for your pocket money.</p>
+    <a class="btn" href="https://whatsapp.com/channel/0029VajyupYAjPXTOvgg2Z41" target="_blank" rel="noopener">Join Now</a>
+    <button class="link" data-close>Dismiss</button>
+  </div>
+</div>
+
+<!-- ============ INSTALL PROMPT ============ -->
+<div class="install" id="install" hidden>
+  <img src="img/icon-192.png" alt="Deluxe Saloon app icon" />
+  <div>
+    <strong>Install Our APP</strong>
+    <span>One tap listen anywhere.</span>
+  </div>
+  <button class="btn sm" id="installBtn">Install</button>
+  <button class="x" id="installClose" aria-label="Close">×</button>
+</div>
+
+<!-- ============ CHAT ============ -->
+<div class="chat" id="chat" hidden>
+  <div class="chat-head">
+    <h3>Live Chat <span class="dot" id="liveDot"></span><small id="online">0 online</small></h3>
+    <button class="x" id="chatClose" aria-label="Close">×</button>
+  </div>
+  <div class="pinned">📌 <b>Deluxe Salon Admin :</b> Welcome! Be kind, no spam. Say hello and tell everyone where
+    you're listening from. ❤️</div>
+  <div class="msgs" id="msgs"></div>
+  <form class="chat-form" id="chatForm">
+    <input id="chatInput" maxlength="200" placeholder="Type a message…" autocomplete="off" />
+    <button class="btn sm" type="submit">Send</button>
+  </form>
+</div>
+
+<div class="modal" id="nameModal" hidden>
+  <div class="sheet small-sheet">
+    <h3>One last step — what's your name?</h3>
+    <p class="small">We'll send this as soon as you enter it:</p>
+    <p class="pending" id="pendingMsg"></p>
+    <input id="nameInput" maxlength="24" placeholder="Your name" />
+    <div class="row">
+      <button class="btn" id="nameSend">Send</button>
+      <button class="link" data-close>Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="app.js"></script>
+</body>
+</html>

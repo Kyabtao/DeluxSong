@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://kyabtao.github.io/DeluxSong/sitemap.xml
