@@ -56,7 +56,7 @@ function toast(msg) {
 }
 
 /* ---------------- radio ---------------- */
-let yt = null, ready = false, order = [], pos = 0, shuffle = true, wantPlay = false, tick = null, seeking = false;
+let yt = null, ready = false, order = [], pos = 0, shuffle = true, wantPlay = false, tick = null, seeking = false, skips = 0;
 
 function buildOrder() {
   order = PLAYLIST.map((_, i) => i);
@@ -82,9 +82,28 @@ window.onYouTubeIframeAPIReady = function () {
       onStateChange: (e) => {
         if (e.data === YT.PlayerState.ENDED) next();
         setPlayingUI(e.data === YT.PlayerState.PLAYING);
-        if (e.data === YT.PlayerState.PLAYING) startTick();
+        if (e.data === YT.PlayerState.PLAYING) { skips = 0; startTick(); }
       },
-      onError: () => { toast("Track unavailable — skipping…"); setTimeout(next, 600); }
+      onError: (e) => {
+        const code = e && e.data;
+        // 100 = video removed/not found, 101/150 = embedding disabled for this video.
+        // Those are per-video problems, so skip ahead — but cap it so a bad batch
+        // never spins forever.
+        if (code === 100 || code === 101 || code === 150) {
+          skips++;
+          if (skips >= PLAYLIST.length) {
+            skips = 0;
+            toast("Every track is unavailable right now — please try again later.");
+            return;
+          }
+          toast("Track unavailable — skipping…");
+          setTimeout(next, 600);
+          return;
+        }
+        // 2 = invalid params, 5 = HTML5 player error, 153 = player config/referrer issue.
+        // These are systemic — advancing won't help, so stop and say why.
+        toast("Player error " + (code || "?") + " — try disabling your ad-blocker and reload.");
+      }
     }
   });
 };
