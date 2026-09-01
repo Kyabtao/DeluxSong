@@ -9,6 +9,10 @@
   --ok:#3fbf6a;
 }
 *{box-sizing:border-box}
+/* The overlays below (.modal / .chat / .install / .toast) set an explicit display,
+   which beats the browser default `[hidden]{display:none}`. Without this rule every
+   modal renders on load and swallows clicks meant for the player. */
+[hidden]{display:none !important}
 html{scroll-behavior:smooth}
 body{
   margin:0;background:var(--bg);color:var(--cream);
