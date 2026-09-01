@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Deluxe Saloon | DeluxSong — 2000s Indian Retro Ambient Radio</title>
+<meta name="description" content="Deluxe Saloon is a free 2000s Indian retro ambient radio — nonstop Bollywood hits, barber chatter and the sound of a neighbourhood saloon. Press play, no sign-up." />
+<meta name="theme-color" content="#140c07" />
+<link rel="icon" href="img/favicon.png" />
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+<link rel="manifest" href="manifest.webmanifest" />
+<meta property="og:title" content="Deluxe Saloon — 2000s Indian Retro Ambient Saloon Radio" />
+<meta property="og:description" content="A 2000s Indian saloon, rebuilt in sound. Free nonstop Bollywood radio." />
+<meta property="og:image" content="https://kyabtao.github.io/DeluxSong/img/newbanner.jpg" />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://www.youtube.com" />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="home">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <a class="head-brand" href="index.html">डीलक्स <span>सैलून</span></a>
+  <div class="head-actions">
+    <button class="pill" id="shareBtn" title="Share"><span class="ico">📤</span><span class="lbl">Share</span></button>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mainNav"><span></span><span></span><span></span></button>
+  </div>
+  <nav class="main-nav" id="mainNav" aria-label="Main">
+    <a href="index.html" aria-current="page">Home</a>
+    <a href="radio.html">Radio</a>
+    <a href="tracks.html">Tracks</a>
+    <a href="about.html">About</a>
+    <a href="faq.html">FAQ</a>
+    <a href="support.html">Support</a>
+  </nav>
+  <button class="nav-backdrop" id="navBackdrop" hidden tabindex="-1" aria-label="Close menu"></button>
+</header>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <img class="hero-bg" src="img/newbanner.jpg" alt="Illustrated 2000s Indian saloon storefront at golden hour, the visual theme of Deluxe Saloon" />
+  <div class="hero-shade"></div>
+  <div class="hero-inner">
+    <h1 class="brand">डीलक्स <span>सैलून</span></h1>
+    <p class="tagline" id="quote">हमारे यहाँ हर स्टाइल की कटिंग की जाती है!</p>
+    <p class="subline">A 2000s Indian saloon, rebuilt in sound. Nonstop Bollywood radio nostalgia — free, no sign-up, no ads.</p>
+    <div class="cta-row">
+      <a class="btn" href="radio.html">▶&nbsp; Start Listening</a>
+      <a class="btn ghost" href="tracks.html">Browse the Playlist</a>
+    </div>
+    <a class="scroll" href="#now">In the saloon now <span>▾</span></a>
+  </div>
+</header>
+
+<main id="main">
+<!-- ============ NOW PLAYING PREVIEW ============ -->
+<section class="wrap" id="now">
+  <p class="eyebrow">Aaj ka Playlist</p>
+  <h2>In the Saloon Now</h2>
+  <p class="lede">Twelve 2000s staples on a loop — the radio in the corner of the saloon, shuffling forever. Tap any song to pick it up on the <a href="radio.html">Radio</a>.</p>
+  <div class="track-list" id="homeTracks"></div>
+  <a class="see-all" href="tracks.html">See all 12 tracks →</a>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="wrap">
+  <p class="eyebrow">Why Deluxe Saloon</p>
+  <h2>Everything the Saloon Had</h2>
+  <div class="cards">
+    <article class="card">
+      <div class="ico">📻</div>
+      <h3>2000s Bollywood Radio</h3>
+      <p>A curated playlist of the era's biggest saloon-radio staples, tuned to keep playing in the background all day.</p>
+    </article>
+    <article class="card">
+      <div class="ico">✂️</div>
+      <h3>Barber Chatter &amp; Quotes</h3>
+      <p>Rotating one-liners from Deluxe Saloon's cast of barbers, woven into the retro soundtrack.</p>
+    </article>
+    <article class="card">
+      <div class="ico">🌧️</div>
+      <h3>Baarish on Tap</h3>
+      <p>Real rain ambience, synthesized in your browser with the Web Audio API — with its own volume knob.</p>
+    </article>
+    <article class="card">
+      <div class="ico">📲</div>
+      <h3>Works Like an App</h3>
+      <p>Mobile-first, installable to your home screen, and it works on 2G-ish nostalgia. <a href="about.html">How it works →</a></p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ ABOUT TEASER ============ -->
+<section class="wrap">
+  <p class="eyebrow">Welcome to</p>
+  <h2>A Neighbourhood Saloon, Rebuilt in Sound</h2>
+  <p class="lede">
+    Deluxe Saloon is a free ambient radio built to recreate one very specific memory: the neighbourhood
+    hair-cutting saloon of 2000s India, with a battered radio in the corner playing Bollywood hits between the
+    buzz of clippers and the snip of scissors. Press play, and it streams a nonstop mix of 2000s Bollywood radio
+    nostalgia, styled around the sights, sounds and one-liners of a classic Indian barbershop.
+  </p>
+  <a class="see-all" href="about.html">The full story →</a>
+</section>
+
+<!-- ============ FAQ TEASER ============ -->
+<section class="wrap">
+  <p class="eyebrow">FAQ</p>
+  <h2>Quick Answers</h2>
+  <div class="acc" id="accTeaser"></div>
+  <a class="see-all" href="faq.html">All questions &amp; answers →</a>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="foot-brand">डीलक्स सैलून</div>
+  <p class="foot-tag">A 2000s Indian saloon, rebuilt in sound.</p>
+  <nav aria-label="Footer">
+    <a href="index.html">Home</a>
+    <a href="radio.html">Radio</a>
+    <a href="tracks.html">Tracks</a>
+    <a href="about.html">About</a>
+    <a href="faq.html">FAQ</a>
+    <a href="support.html">Support ❤️</a>
+    <a href="https://www.youtube.com/@IshtarMusic" target="_blank" rel="noopener">YouTube</a>
+  </nav>
+  <p>Made with ❤️ for everyone who grew up with a radio in the corner of the saloon.</p>
+  <p class="small">A working clone of deluxsalon.in — built for demonstration. All songs stream from YouTube and belong to their respective owners.</p>
+</footer>
+
+<!-- ============ MINI PLAYER (global) ============ -->
+<div class="miniplayer" id="mini" hidden>
+  <button class="mini-main" id="miniPlay" aria-label="Play">
+    <span class="mini-disc" id="miniDisc"><span class="mini-hole" id="miniPlayIcon">▶</span></span>
+  </button>
+  <div class="mini-text">
+    <span class="mini-title" id="miniTitle">Nostalgia Loading…</span>
+    <span class="mini-credit" id="miniCredit">Deluxe Saloon</span>
+  </div>
+  <button class="mini-btn" id="miniNext" aria-label="Next track">⏭</button>
+  <a class="mini-btn" href="radio.html" aria-label="Open full player">📻</a>
+</div>
+<div class="yt-hidden" aria-hidden="true"><div id="ytplayer-mini"></div></div>
+
+<!-- ============ CHAT ============ -->
+<button class="fab" id="chatOpen" aria-label="Live chat">💬<span class="badge" id="chatCount" hidden>0</span></button>
+<div class="chat" id="chat" hidden>
+  <div class="chat-head">
+    <h3>Live Chat <span class="dot" id="liveDot"></span><small id="online">0 online</small></h3>
+    <button class="x" id="chatClose" aria-label="Close">×</button>
+  </div>
+  <div class="pinned">📌 <b>Deluxe Salon Admin :</b> Welcome! Be kind, no spam. Say hello and tell everyone where you're listening from. ❤️</div>
+  <div class="msgs" id="msgs"></div>
+  <form class="chat-form" id="chatForm">
+    <input id="chatInput" maxlength="200" placeholder="Type a message…" autocomplete="off" />
+    <button class="btn sm" type="submit">Send</button>
+  </form>
+</div>
+<div class="modal" id="nameModal" hidden>
+  <div class="sheet small-sheet">
+    <h3>One last step — what's your name?</h3>
+    <p class="small">We'll send this as soon as you enter it:</p>
+    <p class="pending" id="pendingMsg"></p>
+    <input id="nameInput" maxlength="24" placeholder="Your name" />
+    <div class="row">
+      <button class="btn" id="nameSend">Send</button>
+      <button class="link" data-close>Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ INSTALL PROMPT ============ -->
+<div class="install" id="install" hidden>
+  <img src="img/icon-192.png" alt="Deluxe Saloon app icon" />
+  <div>
+    <strong>Install Our APP</strong>
+    <span>One tap, listen anywhere.</span>
+  </div>
+  <button class="btn sm" id="installBtn">Install</button>
+  <button class="x" id="installClose" aria-label="Close">×</button>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
