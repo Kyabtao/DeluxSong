@@ -340,8 +340,6 @@ const Modals = (function () {
           drawer.classList.remove("open");
           drawer.setAttribute("aria-hidden", "true");
         }
-        const launcher = $("#playlistBtn");
-        if (launcher) launcher.setAttribute("aria-expanded", "false");
         const listBtn = $("#listBtn");
         if (listBtn) listBtn.setAttribute("aria-expanded", "false");
         openRequest();

@@ -1,4 +1,4 @@
-const CACHE = 'tcs-radio-v8';
+const CACHE = 'tcs-radio-v9';
 const BASE = new URL('./', self.registration.scope).pathname;
 const ASSETS = [
   BASE,

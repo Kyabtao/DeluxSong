@@ -105,29 +105,12 @@ const PlayerEngine = (function () {
     return activePlaylist[order[pos]] || activePlaylist[0];
   }
 
-  /* Keep the player and selected-track area available, but keep its controls
-     quiet until the listener chooses an actual song from the sidebar. */
-  function revealPlayer() {
-    const player = $("#player");
-    if (!player) return;
-    const wasPending = player.classList.contains("player-controls-pending");
-    player.classList.remove("player-controls-pending");
-    player.setAttribute("aria-hidden", "false");
-    player.title = "Playback controls";
-    const hint = $("#playerHint");
-    if (hint) hint.hidden = true;
-    if (wasPending) player.dataset.revealed = "true";
-  }
-
   function setDrawerOpen(isOpen) {
     const drawer = $("#drawer");
     if (drawer) {
       drawer.classList.toggle("open", isOpen);
       drawer.setAttribute("aria-hidden", isOpen ? "false" : "true");
     }
-
-    const launcher = $("#playlistBtn");
-    if (launcher) launcher.setAttribute("aria-expanded", isOpen ? "true" : "false");
 
     const listBtn = $("#listBtn");
     if (listBtn) listBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
@@ -535,8 +518,6 @@ const PlayerEngine = (function () {
         }
 
         const targetIdx = order.indexOf(i);
-        // Selecting a song is the moment the player becomes useful and visible.
-        revealPlayer();
         loadTrack(targetIdx !== -1 ? targetIdx : i, true);
         setDrawerOpen(false);
       };
@@ -684,25 +665,14 @@ const PlayerEngine = (function () {
       };
     });
 
-    // Control buttons
+    // Control buttons — always visible and ready from the first load.
     $("#play").onclick = togglePlay;
     $("#next").onclick = () => nextTrack(false);
     $("#prev").onclick = prevTrack;
     $("#shuffle").onclick = toggleShuffle;
 
-    // A playing audio-first player can keep its controls quiet until the
-    // listener clicks the player; choosing a song from the sidebar also
-    // reveals them.
-    const player = $("#player");
-    if (player) {
-      player.addEventListener("click", (e) => {
-        if (!player.classList.contains("player-controls-pending")) return;
-        if (e.target.closest("button, input")) return;
-        revealPlayer();
-      });
-    }
-
-    // Drawer toggles — playlist browsing now happens here, not in the hero.
+    // Drawer toggles — playlist browsing happens in the sidebar; it opens
+    // with the ☰ button on the player deck.
     const openDrawer = () => {
       activeDrawerFilter = currentPlaylistKey;
       syncDrawerState(true);
@@ -715,9 +685,6 @@ const PlayerEngine = (function () {
       listBtn.setAttribute("aria-label", "Open Playlist Sidebar");
       listBtn.onclick = openDrawer;
     }
-
-    const playlistBtn = $("#playlistBtn");
-    if (playlistBtn) playlistBtn.onclick = openDrawer;
 
     const drawerClose = $("#drawerClose");
     if (drawerClose) drawerClose.onclick = () => setDrawerOpen(false);

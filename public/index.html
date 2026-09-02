@@ -52,15 +52,6 @@
     </div>
     <p class="tagline" id="quote">टाइम्सशीट भर दी भाई? चलो अब चाय पीते हैं और पुराने गाने सुनते हैं!</p>
 
-    <button class="playlist-launcher" id="playlistBtn" type="button" aria-controls="drawer" aria-expanded="false">
-      <span class="playlist-launcher-icon">📻</span>
-      <span class="playlist-launcher-copy">
-        <strong>Choose a playlist</strong>
-        <small>Open the sidebar to pick a station or song</small>
-      </span>
-      <span class="playlist-launcher-arrow" aria-hidden="true">→</span>
-    </button>
-
     <!-- The sidebar is now the only playlist browser. This compact legacy
          markup remains hidden so saved integrations can still sync its state. -->
     <!-- SECTION 3: Playlist Selector (public/components/playlist-selector.html) -->
@@ -130,8 +121,7 @@
     </div>
 
     <!-- SECTION 4: Audio Player Deck (public/components/player.html) -->
-    <p class="player-hint" id="playerHint">Tap or click the player to reveal playback buttons.</p>
-    <div class="player mini player-controls-pending" id="player" aria-label="Audio player" title="Click to show playback buttons">
+    <div class="player mini" id="player" aria-label="Audio player">
       <!-- Dual-buffer slots: standby player pre-cues the next track for gapless, reload-free transitions -->
       <div class="yt-holder" id="ytHolder">
         <div class="yt-slot on" id="ytSlotA"><div id="ytplayerA"></div></div>
@@ -248,18 +238,6 @@
   </div>
 </section>
 
-<!-- Support is deliberately placed after About, not in the top navigation. -->
-<section class="page-actions about-actions" aria-label="Support TCS Radio">
-  <div class="action-copy">
-    <span class="action-kicker">Keep the radio going</span>
-    <strong>Enjoying the break?</strong>
-    <span>Support the ad-free station by sharing it with a friend.</span>
-  </div>
-  <button class="section-action section-action-primary" id="supportBtn" type="button" title="Support TCS Radio">
-    ❤️ Support TCS Radio
-  </button>
-</section>
-
 <!-- SECTION 7: FAQ Section (public/components/faq.html) -->
 <section class="faq" id="faq">
   <p class="eyebrow">FAQ</p>
@@ -268,14 +246,25 @@
 </section>
 </main>
 
-<!-- These actions sit immediately before the short footer. -->
-<section class="page-actions pre-footer-actions" aria-label="More from TCS Radio">
-  <button class="section-action" id="requestFooterLink" type="button" title="Suggest a song or request removal">
-    🎵 Add / Remove Songs
-  </button>
-  <button class="section-action" id="earnBtn" type="button" title="TCS Careers">
-    💼 TCS Careers
-  </button>
+<!-- Support & quick actions sit together immediately before the short footer.
+     The ☰ button on the player opens the playlist sidebar. -->
+<section class="page-actions support-actions" aria-label="Support TCS Radio">
+  <div class="action-copy">
+    <span class="action-kicker">Keep the radio going</span>
+    <strong>Enjoying the break?</strong>
+    <span>Support the ad-free station by sharing it with a friend.</span>
+  </div>
+  <div class="support-buttons">
+    <button class="section-action section-action-primary" id="supportBtn" type="button" title="Support TCS Radio">
+      ❤️ Support Us
+    </button>
+    <button class="section-action" id="requestFooterLink" type="button" title="Suggest a song or request removal">
+      🎵 Add / Remove Songs
+    </button>
+    <button class="section-action" id="earnBtn" type="button" title="TCS Careers">
+      💼 TCS Careers
+    </button>
+  </div>
 </section>
 
 <!-- SECTION 8: Footer (public/components/footer.html) -->

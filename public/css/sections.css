@@ -363,20 +363,29 @@ main {
   padding: 22px;
 }
 
-.about-actions {
-  margin-top: -34px;
-  padding-top: 0;
-  padding-bottom: 76px;
-}
-
-.pre-footer-actions {
+/* Support & quick actions: one strip after the main content, right before
+   the short footer. Support Us, Add / Remove Songs and TCS Careers live here. */
+.support-actions {
+  flex-direction: column;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
+  gap: 18px;
   max-width: none;
   padding: 34px 22px;
   border-top: 1px solid var(--line);
   background: var(--main-grad);
+  text-align: center;
+}
+
+.support-actions .action-copy {
+  align-items: center;
+}
+
+.support-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .action-copy {
@@ -484,11 +493,6 @@ main {
     padding-right: 16px;
   }
 
-  .about-actions {
-    margin-top: -24px;
-    padding-bottom: 58px;
-  }
-
   .action-copy {
     text-align: center;
     align-items: center;
@@ -498,12 +502,16 @@ main {
     width: 100%;
   }
 
-  .pre-footer-actions {
+  .support-actions {
+    padding: 26px 16px;
+  }
+
+  .support-buttons {
     flex-direction: row;
     align-items: center;
   }
 
-  .pre-footer-actions .section-action {
+  .support-buttons .section-action {
     width: auto;
     flex: 1 1 150px;
   }

@@ -33,13 +33,13 @@ token graphs, so the classic **Retro Gold** look provably never drifts.
 | 7 Curated Playlists | 🏢 **Office (TCS)**, 🛺 **Auto (Jhankar)**, 🚚 **Truck (Highway)**, 🌧️ **Monsoon (90s Romance)**, ☕ **Chai Tapri (Golden Hits)**, 🎸 **Indipop & Cassette**, 🎧 **Latest Hits (2024–26)** — 12–13 hand-picked tracks per station (85+ official uploads in the library, fresh chartbusters like Saiyaara, Dhun, Gehra Hua & Border 2 on the Latest station) |
 | 🎨 Playlist-Matched Backgrounds | Every radio playlist has its own retro hero artwork — Office tech park, Auto bazaar street, Highway truck, Monsoon rain, Chai tapri, Cassette rooftop and a neon rooftop gig for Latest Hits — that **crossfades instantly when you switch stations**, with a matching accent glow |
 | Auto-Play Next Playlist | When all songs in a playlist finish playing, TCS Radio automatically transitions to the next playlist in the cycle for endless uninterrupted streaming |
-| Sidebar Playlist Browser | The hero stays uncluttered; use 📻 Choose a playlist or the player’s ☰ button to browse stations and songs in the slide-out sidebar |
+| Sidebar Playlist Browser | The hero stays uncluttered; use the player’s ☰ button to browse stations and songs in the slide-out sidebar |
 | Song Add / Remove (Connect) | A compact action before the footer opens an enhanced form for artists, copyright holders, and listeners to suggest tracks or request removals directly with Umair |
-| Audio-First Radio | The audio player remains available while its playback buttons stay hidden until the player is clicked or a song is chosen; the full video deck stays out of the way |
+| Audio-First Radio | Playback controls are visible and ready from the first load; the full video deck stays out of the way in mini mode |
 | Tactile Audio Controls | Golden glowing play button, prev/next, shuffle, custom volume with mute toggle, seekbar with real-time sync, keyboard shortcuts (`Space` / `←` / `→` / `M` / `S` / `R` = rain) |
 | 🌧️ Baarish Ambience | Built-in Web Audio API monsoon rain synthesizer with gentle distant thunder — plus a full on-screen rain overlay: falling drops, splash ripples and lightning flashes synced to the thunder, with intensity following the Baarish volume slider |
 | 💼 TCS Careers | Light-hearted careers modal placed after Add / Remove Songs, with an anti-scam notice (no fake links!) |
-| ❤️ Support Us | Support action placed after About with a short thank-you; the station stays ad-free and is supported by sharing |
+| ❤️ Support Us | Support action joins Add / Remove Songs and TCS Careers in the strip after the content, right before the short footer; the station stays ad-free and is supported by sharing |
 | Short footer | A small brand line, three useful links, and one ownership note — the longer promotional copy stays out of the footer |
 | PWA & SEO | Installable Progressive Web App, service worker, manifest, SEO meta tags, sitemap.xml |
 
