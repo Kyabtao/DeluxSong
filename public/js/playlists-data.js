@@ -24,7 +24,8 @@ const PLAYLISTS = {
       { id: "_YjSmLlmqLM", title: "Aisi Deewangi | Deewana | Shahrukh Khan, Divya Bharti", credit: "Ishtar Music" },
       { id: "LtIJuk5te9E", title: "Pehli Baar Mile Hain | Saajan | S P Balasubramaniam", credit: "Ishtar Music" },
       { id: "bBjVLCAAM1A", title: "Dekha Hai Pehli Baar (Duet) | Saajan | Alka Yagnik, SPB", credit: "Ishtar Music" },
-      { id: "plB0ytzIlqI", title: "Paas Woh Aane Lage | Main Khiladi Tu Anari | Kumar Sanu", credit: "Ishtar Music" }
+      { id: "plB0ytzIlqI", title: "Paas Woh Aane Lage | Main Khiladi Tu Anari | Kumar Sanu", credit: "Ishtar Music" },
+      { id: "k3g_WjLCsXM", title: "Sajni | Laapataa Ladies | Arijit Singh", credit: "T-Series" }
     ],
     quotes: [
       "टाइम्सशीट भर दी भाई? चलो अब चाय पीते हैं और पुराने गाने सुनते हैं!",
@@ -55,7 +56,8 @@ const PLAYLISTS = {
       { id: "_YjSmLlmqLM", title: "Aisi Deewangi | Deewana | Shahrukh Khan, Divya Bharti", credit: "Ishtar Music" },
       { id: "ioWh9vMixyw", title: "Tu Shayar Hai Main Teri Shayari | Saajan | Alka Yagnik", credit: "Ishtar Music" },
       { id: "plB0ytzIlqI", title: "Paas Woh Aane Lage | Main Khiladi Tu Anari | Kumar Sanu", credit: "Ishtar Music" },
-      { id: "qGOTe3KmCdY", title: "Kitna Haseen Chehra | Dilwale | Kumar Sanu", credit: "Ishtar Music" }
+      { id: "qGOTe3KmCdY", title: "Kitna Haseen Chehra | Dilwale | Kumar Sanu", credit: "Ishtar Music" },
+      { id: "KGn-erOG-Bs", title: "Laal Pari | Housefull 5 | Yo Yo Honey Singh", credit: "T-Series" }
     ],
     quotes: [
       "मीटर से चलोगे भैया? 'नहीं साहेब, ₹30 एक्स्ट्रा लगेगा!'",
@@ -85,7 +87,8 @@ const PLAYLISTS = {
       { id: "PUO7_Gi6ipg", title: "Baazigar O Baazigar | Baazigar | Shahrukh Khan, Kajol", credit: "Ishtar Music" },
       { id: "bBjVLCAAM1A", title: "Dekha Hai Pehli Baar | Saajan | Alka Yagnik, SPB", credit: "Ishtar Music" },
       { id: "qGOTe3KmCdY", title: "Kitna Haseen Chehra | Dilwale | Ajay Devgan", credit: "Ishtar Music" },
-      { id: "mNSYPtzpfd4", title: "Jab Koi Baat Bigad Jaaye | Jurm | Kumar Sanu, Sadhna", credit: "Ishtar Music" }
+      { id: "mNSYPtzpfd4", title: "Jab Koi Baat Bigad Jaaye | Jurm | Kumar Sanu, Sadhna", credit: "Ishtar Music" },
+      { id: "nYLkyW2dDXU", title: "Bijuria | Sunny Sanskari Ki Tulsi Kumari | Sonu Nigam, Asees Kaur", credit: "Sony Music India" }
     ],
     quotes: [
       "Horn OK Please — बुरी नज़र वाले तेरा मुंह मीठा!",
@@ -181,6 +184,36 @@ const PLAYLISTS = {
       "जब एमटीवी और चैनल वी पर सिर्फ अच्छे गाने आते थे।",
       "रिमोट छोड़कर कैसेट की रील पेंसिल से घुमाने का दौर!"
     ]
+  },
+  latest: {
+    id: "latest",
+    name: "Latest Hits",
+    badge: "🎧 Latest Hits (2024–26)",
+    desc: "Today's Chartbusters & New Releases",
+    bg: "img/hero-latest.jpg",
+    accent: "#ff4d8d",
+    glow: "rgba(255, 77, 141, 0.18)",
+    tracks: [
+      { id: "4jO8EWJutfE", title: "Tu Hi Disda | Bhooth Bangla | Arijit Singh, Nikhita Gandhi", credit: "Zee Music Company" },
+      { id: "lOHVMmZ6n3o", title: "Ghar Kab Aaoge | Border 2 | Sonu Nigam, Arijit Singh, Vishal Mishra, Diljit", credit: "T-Series" },
+      { id: "BSJa1UytM8w", title: "Saiyaara (Title) | Saiyaara | Faheem Abdullah", credit: "YRF" },
+      { id: "cUmUOb7j3dc", title: "Dhun | Saiyaara | Arijit Singh", credit: "YRF" },
+      { id: "0v5eHPfy5Lk", title: "Barbaad | Saiyaara | Jubin Nautiyal", credit: "YRF" },
+      { id: "GX9x62kFsVU", title: "Gehra Hua | Dhurandhar | Arijit Singh", credit: "Saregama Music" },
+      { id: "N4wK3NtVRT0", title: "Pardesiya | Param Sundari | Sonu Nigam, Krishnakali Saha", credit: "Universal Music India" },
+      { id: "hxMNYkLN7tI", title: "Aaj Ki Raat | Stree 2 | Madhubanti Bagchi, Divya Kumar", credit: "Saregama Music" },
+      { id: "KGn-erOG-Bs", title: "Laal Pari | Housefull 5 | Yo Yo Honey Singh", credit: "T-Series" },
+      { id: "FZLadzn5i6Q", title: "Uyi Amma | Azaad | Madhubanti Bagchi", credit: "Zee Music Company" },
+      { id: "d6KJkavA8zk", title: "Jaane Tu | Chhaava | Arijit Singh", credit: "Sony Music India" },
+      { id: "cTokGAQAaK4", title: "Chillgum | 51 Glorious Days | Yo Yo Honey Singh", credit: "T-Series" }
+    ],
+    quotes: [
+      "2024–26 के चार्टबस्टर्स — अब इसी रेडियो पर!",
+      "Saiyaara se Border 2 tak — sabse naye hits, ek hi station par.",
+      "Naya gana, wahi purana feel — latest hits, retro dil.",
+      "Reels mein 15 second suna tha? Yahan poora gana suno!",
+      "Charts badalte rehte hain, ye station hamesha fresh rehta hai."
+    ]
   }
 };
 
@@ -188,7 +221,7 @@ const FAQ_DATA = [
   ["What is TCS Radio?",
    "TCS Radio (Total Chill Station / Tata Chai & Symphony), created by developer Umair, is a free 2000s Indian retro ambient radio that recreates the sounds and melodies of Indian tech offices, auto rickshaws, and highway trucks with timeless Bollywood tracks and ambient sounds."],
   ["What playlists are available?",
-   "You can choose from 6 iconic soundscapes: 🏢 Office (TCS), 🛺 Auto (Jhankar), 🚚 Truck (Highway), 🌧️ Monsoon (90s Romance), ☕ Chai Tapri (Golden Hits), and 🎸 Indipop & Cassette."],
+   "You can choose from 7 iconic soundscapes: 🏢 Office (TCS), 🛺 Auto (Jhankar), 🚚 Truck (Highway), 🌧️ Monsoon (90s Romance), ☕ Chai Tapri (Golden Hits), 🎸 Indipop & Cassette, and 🎧 Latest Hits (2024–26 chartbusters)."],
   ["How does playlist auto-progression work?",
    "When all songs in your active playlist have played, TCS Radio automatically transitions to the next playlist in the cycle so your music never stops!"],
   ["Can I play TCS Radio in the background?",

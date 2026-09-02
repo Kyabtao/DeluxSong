@@ -69,8 +69,8 @@ Themes.setStationAccent(pl.accent, pl.glow, key);
 which writes `--accent-rgb` on `:root`. Because the whole accent ladder derives
 from that one triplet, the play button, badges, glows, focus ring, scrollbar and
 hero wash all follow the station — Office gold → Auto orange → Truck red-orange →
-Monsoon blue → Tapri amber → Indipop violet. Turn it off in the picker and the
-skin keeps its own accent.
+Monsoon blue → Tapri amber → Indipop violet → Latest pink. Turn it off in the
+picker and the skin keeps its own accent.
 
 ### No flash of wrong theme
 

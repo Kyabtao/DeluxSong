@@ -1,4 +1,4 @@
-const CACHE = 'tcs-radio-v5';
+const CACHE = 'tcs-radio-v6';
 const BASE = new URL('./', self.registration.scope).pathname;
 const ASSETS = [
   BASE,
@@ -21,6 +21,7 @@ const ASSETS = [
   BASE + 'img/hero-monsoon.jpg',
   BASE + 'img/hero-tapri.jpg',
   BASE + 'img/hero-indipop.jpg',
+  BASE + 'img/hero-latest.jpg',
   BASE + 'manifest.webmanifest'
 ];
 

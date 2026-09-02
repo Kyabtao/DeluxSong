@@ -30,10 +30,10 @@ token graphs, so the default **Retro Gold** look provably never drifts.
 
 | Feature | Notes |
 | --- | --- |
-| 6 Curated Playlists | 🏢 **Office (TCS)**, 🛺 **Auto (Jhankar)**, 🚚 **Truck (Highway)**, 🌧️ **Monsoon (90s Romance)**, ☕ **Chai Tapri (Golden Hits)**, 🎸 **Indipop & Cassette** — now **12 hand-picked tracks each** (72+ official uploads in the library) |
+| 7 Curated Playlists | 🏢 **Office (TCS)**, 🛺 **Auto (Jhankar)**, 🚚 **Truck (Highway)**, 🌧️ **Monsoon (90s Romance)**, ☕ **Chai Tapri (Golden Hits)**, 🎸 **Indipop & Cassette**, 🎧 **Latest Hits (2024–26)** — 12–13 hand-picked tracks per station (85+ official uploads in the library, fresh chartbusters like Saiyaara, Dhun, Gehra Hua & Border 2 on the Latest station) |
 | 🎨 7 Theme Packs | Switch the whole skin from the top bar (or press `T`): 📻 **Retro Gold** (the classic 2000s amber), 🌆 **Synthwave '84**, 🌧️ **Monsoon Blue**, 🎞️ **Old Poster**, 🟢 **Phosphor** CRT, 🖤 **Midnight Noir**, ☀️ **Chai Daylight**. Each one re-maps colours, fonts, corner radii and screen texture (scanlines / film grain / vignette), remembers your choice, and stays legible — see [docs/THEMES.md](docs/THEMES.md) |
-| 🔁 Station Auto | The accent of whichever theme you picked re-tints itself to match the playlist you're on — Office gold → Auto orange → Truck red → Monsoon blue → Tapri amber → Indipop violet. Toggle it off to keep a fixed accent |
-| 🎨 Playlist-Matched Backgrounds | Every radio playlist has its own retro hero artwork — Office tech park, Auto bazaar street, Highway truck, Monsoon rain, Chai tapri and Cassette rooftop — that **crossfades instantly when you switch stations**, with a matching accent glow |
+| 🔁 Station Auto | The accent of whichever theme you picked re-tints itself to match the playlist you're on — Office gold → Auto orange → Truck red → Monsoon blue → Tapri amber → Indipop violet → Latest pink. Toggle it off to keep a fixed accent |
+| 🎨 Playlist-Matched Backgrounds | Every radio playlist has its own retro hero artwork — Office tech park, Auto bazaar street, Highway truck, Monsoon rain, Chai tapri, Cassette rooftop and a neon rooftop gig for Latest Hits — that **crossfades instantly when you switch stations**, with a matching accent glow |
 | Auto-Play Next Playlist | When all songs in a playlist finish playing, TCS Radio automatically transitions to the next playlist in the cycle for endless uninterrupted streaming |
 | Song Add / Remove (Connect) | Enhanced connect form for artists, copyright holders, and listeners to suggest tracks or request removals directly with Umair instead of reporting — type-aware fields, validation, draft save, success panel, and one-tap copy of the request |
 | Audio-First Radio | Video player starts hidden by default for lightweight distraction-free listening; expandable anytime via the 📺 button |
@@ -54,10 +54,10 @@ public/css/themes.css        7 theme packs (token re-maps + texture overlays)
 public/css/theme-switcher.css  🎨 Theme pill & skin-picker panel
 public/css/{base,hero,player,…}.css  Component styles — token-driven, theme-agnostic
 public/js/themes.js          Theme registry, persistence, lazy webfonts, Station Auto
-public/js/playlists-data.js  Song database: 6 playlists × 12 tracks, quotes, per-playlist hero artwork
+public/js/playlists-data.js  Song database: 7 playlists × 12–13 tracks, quotes, per-playlist hero artwork
 public/js/player.js          Player engine, auto-advance, backdrop crossfade, station accent
 public/sw.js                 Service worker
-public/img/hero-*.jpg        Per-playlist hero background artwork (office/auto/truck/monsoon/tapri/indipop)
+public/img/hero-*.jpg        Per-playlist hero background artwork (office/auto/truck/monsoon/tapri/indipop/latest)
 public/manifest.webmanifest
 public/img/                  Banner artwork (tcs-banner.jpg), app icons (tcs-icon.png)
 docs/THEMES.md               Theme architecture + how to add a new skin
