@@ -77,7 +77,9 @@ window.onYouTubeIframeAPIReady = function () {
       onReady: () => {
         ready = true;
         yt.setVolume(Number($("#vol").value));
-        load(0, false);
+        // Honour a play press that happened while the API was still loading.
+        const play = wantPlay; wantPlay = false;
+        load(pos, play);
       },
       onStateChange: (e) => {
         if (e.data === YT.PlayerState.ENDED) next();
@@ -143,7 +145,11 @@ function prev() {
 }
 
 $("#play").onclick = () => {
-  if (!ready) { wantPlay = true; toast("Warming up the radio…"); return; }
+  if (!ready) {
+    wantPlay = true;
+    toast(window.YT && window.YT.Player ? "Warming up the radio…" : "Loading YouTube player… if this sticks, disable your ad-blocker and reload.");
+    return;
+  }
   const s = yt.getPlayerState();
   if (s === YT.PlayerState.PLAYING) yt.pauseVideo();
   else yt.playVideo();
@@ -262,10 +268,19 @@ $("#rainVol").oninput = (e) => {
 /* ---------------- modals ---------------- */
 function open(id) { $(id).hidden = false; }
 function close(id) { $(id).hidden = true; }
+function dismiss(modal) {
+  if (!modal) return;
+  modal.hidden = true;
+  if (modal.id === "nameModal") cancelName();
+}
 document.querySelectorAll("[data-close]").forEach((b) =>
-  b.addEventListener("click", (e) => (e.target.closest(".modal").hidden = true)));
+  b.addEventListener("click", (e) => dismiss(e.target.closest(".modal"))));
 document.querySelectorAll(".modal").forEach((m) =>
-  m.addEventListener("click", (e) => { if (e.target === m) m.hidden = true; }));
+  m.addEventListener("click", (e) => { if (e.target === m) dismiss(m); }));
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return;
+  document.querySelectorAll(".modal:not([hidden])").forEach(dismiss);
+});
 
 $("#earnBtn").onclick = () => open("#earnModal");
 $("#supportLink").onclick = (e) => { e.preventDefault(); open("#supportModal"); };
@@ -368,9 +383,16 @@ function send(text) {
 }
 $("#nameSend").onclick = () => {
   const n = $("#nameInput").value.trim();
-  if (!n) return;
+  if (!n) { $("#nameInput").focus(); toast("Please enter a name first"); return; }
   myName = n; localStorage.setItem("ds_name", n);
   close("#nameModal");
-  if (pending) { send(pending); pending = null; }
+  const text = pending; pending = null;
+  if (text) send(text);
 };
-$("#nameInput").addEventListener("keydown", (e) => { if (e.key === "Enter") $("#nameSend").click(); });
+// Cancel / backdrop / Escape: drop the pending message back into the chat box
+// so nothing the user typed is lost.
+function cancelName() {
+  if (pending) { $("#chatInput").value = pending; pending = null; }
+  $("#pendingMsg").textContent = "";
+}
+$("#nameInput").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); $("#nameSend").click(); } });
