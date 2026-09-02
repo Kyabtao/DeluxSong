@@ -43,16 +43,22 @@ const RainAmbient = (function () {
     // Occasional distant gentle thunder
     setInterval(() => {
       if (!rainOn || Math.random() > 0.25) return;
+      const power = Math.max(0.4, Math.min(1, rainGain.gain.value / 0.45 || 1));
       const o = actx.createOscillator(), g = actx.createGain();
       o.type = "sine";
       o.frequency.value = 55 + Math.random() * 30;
       g.gain.setValueAtTime(0.0001, actx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.25 * (rainGain.gain.value / 0.45 || 1), actx.currentTime + 0.4);
+      g.gain.exponentialRampToValueAtTime(0.25 * power, actx.currentTime + 0.4);
       g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + 3);
       o.connect(g);
       g.connect(actx.destination);
       o.start();
       o.stop(actx.currentTime + 3.2);
+      // Let the on-screen rain overlay flash in sync with the rumble
+      // (see js/rain-visual.js). Never throws, even if it is not loaded.
+      try {
+        window.dispatchEvent(new CustomEvent("tcs:thunder", { detail: { power } }));
+      } catch (_) {}
     }, 18000);
   }
 

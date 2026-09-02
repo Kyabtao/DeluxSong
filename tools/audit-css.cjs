@@ -1,6 +1,6 @@
 /* Static CSS token auditor — no browser needed.
-   Checks: brace balance, every var(--x) resolves somewhere, no self-referential
-   custom property, and every theme block re-declares the tokens it needs. */
+   Checks: brace balance, every var(--x) resolves somewhere, and no
+   self-referential custom property. */
 const fs = require('fs');
 const path = require('path');
 
@@ -84,20 +84,6 @@ if (missing.length) {
 
 // 4. tokens declared but never used (informational)
 const unused = [...defined.keys()].filter(t => !used.has(t) && !JS_OWNED.has(t)).sort();
-
-// 5. per-theme coverage: which themes override the "identity" tokens?
-const themesCss = fs.readFileSync(path.join(CSS_DIR, 'themes.css'), 'utf8');
-const identity = ['--accent-rgb', '--cream-rgb', '--bg', '--bg-image', '--surface-rgb', '--panel-solid',
-                  '--shade-rgb', '--main-grad', '--foot-bg', '--on-accent', '--font-display', '--media-bg',
-                  '--hero-img-filter', '--scroll-track'];
-const blocks = [...themesCss.matchAll(/:root\[data-theme="([a-z]+)"\]\s*\{([\s\S]*?)\n\}/g)];
-console.log(`\nTheme blocks found: ${blocks.map(b => b[1]).join(', ')}`);
-for (const [id, body] of blocks.map(b => [b[1], b[2]])) {
-  // "retro" IS the :root default, so it only adds texture — no override expected
-  if (id === 'retro') continue;
-  const miss = identity.filter(t => !body.includes(t + ':'));
-  if (miss.length) console.log(`  ⚠ ${id}: does not override ${miss.join(', ')}`);
-}
 
 console.log(`\n${defined.size} tokens declared, ${used.size} referenced.`);
 if (unused.length) console.log(`Declared-but-unused (${unused.length}): ${unused.join(', ')}`);

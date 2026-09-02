@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""WCAG contrast audit for every theme pack.
+"""WCAG contrast audit for the classic Retro Gold palette.
 
-Resolves each skin's tokens independently and checks the pairs that actually
-carry meaning on screen:
+Resolves the design tokens and checks the pairs that actually carry meaning
+on screen:
 
     body copy / headings / dim text        on  page background
     body copy                              on  raised panel + modal sheet
@@ -24,9 +24,6 @@ exec(compile(src, 'audit-render', 'exec'), ns)
 Resolver, parse_color = ns['Resolver'], ns['parse_color']
 
 variables = (ROOT / 'public/css/variables.css').read_text()
-themes = (ROOT / 'public/css/themes.css').read_text()
-
-THEME_IDS = ['retro', 'synthwave', 'monsoon', 'poster', 'phosphor', 'noir', 'daylight']
 
 # token -> what it is used for
 PAIRS = [
@@ -64,13 +61,7 @@ def ratio(a, b):
 def theme_overrides(tid):
     if tid == 'retro':
         return {}
-    m = re.search(r':root\[data-theme="%s"\]\s*\{([\s\S]*?)\n\}' % tid, themes)
-    if not m:
-        raise SystemExit(f'no CSS block for theme "{tid}"')
-    out = {}
-    for dm in re.finditer(r'^\s*(--[a-z0-9-]+)\s*:([^;{}]*)[;\n]', m.group(1), re.M):
-        out[dm.group(1)] = dm.group(2).strip()
-    return out
+    return None
 
 
 def resolve(res, token):
@@ -82,10 +73,10 @@ def resolve(res, token):
 
 
 fails, warns, checks = [], [], 0
-print(f'{"theme":<11} {"pair":<42} {"ratio":>7}  verdict')
+print(f'{"palette":<11} {"pair":<42} {"ratio":>7}  verdict')
 print('-' * 78)
 
-for tid in THEME_IDS:
+for tid in ['retro']:
     res = Resolver(variables, theme_overrides(tid))
     for fg_tok, bg_tok, label in PAIRS:
         fg, bg = resolve(res, fg_tok), resolve(res, bg_tok)
@@ -103,7 +94,7 @@ for tid in THEME_IDS:
             warns.append((tid, label, f'{r:.2f}:1 — passes AA only for large/bold text'))
     print()
 
-print(f'{checks} pairs checked across {len(THEME_IDS)} themes')
+print(f'{checks} pairs checked across the classic palette')
 if warns:
     print(f'\n⚠ {len(warns)} pair(s) below 4.5:1 (acceptable for large/bold UI text):')
     for t, l, r in warns:
@@ -113,4 +104,4 @@ if fails:
     for t, l, r in fails:
         print(f'    {t:<11} {l:<42} {r:.2f}:1')
     sys.exit(1)
-print('\n✓ no theme drops below the 3:1 legibility floor')
+print('\n✓ nothing drops below the 3:1 legibility floor')

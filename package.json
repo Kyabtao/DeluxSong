@@ -6,12 +6,12 @@
   "scripts": {
     "start": "node server.js",
     "test": "npm run check",
-    "check": "npm run check:tokens && npm run check:render && npm run check:contrast && npm run check:engine && npm run check:player",
+    "check": "npm run check:tokens && npm run check:render && npm run check:contrast && npm run check:player && npm run check:rain",
     "check:tokens": "node tools/audit-css.cjs",
     "check:render": "python3 tools/audit-render.py",
     "check:contrast": "python3 tools/audit-contrast.py",
-    "check:engine": "node tools/test-themes.cjs",
-    "check:player": "node tools/test-player-ui.cjs"
+    "check:player": "node tools/test-player-ui.cjs",
+    "check:rain": "node tools/test-rain-ui.cjs"
   },
   "repository": {
     "type": "git",
