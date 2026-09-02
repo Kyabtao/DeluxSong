@@ -27,7 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Keyboard Shortcuts
   document.addEventListener("keydown", (e) => {
-    if (/input|textarea|select/i.test(e.target.tagName)) return;
+    const t = e.target;
+    if (t && (t.isContentEditable || /^(input|textarea|select|button)$/i.test(t.tagName))) return;
     if (e.code === "Space") {
       e.preventDefault();
       PlayerEngine.togglePlay();

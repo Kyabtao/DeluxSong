@@ -19,12 +19,12 @@ npm start          # http://localhost:3000
 | --- | --- |
 | 6 Curated Playlists | 🏢 **Office (TCS)**, 🛺 **Auto (Jhankar)**, 🚚 **Truck (Highway)**, 🌧️ **Monsoon (90s Romance)**, ☕ **Chai Tapri (Golden Hits)**, 🎸 **Indipop & Cassette** |
 | Auto-Play Next Playlist | When all songs in a playlist finish playing, TCS Radio automatically transitions to the next playlist in the cycle for endless uninterrupted streaming |
-| Song Add / Remove (Connect) | Friendly modal for artists, copyright holders, and listeners to suggest tracks or request removals directly with Umair instead of reporting |
+| Song Add / Remove (Connect) | Enhanced connect form for artists, copyright holders, and listeners to suggest tracks or request removals directly with Umair instead of reporting — type-aware fields, validation, draft save, success panel, and one-tap copy of the request |
 | Audio-First Radio | Video player starts hidden by default for lightweight distraction-free listening; expandable anytime via the 📺 button |
 | Tactile Audio Controls | Golden glowing play button, prev/next, shuffle, custom volume with mute toggle, seekbar with real-time sync, keyboard shortcuts (`Space` / `←` / `→` / `M` / `S`) |
 | 🌧️ Baarish Ambience | Built-in Web Audio API monsoon rain synthesizer with gentle distant thunder and dedicated volume slider |
 | 💼 TCS Careers (Joke) | Humorous corporate job offer (*Role: Senior Timesheet Filler & Chai Break Lead*) with anti-scam notice (no fake links!) |
-| ❤️ Support Us | Heartfelt thank-you message from Umair, humorous corporate expense breakdown, and downloadable UPI QR code |
+| ❤️ Support Us | Heartfelt (and short) thank-you from Umair with a playful expense breakdown — no QR, no UPI; ad-free radio supported by sharing |
 | PWA & SEO | Installable Progressive Web App, service worker, manifest, SEO meta tags, sitemap.xml |
 
 ## Layout
@@ -36,7 +36,7 @@ public/style.css          Retro ambient theme (amber / cream / mahogany / gold)
 public/app.js             Player, 6 playlists, auto-advance, quotes, rain synth, modals, PWA
 public/sw.js              Service worker
 public/manifest.webmanifest
-public/img/               Banner artwork (tcs-banner.jpg), app icons (tcs-icon.png), UPI QR
+public/img/               Banner artwork (tcs-banner.jpg), app icons (tcs-icon.png)
 ```
 
 ## Credits

@@ -1,9 +1,10 @@
 :root {
-  --bg: #120904;
-  --bg-gradient: radial-gradient(circle at 50% 15%, #24140a 0%, #120904 85%);
+  /* Core palette */
+  --bg: #120a05;
+  --bg-gradient: radial-gradient(circle at 50% 15%, #26140a 0%, #120a05 85%);
   --panel: rgba(26, 15, 9, 0.88);
   --panel-solid: #1c1008;
-  --cream: #fbf0dc;
+  --cream: #fbf1de;
   --cream-dim: #d8c3a5;
   --amber: #f5b324;
   --amber-light: #ffd56b;
@@ -14,7 +15,16 @@
   --line: rgba(246, 231, 205, 0.16);
   --line-light: rgba(246, 231, 205, 0.28);
   --ok: #3fbf6a;
+
+  /* Shadows */
   --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.35);
   --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.7);
+
+  /* Polish tokens */
+  --ring: rgba(245, 179, 36, 0.75);
+  --grad-gold: linear-gradient(135deg, #ffe07a 0%, #f5b324 50%, #c77a03 100%);
+  --glass: linear-gradient(145deg, rgba(42, 23, 14, 0.9), rgba(20, 11, 6, 0.94));
+  --font-display: "Baloo 2", Inter, system-ui, sans-serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
