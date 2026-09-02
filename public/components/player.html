@@ -1,0 +1,47 @@
+<!-- ============ AUDIO PLAYER DECK SECTION ============ -->
+<div class="player mini" id="player">
+  <div class="yt-holder" id="ytHolder"><div id="ytplayer"></div></div>
+  
+  <div class="np">
+    <div class="disc" id="disc" title="Spinning retro vinyl record">
+      <div class="disc-hole"></div>
+    </div>
+    <div class="np-text">
+      <div class="np-badge-row">
+        <span class="np-badge" id="stationBadge">🏢 TCS Office Mode</span>
+        <span class="np-track-counter" id="trackCounter">Track 1 / 7</span>
+      </div>
+      <div class="np-title" id="npTitle">Nostalgia Loading...</div>
+      <div class="np-credit">Credits: <span id="npCredit">YouTube</span></div>
+    </div>
+  </div>
+
+  <div class="seek">
+    <span class="time" id="cur">0:00</span>
+    <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Seek track position" />
+    <span class="time" id="dur">0:00</span>
+  </div>
+
+  <div class="controls">
+    <button class="ctl" id="prev" title="Previous Track (Left Arrow)" aria-label="Previous Track">⏮</button>
+    <button class="ctl play" id="play" title="Play / Pause (Space)" aria-label="Play or Pause Track">▶</button>
+    <button class="ctl" id="next" title="Next Track (Right Arrow)" aria-label="Next Track">⏭</button>
+    <button class="ctl small on" id="shuffle" title="Toggle Shuffle Mode" aria-label="Shuffle Track Order">🔀</button>
+    
+    <div class="vol" title="Volume Slider">
+      <button class="vol-btn" id="volBtn" title="Mute / Unmute" aria-label="Toggle Mute">
+        <span id="volIcon">🔊</span>
+      </button>
+      <input type="range" id="vol" min="0" max="100" value="70" aria-label="Volume Slider" />
+    </div>
+
+    <button class="ctl small" id="listBtn" title="Open Playlist Drawer" aria-label="Open Playlist Drawer">☰</button>
+    <button class="ctl small" id="videoBtn" title="Show Video (📺)" aria-label="Toggle Video Display">📺</button>
+  </div>
+
+  <!-- Ambient Sound Mixer Row -->
+  <div class="rainrow" id="rainRow" hidden>
+    <span>🌧️ Baarish Volume</span>
+    <input type="range" id="rainVol" min="0" max="100" value="45" aria-label="Rain Sound Volume" />
+  </div>
+</div>

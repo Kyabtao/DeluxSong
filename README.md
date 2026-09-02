@@ -1,8 +1,10 @@
-# DeluxSong — a working clone of [deluxsalon.in](https://deluxsalon.in/)
+# TCS Radio — 2000s Indian Retro Ambient Radio
 
-**Deluxe Saloon** — a 2000s Indian neighbourhood barbershop, rebuilt in sound. A free ambient
-radio that streams nonstop Bollywood nostalgia, with barber one-liners, rain ambience and a
-live chat room, exactly in the spirit of the original site.
+**TCS Radio** (Total Chill Station / Tata Chai & Symphony) is a free 2000s Indian nostalgia ambient radio created and developed by **Umair**. It brings together iconic Indian soundscapes — IT corporate offices, auto rickshaws, highway trucks, monsoon rains, and roadside chai tapris — with nonstop Bollywood music and ambient sound.
+
+## Developed By
+
+**Umair** (`author: Umair`)
 
 ## Run it
 
@@ -11,69 +13,32 @@ npm install
 npm start          # http://localhost:3000
 ```
 
-## What's implemented
+## Features
 
 | Feature | Notes |
 | --- | --- |
-| Retro saloon hero | Full-bleed illustrated storefront banner, Devanagari wordmark, rotating barber quotes |
-| Radio player | YouTube IFrame API — play/pause, next/prev, seek, volume, shuffle, autoplay-next, keyboard shortcuts (Space / ← / →) |
-| Playlist drawer | 12 curated 2000s Bollywood tracks, click to play, shuffle-aware ordering |
-| 🌧️ Baarish | Rain ambience synthesized in the browser with the Web Audio API (filtered noise + distant thunder), with its own volume slider |
-| 💬 Live Chat | Real WebSocket chat (`ws`), server-side history of the last 200 messages, online counter, "what's your name?" prompt before the first message, rate limiting |
-| 💰 Part Time Earning | Modal with WhatsApp channel link |
-| ❤️ Support | UPI QR modal with downloadable QR, auto-shown once per session |
-| Share | Web Share API with clipboard fallback |
-| PWA | Manifest, icons, service worker (offline shell), install prompt banner |
-| Content | About section, three feature cards, FAQ accordion, footer — mirroring the original copy |
-| SEO | Title/description/OG tags, `robots.txt`, generated `sitemap.xml` |
+| 6 Curated Playlists | 🏢 **Office (TCS)**, 🛺 **Auto (Jhankar)**, 🚚 **Truck (Highway)**, 🌧️ **Monsoon (90s Romance)**, ☕ **Chai Tapri (Golden Hits)**, 🎸 **Indipop & Cassette** |
+| Auto-Play Next Playlist | When all songs in a playlist finish playing, TCS Radio automatically transitions to the next playlist in the cycle for endless uninterrupted streaming |
+| Song Add / Remove (Connect) | Friendly modal for artists, copyright holders, and listeners to suggest tracks or request removals directly with Umair instead of reporting |
+| Audio-First Radio | Video player starts hidden by default for lightweight distraction-free listening; expandable anytime via the 📺 button |
+| Tactile Audio Controls | Golden glowing play button, prev/next, shuffle, custom volume with mute toggle, seekbar with real-time sync, keyboard shortcuts (`Space` / `←` / `→` / `M` / `S`) |
+| 🌧️ Baarish Ambience | Built-in Web Audio API monsoon rain synthesizer with gentle distant thunder and dedicated volume slider |
+| 💼 TCS Careers (Joke) | Humorous corporate job offer (*Role: Senior Timesheet Filler & Chai Break Lead*) with anti-scam notice (no fake links!) |
+| ❤️ Support Us | Heartfelt thank-you message from Umair, humorous corporate expense breakdown, and downloadable UPI QR code |
+| PWA & SEO | Installable Progressive Web App, service worker, manifest, SEO meta tags, sitemap.xml |
 
 ## Layout
 
 ```
-server.js                 Express static server + /ws chat WebSocket + /api/health, /sitemap.xml
-public/index.html         Page markup
-public/style.css          Retro saloon theme (amber / cream / deep red)
-public/app.js             Player, playlist, quotes, rain synth, modals, PWA, chat client
+server.js                 Express static server + /api/health, /sitemap.xml
+public/index.html         Page markup & modals
+public/style.css          Retro ambient theme (amber / cream / mahogany / gold)
+public/app.js             Player, 6 playlists, auto-advance, quotes, rain synth, modals, PWA
 public/sw.js              Service worker
 public/manifest.webmanifest
-public/img/               Banner artwork, app icons, UPI QR
+public/img/               Banner artwork (tcs-banner.jpg), app icons (tcs-icon.png), UPI QR
 ```
 
-## Notes
+## Credits
 
-- The sandbox this was built in had no outbound access to `deluxsalon.in`, so the original binary
-  assets could not be downloaded. The banner and app icon here are freshly generated artwork in the
-  same style, and the UPI QR is a placeholder generated locally — swap the files in `public/img/`
-  to use the real ones.
-- Songs stream from YouTube and remain the property of their respective owners (Ishtar Music etc.).
-- Chat history is in-memory; restarting the server clears it. Swap the `messages` array in
-  `server.js` for Redis/SQLite for persistence.
-
-## Deploying
-
-> This project is deployed to **GitHub Pages only** (see `deploy/github-pages.yml`). GitHub Pages is
-> a static host, so there is **no Node/WebSocket chat server** in production. The live chat room
-> degrades to a clean read-only "offline" state there — the chat input stays disabled and the
-> "what's your name?" prompt is never shown, so users are never trapped by Send/Cancel.
-
-### GitHub Pages (static — no live chat)
-
-A ready-made workflow is provided at `deploy/github-pages.yml`. Copy it to `.github/workflows/pages.yml`
-(this has to be done by a human account — app tokens can't create workflow files). It publishes the `public/` folder to GitHub Pages on every
-push to `main`. Enable it once under **Settings → Pages → Build and deployment → Source: GitHub Actions**,
-then the site is live at `https://<user>.github.io/DeluxSong/`.
-
-All asset paths are relative, so it works from a project sub-path. Everything runs on Pages except
-the live chat, which needs a WebSocket server — it degrades to a read-only "offline" state there.
-
-To re-enable chat from the static build, host `server.js` somewhere (Render, Railway, Fly.io) and set
-the endpoint before `app.js` loads:
-
-```html
-<script>window.DELUX_CHAT_URL = "wss://your-chat-host.example.com/ws";</script>
-```
-
-### Full site (with live chat)
-
-Any Node host that supports WebSockets works — deploy the repo and run `npm start`
-(the server binds `0.0.0.0` and honours `PORT`).
+Inspired by deluxsalon.in • Built with ❤️ for Indian retro nostalgia by **Umair**.

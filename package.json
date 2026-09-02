@@ -1,7 +1,7 @@
 {
-  "name": "deluxsong",
-  "version": "1.0.0",
-  "description": "Deluxe Saloon \u2014 2000s Indian retro ambient saloon radio. Working clone of deluxsalon.in.",
+  "name": "tcs-radio",
+  "version": "2.1.0",
+  "description": "TCS Radio — 2000s Indian Corporate Office, Auto Rickshaw & Highway Truck Retro Ambient Radio.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -15,16 +15,19 @@
     "radio",
     "bollywood",
     "2000s",
-    "saloon"
+    "tcs",
+    "office",
+    "auto",
+    "truck",
+    "ambient"
   ],
-  "author": "",
+  "author": "Umair",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Kyabtao/DeluxSong/issues"
   },
   "homepage": "https://github.com/Kyabtao/DeluxSong#readme",
   "dependencies": {
-    "express": "^5.2.1",
-    "ws": "^8.21.3"
+    "express": "^5.2.1"
   }
 }

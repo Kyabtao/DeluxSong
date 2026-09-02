@@ -1,0 +1,20 @@
+:root {
+  --bg: #120904;
+  --bg-gradient: radial-gradient(circle at 50% 15%, #24140a 0%, #120904 85%);
+  --panel: rgba(26, 15, 9, 0.88);
+  --panel-solid: #1c1008;
+  --cream: #fbf0dc;
+  --cream-dim: #d8c3a5;
+  --amber: #f5b324;
+  --amber-light: #ffd56b;
+  --amber-dark: #c48208;
+  --amber-glow: rgba(245, 179, 36, 0.4);
+  --red: #c2321f;
+  --red-dark: #8b1e10;
+  --line: rgba(246, 231, 205, 0.16);
+  --line-light: rgba(246, 231, 205, 0.28);
+  --ok: #3fbf6a;
+  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.7);
+}

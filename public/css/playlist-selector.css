@@ -1,0 +1,114 @@
+/* ==========================================================================
+   PLAYLIST / STATION SWITCHER
+   ========================================================================== */
+.playlist-nav-wrapper {
+  width: min(720px, 100%);
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.playlist-nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  padding: 0 4px;
+}
+
+.nav-title {
+  color: var(--cream-dim);
+  font-weight: 600;
+}
+
+.auto-advance-badge {
+  color: var(--amber-light);
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(245, 179, 36, 0.12);
+  border: 1px solid rgba(245, 179, 36, 0.28);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.station-switcher {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+  width: 100%;
+}
+
+.station-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(145deg, rgba(38, 20, 12, 0.85), rgba(20, 10, 6, 0.92));
+  border: 1px solid var(--line-light);
+  border-radius: 14px;
+  padding: 9px 12px;
+  color: var(--cream);
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: left;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.stn-emoji {
+  font-size: 22px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.stn-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  min-width: 0;
+}
+
+.stn-name {
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stn-desc {
+  font-size: 10.5px;
+  color: var(--cream-dim);
+  opacity: 0.75;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.station-btn:hover {
+  background: linear-gradient(145deg, rgba(62, 32, 18, 0.9), rgba(30, 15, 8, 0.95));
+  border-color: rgba(245, 179, 36, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(245, 179, 36, 0.22);
+}
+
+.station-btn:hover .stn-emoji {
+  transform: scale(1.2) rotate(-5deg);
+}
+
+.station-btn.active {
+  background: linear-gradient(135deg, #ffd56b 0%, #f5b324 50%, #c48208 100%);
+  color: #241103;
+  border-color: #ffe699;
+  box-shadow:
+    0 8px 24px rgba(245, 179, 36, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+.station-btn.active .stn-desc {
+  color: #3b1f07;
+  font-weight: 600;
+  opacity: 0.9;
+}
