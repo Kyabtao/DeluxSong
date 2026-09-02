@@ -58,6 +58,10 @@ const PlayerEngine = (function () {
       if (pl.accent) hero.style.setProperty("--pl-accent", pl.accent);
     }
 
+    // Let the theme engine re-tint the whole skin to this station's accent
+    // when "Station Auto" is on (see js/themes.js).
+    if (window.Themes) Themes.setStationAccent(pl.accent, pl.glow, key);
+
     const url = pl.bg;
     if (!url || !bgLayers.a || !bgLayers.b) return;
     const showLayer = bgLayers[bgNow];

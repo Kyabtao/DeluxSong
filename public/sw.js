@@ -1,15 +1,18 @@
-const CACHE = 'tcs-radio-v4';
+const CACHE = 'tcs-radio-v6';
 const BASE = new URL('./', self.registration.scope).pathname;
 const ASSETS = [
   BASE,
   BASE + 'index.html',
   BASE + 'style.css',
+  BASE + 'css/themes.css',
+  BASE + 'css/theme-switcher.css',
   BASE + 'js/playlists-data.js',
   BASE + 'js/player.js',
   BASE + 'js/app.js',
   BASE + 'js/background-audio.js',
   BASE + 'js/rain-ambient.js',
   BASE + 'js/modals.js',
+  BASE + 'js/themes.js',
   BASE + 'img/tcs-banner.jpg',
   BASE + 'img/tcs-icon.png',
   BASE + 'img/hero-office.jpg',
@@ -18,6 +21,7 @@ const ASSETS = [
   BASE + 'img/hero-monsoon.jpg',
   BASE + 'img/hero-tapri.jpg',
   BASE + 'img/hero-indipop.jpg',
+  BASE + 'img/hero-latest.jpg',
   BASE + 'manifest.webmanifest'
 ];
 

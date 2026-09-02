@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>TCS Radio | 2000s Indian Corporate, Auto &amp; Truck Retro Ambient Radio</title>
-<meta name="description" content="TCS Radio is a free 2000s Indian retro ambient radio developed by Umair. Stream nonstop nostalgic Bollywood hits across Office, Auto, Truck, Monsoon, Chai Tapri, and Indipop playlists with background playback and ambient audio." />
+<meta name="description" content="TCS Radio is a free 2000s Indian retro ambient radio developed by Umair. Stream nonstop nostalgic Bollywood hits across Office, Auto, Truck, Monsoon, Chai Tapri, Indipop and Latest Hits playlists with background playback and ambient audio." />
 <meta name="author" content="Umair" />
 <meta name="theme-color" content="#120904" />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
@@ -18,6 +18,9 @@
 <link rel="preconnect" href="https://www.youtube.com" />
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- Theme engine boots in <head> so the saved skin is applied before first paint -->
+<script src="js/themes.js"></script>
 </head>
 <body>
 <a class="skip" href="#about">Skip to content</a>
@@ -41,6 +44,11 @@
     </div>
     
     <div class="topbar-right">
+      <div class="theme-pill">
+        <button class="pill" id="themeBtn" title="Switch theme — Retro Gold, Synthwave, Monsoon &amp; more" aria-haspopup="dialog" aria-expanded="false" aria-controls="themePanel">
+          <span class="theme-swatch-dot" id="themePillIcon" aria-hidden="true"></span> <span id="themePillName">Theme</span>
+        </button>
+      </div>
       <button class="pill" id="rainBtn" title="Toggle monsoon rain ambience">
         <span class="pill-icon">🌧️</span> <span>Baarish?</span>
       </button>
@@ -115,6 +123,14 @@
           <span class="stn-info">
             <strong class="stn-name">Indipop &amp; Cassette</strong>
             <small class="stn-desc">College 2000s Bands</small>
+          </span>
+        </button>
+
+        <button class="station-btn" data-playlist="latest" role="tab" aria-selected="false">
+          <span class="stn-emoji">🎧</span>
+          <span class="stn-info">
+            <strong class="stn-name">Latest Hits</strong>
+            <small class="stn-desc">2024–26 Chartbusters</small>
           </span>
         </button>
       </div>
@@ -275,7 +291,7 @@
       <div class="joke-bill-title">💼 Expense Breakdown (Short Version):</div>
       <div class="joke-bill-items">
         <div class="joke-bill-row"><span>☕ Daily cutting chai &amp; samosa fund</span><strong>₹20</strong></div>
-        <div class="joke-bill-row"><span>📻 All 6 playlists + baarish ambience</span><strong class="free-tag">FREE</strong></div>
+        <div class="joke-bill-row"><span>📻 All 7 playlists + baarish ambience</span><strong class="free-tag">FREE</strong></div>
         <div class="joke-bill-row joke-bill-highlight"><span>⚡ High-speed server bill</span><strong class="paid-tag">Thoda mehnga hai boss 😅</strong></div>
       </div>
     </div>
@@ -406,6 +422,9 @@
   <button class="btn sm btn-primary" type="button" id="installBtn">Install</button>
   <button class="x" type="button" id="installClose" aria-label="Close">×</button>
 </div>
+
+<!-- Theme texture overlay: scanlines, film grain & vignette (see css/themes.css) -->
+<div class="fx-overlay" aria-hidden="true"><div class="fx-vignette"></div></div>
 
 <div class="toast" id="toast" hidden></div>
 

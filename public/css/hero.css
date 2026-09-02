@@ -16,7 +16,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(1.08) brightness(0.92);
+  filter: var(--hero-img-filter);
   transform: scale(1.02);
   opacity: 0;
   transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1);
@@ -30,9 +30,7 @@
 .hero-shade {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(120% 90% at 50% 20%, rgba(18, 9, 4, 0.25), rgba(18, 9, 4, 0.9) 75%),
-    linear-gradient(to bottom, rgba(18, 9, 4, 0.8), rgba(18, 9, 4, 0.35) 35%, rgba(18, 9, 4, 0.98));
+  background: var(--hero-shade);
 }
 
 .hero-inner {
@@ -74,8 +72,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(145deg, rgba(42, 23, 14, 0.88), rgba(22, 12, 7, 0.92));
-  color: var(--cream);
+  background: linear-gradient(145deg, var(--surface-rgb-88), var(--surface-2-rgb-92));
+  color: var(--text);
   border: 1px solid var(--line-light);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -86,7 +84,7 @@
   letter-spacing: 0.01em;
   cursor: pointer;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 12px var(--black-rgb-35), inset 0 1px 1px var(--white-rgb-12);
   user-select: none;
 }
 
@@ -97,11 +95,11 @@
 }
 
 .pill:hover {
-  background: linear-gradient(145deg, rgba(74, 35, 18, 0.95), rgba(38, 19, 10, 0.98));
-  border-color: rgba(245, 179, 36, 0.65);
-  color: #ffffff;
+  background: linear-gradient(145deg, var(--surface-hi-rgb-95), var(--surface-hi-2-rgb-98));
+  border-color: var(--accent-rgb-65);
+  color: var(--text-hi);
   transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(245, 179, 36, 0.22), 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 22px var(--accent-rgb-22), 0 2px 6px var(--black-rgb-40), inset 0 1px 1px var(--white-rgb-20);
 }
 
 .pill:hover .pill-icon {
@@ -110,24 +108,24 @@
 
 .pill:active {
   transform: translateY(1px) scale(0.97);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px var(--black-rgb-50), inset 0 2px 4px var(--black-rgb-30);
 }
 
 .pill.on {
-  background: linear-gradient(135deg, #ffd56b 0%, #f5b324 50%, #c48208 100%);
-  color: #261203;
-  border-color: #ffe89e;
+  background: var(--chip-grad);
+  color: var(--on-accent);
+  border-color: var(--chip-border-2);
   font-weight: 700;
-  box-shadow: 0 0 18px rgba(245, 179, 36, 0.6), 0 4px 14px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 18px var(--accent-rgb-60), 0 4px 14px var(--black-rgb-40), inset 0 1px 2px var(--white-rgb-60);
 }
 
 .pill-support {
-  border-color: rgba(245, 179, 36, 0.45);
+  border-color: var(--accent-rgb-45);
 }
 
 .pill-support:hover {
-  border-color: rgba(245, 179, 36, 0.9);
-  box-shadow: 0 8px 24px rgba(245, 179, 36, 0.35);
+  border-color: var(--accent-rgb-90);
+  box-shadow: 0 8px 24px var(--accent-rgb-35);
 }
 
 /* Brand & Tagline */
@@ -143,12 +141,12 @@
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--amber-light);
-  background: rgba(245, 179, 36, 0.15);
-  border: 1px solid rgba(245, 179, 36, 0.35);
+  color: var(--chip-light);
+  background: var(--accent-rgb-15);
+  border: 1px solid var(--accent-rgb-35);
   padding: 4px 14px;
   border-radius: 999px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px var(--black-rgb-30);
 }
 
 .brand {
@@ -156,23 +154,20 @@
   font-size: clamp(2.8rem, 9.5vw, 5.6rem);
   line-height: 1.05;
   font-weight: 800;
-  color: var(--cream);
-  text-shadow:
-    0 8px 36px rgba(0, 0, 0, 0.85),
-    0 2px 0 rgba(194, 50, 31, 0.7),
-    0 0 28px rgba(245, 179, 36, 0.35);
+  color: var(--text);
+  text-shadow: var(--brand-shadow);
   letter-spacing: -0.01em;
 }
 
 .brand span {
-  color: var(--amber);
-  text-shadow: 0 0 32px rgba(245, 179, 36, 0.55);
+  color: var(--accent);
+  text-shadow: var(--brand-span-shadow);
 }
 
 .brand-sub {
   margin: 0;
   font-size: clamp(0.85rem, 2.2vw, 1.05rem);
-  color: var(--cream-dim);
+  color: var(--text-dim);
   opacity: 0.9;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -180,25 +175,22 @@
 
 .tagline {
   margin: 2px 0 0;
-  color: #eedcc0;
+  color: var(--text-soft);
   opacity: 0.95;
   font-size: clamp(0.95rem, 2.6vw, 1.15rem);
   font-weight: 500;
   min-height: 1.6em;
   max-width: 680px;
   transition: opacity 0.35s ease;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
+  text-shadow: 0 2px 8px var(--black-rgb-75);
 }
 
 /* ==========================================================================
    UI POLISH — refined details & responsive tuning
    ========================================================================== */
-/* First glow layer is tinted per active playlist via --pl-glow (set in JS) */
+/* The scrim is themed through --hero-shade (css/variables.css); its first glow
+   layer is tinted per active playlist via --pl-glow, set from js/themes.js. */
 .hero-shade {
-  background:
-    radial-gradient(80% 55% at 50% 4%, var(--pl-glow, rgba(245, 179, 36, 0.12)), transparent 60%),
-    radial-gradient(120% 90% at 50% 20%, rgba(18, 9, 4, 0.22), rgba(18, 9, 4, 0.9) 75%),
-    linear-gradient(to bottom, rgba(18, 9, 4, 0.82), rgba(18, 9, 4, 0.32) 35%, rgba(18, 9, 4, 0.98));
   transition: opacity 1s ease;
 }
 
@@ -212,13 +204,6 @@
   padding: 9px 16px;
 }
 
-.brand {
-  text-shadow:
-    0 10px 44px rgba(0, 0, 0, 0.9),
-    0 3px 0 rgba(194, 50, 31, 0.65),
-    0 0 34px rgba(245, 179, 36, 0.4);
-}
-
 .brand-sub {
   letter-spacing: 0.03em;
 }
@@ -226,12 +211,12 @@
 .tagline {
   padding: 9px 20px 10px;
   border-radius: 999px;
-  background: rgba(10, 5, 2, 0.28);
-  border: 1px solid rgba(246, 231, 205, 0.14);
+  background: var(--shade-rgb-28);
+  border: 1px solid var(--paper-rgb-14);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   max-width: min(680px, 94%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 var(--white-rgb-08);
 }
 
 .scroll {

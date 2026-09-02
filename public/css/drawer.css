@@ -8,13 +8,13 @@
   right: 0;
   height: 100dvh;
   width: min(420px, 92vw);
-  background: #1a0e07;
+  background: var(--panel-solid);
   border-left: 1px solid var(--line-light);
   transform: translateX(103%);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
-  box-shadow: -24px 0 70px rgba(0, 0, 0, 0.7);
+  box-shadow: -24px 0 70px var(--black-rgb-70);
 }
 
 .drawer.open {
@@ -37,13 +37,13 @@
 .drawer-head h3 {
   margin: 0;
   font-size: 19px;
-  color: var(--cream);
+  color: var(--text);
 }
 
 .drawer-active-stn {
   font-size: 11.5px;
   font-weight: 600;
-  color: var(--amber);
+  color: var(--accent);
 }
 
 .drawer-tabs {
@@ -51,14 +51,14 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 6px;
   padding: 10px 14px;
-  background: rgba(14, 7, 3, 0.6);
+  background: var(--tab-strip);
   border-bottom: 1px solid var(--line);
 }
 
 .drawer-tab {
-  background: rgba(246, 231, 205, 0.06);
+  background: var(--paper-rgb-06);
   border: 1px solid var(--line);
-  color: var(--cream-dim);
+  color: var(--text-dim);
   border-radius: 8px;
   padding: 7px 8px;
   font-size: 11.5px;
@@ -72,14 +72,14 @@
 }
 
 .drawer-tab:hover {
-  background: rgba(246, 231, 205, 0.12);
-  color: #ffffff;
+  background: var(--paper-rgb-12);
+  color: var(--text-hi);
 }
 
 .drawer-tab.active {
-  background: var(--amber);
-  color: #241103;
-  border-color: var(--amber-light);
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--chip-light);
 }
 
 .drawer-connect-banner {
@@ -87,16 +87,16 @@
   align-items: center;
   justify-content: space-between;
   padding: 8px 14px;
-  background: rgba(245, 179, 36, 0.08);
-  border-bottom: 1px solid rgba(245, 179, 36, 0.2);
+  background: var(--accent-rgb-08);
+  border-bottom: 1px solid var(--accent-rgb-20);
   font-size: 11.5px;
-  color: var(--amber-light);
+  color: var(--chip-light);
 }
 
 .btn-link-sm {
   background: none;
   border: none;
-  color: #ffffff;
+  color: var(--text-hi);
   font-weight: 700;
   font-size: 11.5px;
   cursor: pointer;
@@ -127,15 +127,15 @@
 }
 
 .tracks li:hover {
-  background: rgba(246, 231, 205, 0.08);
-  border-color: rgba(246, 231, 205, 0.12);
+  background: var(--paper-rgb-08);
+  border-color: var(--paper-rgb-12);
   transform: translateX(-2px);
 }
 
 .tracks li.active {
-  background: linear-gradient(135deg, rgba(245, 179, 36, 0.22), rgba(245, 179, 36, 0.08));
-  border-color: rgba(245, 179, 36, 0.45);
-  color: #fff1d0;
+  background: linear-gradient(135deg, var(--accent-rgb-22), var(--accent-rgb-08));
+  border-color: var(--accent-rgb-45);
+  color: var(--text-gold);
   font-weight: 600;
 }
 
@@ -145,7 +145,7 @@
   font-size: 12px;
   min-width: 20px;
   font-weight: 700;
-  color: var(--amber);
+  color: var(--accent);
 }
 
 .drawer-note {
@@ -155,5 +155,5 @@
   margin: 0;
   border-top: 1px solid var(--line);
   text-align: center;
-  color: var(--amber-light);
+  color: var(--chip-light);
 }
