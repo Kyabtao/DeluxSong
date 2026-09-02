@@ -332,8 +332,6 @@ $("#installClose").onclick = () => { $("#install").hidden = true; storageSet("ds
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 
 /* ---------------- live chat (websocket) ---------------- */
-let ws = null, myName = storageGet("ds_name") || "", pending = null, unread = 0, chatOpen = false;
-
 function addMsg(m) {
   const box = $("#msgs");
   const el = document.createElement("div");
@@ -348,35 +346,72 @@ function addMsg(m) {
 }
 function esc(s) { return String(s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c])); }
 
-// Chat needs the Node server (server.js). On a static host (e.g. GitHub Pages) there is no
-// WebSocket endpoint, so the room degrades to a read-only "offline" state instead of erroring.
-// Point CHAT_URL at a hosted chat server to switch it back on from a static deployment.
-const CHAT_URL = window.DELUX_CHAT_URL ||
-  (location.protocol.startsWith("http") && !/github\.io$/.test(location.hostname)
-    ? `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws`
-    : null);
-let chatTries = 0;
+// Live chat needs the Node server (server.js). This project deploys to GitHub
+// Pages only, where there is no WebSocket endpoint — so the room must stay in a
+// clean read-only "offline" state instead of showing the name prompt and then
+// failing on Send.
+// To host the chat elsewhere, set window.DELUX_CHAT_URL before app.js loads.
+let ws = null, myName = storageGet("ds_name") || "", pending = null, unread = 0, chatOpen = false;
+let chatServerReady = null; // null = unknown, false = no server on this host, true = online
+
+function chatConnecting() {
+  $("#liveDot").style.background = "#c8a03a";
+  $("#online").textContent = "connecting…";
+  $("#chatInput").disabled = true;
+  $("#chatInput").placeholder = "Connecting to live chat…";
+}
 
 function chatOffline() {
   $("#liveDot").style.background = "#c2321f";
   $("#online").textContent = "offline";
   $("#chatInput").disabled = true;
-  $("#chatInput").placeholder = "Live chat is offline on this build";
+  $("#chatInput").placeholder = "Live chat is not available here";
   if (!$("#msgs").querySelector(".sys")) {
-    addMsg({ sys: true, text: "Live chat needs the Deluxe Saloon server (npm start). Everything else works right here.", ts: Date.now() });
+    addMsg({ sys: true, text: "Live chat is not available in this hosted build — everything else works right here.", ts: Date.now() });
   }
 }
 
-function connect() {
-  if (!CHAT_URL) { chatOffline(); return; }
-  try { ws = new WebSocket(CHAT_URL); } catch { chatOffline(); return; }
+function chatUrl() {
+  if (window.DELUX_CHAT_URL) return window.DELUX_CHAT_URL;
+  const proto = location.protocol === "https:" ? "wss" : "ws";
+  return `${proto}://${location.host}/ws`;
+}
+
+// GitHub Pages (including a custom domain) has no /api/health route, so this
+// resolves to false and the chat stays offline. Only a real Deluxe Saloon
+// Node server returns { ok: true }.
+async function detectChatServer() {
+  if (window.DELUX_CHAT_URL) return true;
+  if (!location.protocol.startsWith("http")) return false;
+  try {
+    const res = await fetch("/api/health", { cache: "no-store" });
+    const data = await res.json();
+    return !!(data && data.ok);
+  } catch (_) {
+    return false;
+  }
+}
+
+let chatTries = 0;
+async function connect() {
+  if (chatServerReady === null) {
+    chatConnecting();
+    chatServerReady = await detectChatServer();
+  }
+  if (!chatServerReady) { chatOffline(); return; }
+  try { ws = new WebSocket(chatUrl()); } catch { chatOffline(); return; }
   ws.onmessage = (ev) => {
     const d = JSON.parse(ev.data);
     if (d.type === "history") { $("#msgs").innerHTML = ""; d.messages.forEach(addMsg); }
     else if (d.type === "msg") addMsg(d.message);
     else if (d.type === "online") $("#online").textContent = d.count + " online";
   };
-  ws.onopen = () => { chatTries = 0; $("#liveDot").style.background = "#3fbf6a"; $("#chatInput").disabled = false; };
+  ws.onopen = () => {
+    chatTries = 0; chatServerReady = true;
+    $("#liveDot").style.background = "#3fbf6a";
+    $("#chatInput").disabled = false;
+    $("#chatInput").placeholder = "Type a message…";
+  };
   ws.onclose = () => {
     $("#liveDot").style.background = "#c2321f";
     if (++chatTries > 3) { chatOffline(); return; }
@@ -387,7 +422,15 @@ connect();
 
 $("#chatOpen").onclick = () => {
   chatOpen = true; unread = 0; $("#chatCount").textContent = 0;
-  $("#chat").hidden = false; $("#chatInput").focus();
+  // While connecting keep the box locked so a static build never traps the
+  // user in the name dialog; offline state already locked it too.
+  if (chatServerReady !== false) chatConnecting();
+  $("#chat").hidden = false;
+  if (ws && ws.readyState === 1) {
+    $("#chatInput").disabled = false;
+    $("#chatInput").placeholder = "Type a message…";
+  }
+  $("#chatInput").focus();
   $("#msgs").scrollTop = $("#msgs").scrollHeight;
 };
 $("#chatClose").onclick = () => { chatOpen = false; $("#chat").hidden = true; };
@@ -396,6 +439,11 @@ $("#chatForm").onsubmit = (e) => {
   e.preventDefault();
   const text = $("#chatInput").value.trim();
   if (!text) return;
+  // Never show the name prompt unless the chat server is actually connected.
+  if (!(chatServerReady === true && ws && ws.readyState === 1)) {
+    toast("Live chat isn't connected yet");
+    return;
+  }
   if (!myName) {
     pending = text;
     $("#pendingMsg").textContent = text;

@@ -1,4 +1,4 @@
-const CACHE = 'delux-v4';
+const CACHE = 'delux-v5';
 const BASE = new URL('./', self.registration.scope).pathname;
 const ASSETS = [BASE, BASE + 'index.html', BASE + 'style.css', BASE + 'app.js', BASE + 'img/newbanner.jpg', BASE + 'img/icon-192.png', BASE + 'manifest.webmanifest'];
 
