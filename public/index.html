@@ -24,7 +24,9 @@
 
 <!-- ============ HERO & PLAYER WRAPPER ============ -->
 <header class="hero" id="top">
-  <img class="hero-bg" src="img/tcs-banner.jpg" alt="TCS Radio retro Indian tech park, auto rickshaw, and highway truck illustration at golden hour" />
+  <!-- Per-playlist artwork: two stacked layers crossfade whenever the station changes -->
+  <img class="hero-bg in" id="bgA" src="img/hero-office.jpg" alt="TCS Radio retro Indian tech park, auto rickshaw, and highway truck illustration at golden hour" />
+  <img class="hero-bg" id="bgB" src="img/hero-office.jpg" alt="" aria-hidden="true" />
   <div class="hero-shade"></div>
 
   <!-- SECTION 1: Top Navigation Bar (public/components/topbar.html) -->
