@@ -1,11 +1,27 @@
 /* ==========================================================================
    TCS RADIO - AUDIO PLAYER & AUTO-PLAY ENGINE
    Developed by Umair
+
+   Dual-Buffer Gapless Engine:
+   Two YouTube players (A/B) run side-by-side. While the ACTIVE player sounds
+   the current track, the STANDBY player silently pre-buffers (cues) the next
+   track. When the current track ends — on screen, in another tab, or on the
+   lock screen — we instantly swap players, so the next song starts with no
+   reload wait and no dead air.
+
+   Note on ads: this app itself serves zero ads. Any advert is injected by
+   YouTube inside its own embedded stream and cannot be removed, skipped or
+   blocked by a website (YouTube Player API ToS). Pre-buffering keeps the
+   hand-off instant whenever YouTube does not insert one.
    ========================================================================== */
 
 const PlayerEngine = (function () {
-  let yt = null;
-  let ready = false;
+  const SLOTS = ["a", "b"];
+  let players = { a: null, b: null };      // YT.Player instances per slot
+  let slotReady = { a: false, b: false };  // onReady fired per slot
+  let cuedOn = { a: null, b: null };       // videoId each slot has pre-cued
+  let activeSlot = "a";
+
   let currentPlaylistKey = storageGet("tcs_playlist") || "office";
   if (!PLAYLISTS[currentPlaylistKey]) currentPlaylistKey = "office";
 
@@ -14,11 +30,18 @@ const PlayerEngine = (function () {
   let pos = 0;
   let shuffle = true;
   let wantPlay = false;
+  let userPaused = true;      // true until the listener first presses play
   let tick = null;
   let seeking = false;
   let skips = 0;
+  let stallPokes = 0;         // watchdog counter for a wedged player
   let lastVol = 70;
   let activeDrawerFilter = currentPlaylistKey;
+
+  /* ---------- Tiny slot helpers ---------- */
+  const standbySlot = () => (activeSlot === "a" ? "b" : "a");
+  const active = () => players[activeSlot];
+  const activeReady = () => !!(players[activeSlot] && slotReady[activeSlot]);
 
   /* ---------- Per-playlist hero backdrop (crossfading layers) ---------- */
   const bgLayers = { a: null, b: null };
@@ -82,61 +105,170 @@ const PlayerEngine = (function () {
     return activePlaylist[order[pos]] || activePlaylist[0];
   }
 
+  // The track that SHOULD be waiting pre-buffered on the standby player.
+  function peekNextTrack() {
+    if (pos >= order.length - 1) return null; // station change — handled by advanceToNextPlaylist
+    return activePlaylist[order[pos + 1]] || null;
+  }
+
+  /* ==================================================================
+     YOUTUBE DUAL-BUFFER CORE
+     ================================================================== */
   function initYouTubePlayer() {
     window.onYouTubeIframeAPIReady = function () {
-      yt = new YT.Player("ytplayer", {
-        height: "180",
-        width: "320",
-        playerVars: {
-          autoplay: 0,
-          controls: 0,
-          disablekb: 1,
-          playsinline: 1,
-          rel: 0,
-          origin: location.origin
-        },
-        events: {
-          onReady: () => {
-            ready = true;
-            yt.setVolume(Number($("#vol").value));
-            const play = wantPlay;
-            wantPlay = false;
-            loadTrack(pos, play);
+      SLOTS.forEach((slot) => {
+        players[slot] = new YT.Player(slot === "a" ? "ytplayerA" : "ytplayerB", {
+          height: "180",
+          width: "320",
+          playerVars: {
+            autoplay: 0,
+            controls: 0,
+            disablekb: 1,
+            playsinline: 1,
+            rel: 0,
+            origin: location.origin
           },
-          onStateChange: (e) => {
-            if (e.data === YT.PlayerState.ENDED) {
-              nextTrack(true);
-            }
-            
-            const isPlaying = e.data === YT.PlayerState.PLAYING;
-            setPlayingUI(isPlaying);
-            BackgroundAudio.setPlaybackState(isPlaying ? "playing" : "paused");
-
-            if (isPlaying) {
-              skips = 0;
-              startTick();
-            }
-          },
-          onError: (e) => {
-            const code = e && e.data;
-            if (code === 100 || code === 101 || code === 150) {
-              skips++;
-              if (skips >= activePlaylist.length) {
-                skips = 0;
-                advanceToNextPlaylist();
-                return;
-              }
-              Modals.toast("Track unavailable — skipping to next melody…");
-              setTimeout(() => nextTrack(false), 600);
-              return;
-            }
-            Modals.toast("Player notification (" + (code || "?") + ") — tuning frequency…");
+          events: {
+            onReady: () => onSlotReady(slot),
+            onStateChange: (e) => onSlotState(slot, e),
+            onError: (e) => onSlotError(slot, e)
           }
-        }
+        });
       });
     };
   }
 
+  function onSlotReady(slot) {
+    slotReady[slot] = true;
+    applyVolumeTo(slot);
+
+    if (slot === activeSlot) {
+      // Engine is usable as soon as the ACTIVE slot is alive
+      const play = wantPlay;
+      wantPlay = false;
+      loadTrack(pos, play);
+    } else {
+      // Standby woke up later — give it the next track to pre-buffer
+      preloadNext();
+    }
+  }
+
+  function onSlotState(slot, e) {
+    // Only the audible player drives UI, timers and auto-advance.
+    // (The standby player stays cued/silent and is ignored here.)
+    if (slot !== activeSlot) return;
+
+    if (e.data === YT.PlayerState.ENDED) {
+      nextTrack(true);
+      return;
+    }
+
+    const isPlaying = e.data === YT.PlayerState.PLAYING;
+    setPlayingUI(isPlaying);
+    BackgroundAudio.setPlaybackState(isPlaying ? "playing" : "paused");
+
+    if (isPlaying) {
+      skips = 0;
+      stallPokes = 0;
+      startTick();
+      preloadNext(); // buffer the next melody while this one sings
+    }
+  }
+
+  function onSlotError(slot, e) {
+    const code = e && e.data;
+
+    if (slot !== activeSlot) {
+      // Pre-buffer failed on standby — clear the marker so the
+      // watchdog / near-end tick retires it quietly. No toast spam.
+      cuedOn[slot] = null;
+      return;
+    }
+
+    if (code === 100 || code === 101 || code === 150) {
+      skips++;
+      if (skips >= activePlaylist.length) {
+        skips = 0;
+        advanceToNextPlaylist();
+        return;
+      }
+      Modals.toast("Track unavailable — skipping to next melody…");
+      setTimeout(() => nextTrack(false), 600);
+      return;
+    }
+    Modals.toast("Player notification (" + (code || "?") + ") — tuning frequency…");
+  }
+
+  /* ---------- Buffering & instant swaps ---------- */
+
+  // Ask the standby player to silently pre-buffer the upcoming track.
+  function preloadNext() {
+    const nxt = peekNextTrack();
+    if (!nxt || !players[standbySlot()] || !slotReady[standbySlot()]) return;
+    const st = standbySlot();
+    if (cuedOn[st] === nxt.id) return; // already buffered
+    try {
+      players[st].cueVideoById(nxt.id);
+      cuedOn[st] = nxt.id;
+    } catch (_) {}
+  }
+
+  // Debounced pre-buffer kick used right after any track change.
+  let preloadTimer = null;
+  function preloadNextSoon() {
+    clearTimeout(preloadTimer);
+    preloadTimer = setTimeout(preloadNext, 800);
+  }
+
+  // Hand audio over to a player that already has this video pre-buffered.
+  // This is the gapless path: no reload, near-zero wait.
+  function activateSlot(slot) {
+    const prev = activeSlot;
+    activeSlot = slot;
+    stallPokes = 0;
+
+    applyVolumeTo(slot);
+    try { players[slot].playVideo(); } catch (_) {}
+    if (players[prev] && prev !== slot) {
+      try { players[prev].stopVideo(); } catch (_) {}
+    }
+
+    cuedOn[slot] = null; // this slot is now PERFORMING, not waiting
+    cuedOn[prev] = null;
+    updateSlotVisibility();
+    preloadNextSoon(); // start buffering the track that follows
+  }
+
+  // Cold path: load straight onto the active player (first play, manual
+  // pick, previous, or station changes where nothing was pre-buffered).
+  function playOnActive(videoId, play) {
+    const st = standbySlot();
+    cuedOn[st] = null;
+    if (play) players[activeSlot].loadVideoById(videoId);
+    else players[activeSlot].cueVideoById(videoId);
+    updateSlotVisibility();
+  }
+
+  function updateSlotVisibility() {
+    const elA = document.getElementById("ytSlotA");
+    const elB = document.getElementById("ytSlotB");
+    if (elA) elA.classList.toggle("on", activeSlot === "a");
+    if (elB) elB.classList.toggle("on", activeSlot === "b");
+  }
+
+  function applyVolumeTo(slot) {
+    const p = players[slot];
+    if (!p || !slotReady[slot]) return;
+    const v = Number($("#vol").value);
+    try {
+      p.setVolume(v);
+      if (v === 0) p.mute(); else p.unMute();
+    } catch (_) {}
+  }
+
+  /* ==================================================================
+     TRACK LIFECYCLE
+     ================================================================== */
   function loadTrack(i, play) {
     pos = (i + order.length) % order.length;
     const t = currentTrack();
@@ -155,13 +287,20 @@ const PlayerEngine = (function () {
     // Update Lock Screen & Control Center media metadata
     BackgroundAudio.updateMediaSession(t, PLAYLISTS[currentPlaylistKey].name);
 
-    if (!ready) {
+    if (!activeReady()) {
       wantPlay = play;
       return;
     }
 
-    if (play) yt.loadVideoById(t.id);
-    else yt.cueVideoById(t.id);
+    if (play) userPaused = false;
+
+    const st = standbySlot();
+    if (play && players[st] && slotReady[st] && cuedOn[st] === t.id) {
+      activateSlot(st);            // ← gapless: next song was pre-buffered
+    } else {
+      playOnActive(t.id, play);    // ← cold start fallback
+      preloadNextSoon();
+    }
   }
 
   function setPlayingUI(on) {
@@ -176,15 +315,54 @@ const PlayerEngine = (function () {
   function startTick() {
     clearInterval(tick);
     tick = setInterval(() => {
-      if (!ready || seeking) return;
-      const d = yt.getDuration() || 0, c = yt.getCurrentTime() || 0;
+      if (!activeReady() || seeking) return;
+      let d = 0, c = 0;
+      try {
+        d = active().getDuration() || 0;
+        c = active().getCurrentTime() || 0;
+      } catch (_) { return; }
       $("#cur").textContent = fmt(c);
       $("#dur").textContent = fmt(d);
       if (d) $("#seek").value = Math.round((c / d) * 1000);
 
       BackgroundAudio.setPositionState(d, c);
+
+      // Near-end safety net: make sure the next track is buffered even if
+      // an earlier preload attempt was throttled in a background tab.
+      if (d && d - c < 25) preloadNext();
     }, 500);
   }
+
+  /* ==================================================================
+     BACKGROUND WATCHDOG
+     Browsers throttle background tabs; a wedged or never-started player
+     would otherwise leave the radio silent. While the listener wants
+     music, gently poke a stalled player — and hard-reload it only as a
+     last resort.
+     ================================================================== */
+  function watchPlayback() {
+    if (userPaused || !players.a) return;
+    preloadNext(); // keep the pipeline fed — cheap when already buffered
+    if (!activeReady()) return;
+
+    let state;
+    try { state = active().getPlayerState(); } catch (_) { return; }
+
+    const IDLE = [YT.PlayerState.UNSTARTED, YT.PlayerState.PAUSED, YT.PlayerState.CUED];
+    if (IDLE.indexOf(state) !== -1) {
+      stallPokes++;
+      try { active().playVideo(); } catch (_) {}
+      if (stallPokes > 5) {
+        // Player never woke up — reload the same track once.
+        stallPokes = 0;
+        const t = currentTrack();
+        if (t) { try { active().loadVideoById(t.id); } catch (_) {} }
+      }
+    } else if (state === YT.PlayerState.PLAYING) {
+      stallPokes = 0;
+    }
+  }
+  setInterval(watchPlayback, 4000);
 
   /* ---------------- Playlist Completion & Auto-Play Next ---------------- */
   function advanceToNextPlaylist() {
@@ -205,35 +383,41 @@ const PlayerEngine = (function () {
   }
 
   function prevTrack() {
-    if (ready && yt.getCurrentTime() > 4) {
-      yt.seekTo(0);
-      return;
+    if (activeReady()) {
+      try {
+        if (active().getCurrentTime() > 4) {
+          active().seekTo(0, true);
+          return;
+        }
+      } catch (_) {}
     }
     loadTrack(pos - 1, true);
   }
 
   function togglePlay() {
-    if (!ready) {
+    if (!activeReady()) {
       wantPlay = true;
       Modals.toast(window.YT && window.YT.Player ? "📻 Tuning TCS Radio frequency…" : "Warming up player… please wait.");
       return;
     }
-    const s = yt.getPlayerState();
-    if (s === YT.PlayerState.PLAYING) yt.pauseVideo();
-    else yt.playVideo();
+    const s = active().getPlayerState();
+    if (s === YT.PlayerState.PLAYING) pause();
+    else play();
   }
 
   function play() {
-    if (ready) yt.playVideo();
+    userPaused = false;
+    if (activeReady()) active().playVideo();
     else wantPlay = true;
   }
 
   function pause() {
-    if (ready) yt.pauseVideo();
+    userPaused = true;
+    if (activeReady()) active().pauseVideo();
   }
 
   function seekTo(seconds) {
-    if (ready) yt.seekTo(seconds, true);
+    if (activeReady()) active().seekTo(seconds, true);
   }
 
   function toggleShuffle() {
@@ -243,6 +427,9 @@ const PlayerEngine = (function () {
     buildOrder();
     pos = Math.max(0, order.indexOf(activePlaylist.indexOf(keep)));
     renderTracks();
+    // Order changed — whatever was buffered is no longer the "next" song
+    cuedOn[standbySlot()] = null;
+    preloadNextSoon();
     Modals.toast(shuffle ? "🔀 Shuffle On" : "🔁 Playing in playlist order");
   }
 
@@ -255,6 +442,10 @@ const PlayerEngine = (function () {
     activePlaylist = PLAYLISTS[playlistKey].tracks;
     buildOrder();
     pos = 0;
+
+    // New station, new pipeline — drop stale pre-buffer state
+    cuedOn.a = null;
+    cuedOn.b = null;
 
     // Update switcher buttons in hero
     document.querySelectorAll(".station-btn").forEach((btn) => {
@@ -273,7 +464,7 @@ const PlayerEngine = (function () {
 
     updateStationQuote();
     applyBackground(playlistKey);
-    loadTrack(0, shouldPlay && ready);
+    loadTrack(0, shouldPlay && activeReady());
   }
 
   function renderTracks() {
@@ -297,6 +488,8 @@ const PlayerEngine = (function () {
           storageSet("tcs_playlist", currentPlaylistKey);
           activePlaylist = PLAYLISTS[currentPlaylistKey].tracks;
           buildOrder();
+          cuedOn.a = null;
+          cuedOn.b = null;
 
           document.querySelectorAll(".station-btn").forEach((b) => {
             b.classList.toggle("active", b.dataset.playlist === currentPlaylistKey);
@@ -365,6 +558,7 @@ const PlayerEngine = (function () {
     setTimeout(preloadThemeBackgrounds, 600);
 
     initYouTubePlayer();
+    updateSlotVisibility();
 
     // Setup Background Audio MediaSession controls
     BackgroundAudio.setupActionHandlers({
@@ -379,20 +573,18 @@ const PlayerEngine = (function () {
     $("#seek").addEventListener("input", () => (seeking = true));
     $("#seek").addEventListener("change", (e) => {
       seeking = false;
-      if (ready) {
-        const d = yt.getDuration() || 0;
+      if (activeReady()) {
+        const d = active().getDuration() || 0;
         seekTo((e.target.value / 1000) * d);
       }
     });
 
-    // Volume input handlers
+    // Volume input handlers (applied to BOTH buffer slots)
     $("#vol").oninput = (e) => {
       const v = Number(e.target.value);
       if (v > 0) lastVol = v;
-      if (ready) {
-        yt.setVolume(v);
-        if (v === 0) yt.mute(); else yt.unMute();
-      }
+      applyVolumeTo("a");
+      applyVolumeTo("b");
       const icon = $("#volIcon");
       if (v === 0) icon.textContent = "🔇";
       else if (v < 45) icon.textContent = "🔉";

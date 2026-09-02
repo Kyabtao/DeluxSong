@@ -122,7 +122,11 @@
 
     <!-- SECTION 4: Audio Player Deck (public/components/player.html) -->
     <div class="player mini" id="player">
-      <div class="yt-holder" id="ytHolder"><div id="ytplayer"></div></div>
+      <!-- Dual-buffer slots: standby player pre-cues the next track for gapless, reload-free transitions -->
+      <div class="yt-holder" id="ytHolder">
+        <div class="yt-slot on" id="ytSlotA"><div id="ytplayerA"></div></div>
+        <div class="yt-slot" id="ytSlotB"><div id="ytplayerB"></div></div>
+      </div>
       
       <div class="np">
         <div class="disc" id="disc" title="Spinning retro vinyl record">
