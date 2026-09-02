@@ -20,6 +20,54 @@ const PlayerEngine = (function () {
   let lastVol = 70;
   let activeDrawerFilter = currentPlaylistKey;
 
+  /* ---------- Per-playlist hero backdrop (crossfading layers) ---------- */
+  const bgLayers = { a: null, b: null };
+  let bgNow = "a";
+
+  // Set playlist artwork + accent glow on the hero, crossfading between layers.
+  function applyBackground(key) {
+    const pl = PLAYLISTS[key];
+    if (!pl) return;
+
+    const hero = document.querySelector(".hero");
+    if (hero) {
+      if (pl.glow) hero.style.setProperty("--pl-glow", pl.glow);
+      if (pl.accent) hero.style.setProperty("--pl-accent", pl.accent);
+    }
+
+    const url = pl.bg;
+    if (!url || !bgLayers.a || !bgLayers.b) return;
+    const showLayer = bgLayers[bgNow];
+    if (showLayer.dataset.src === url) return; // already showing this backdrop
+
+    const toShow = bgLayers[bgNow === "a" ? "b" : "a"];
+    const toHide = bgLayers[bgNow];
+
+    const warm = new Image();
+    const swap = () => {
+      toShow.src = url;
+      toShow.dataset.src = url;
+      requestAnimationFrame(() => {
+        toShow.classList.add("in");
+        toHide.classList.remove("in");
+        bgNow = bgNow === "a" ? "b" : "a";
+      });
+    };
+    warm.onload = swap;
+    warm.onerror = swap; // even if a frame fails, keep the UI moving
+    warm.src = url;
+  }
+
+  // Warm the other five playlist backdrops so switching is instant.
+  function preloadThemeBackgrounds() {
+    Object.keys(PLAYLISTS).forEach((key) => {
+      const url = PLAYLISTS[key].bg;
+      if (!url) return;
+      const img = new Image();
+      img.src = url;
+    });
+  }
+
   function buildOrder() {
     order = activePlaylist.map((_, i) => i);
     if (shuffle) {
@@ -224,6 +272,7 @@ const PlayerEngine = (function () {
     });
 
     updateStationQuote();
+    applyBackground(playlistKey);
     loadTrack(0, shouldPlay && ready);
   }
 
@@ -253,6 +302,7 @@ const PlayerEngine = (function () {
             b.classList.toggle("active", b.dataset.playlist === currentPlaylistKey);
           });
           updateStationQuote();
+          applyBackground(currentPlaylistKey);
         }
 
         const targetIdx = order.indexOf(i);
@@ -302,6 +352,18 @@ const PlayerEngine = (function () {
   function init() {
     buildOrder();
     buildDrawerTabs();
+
+    // Set up the crossfading playlist backdrops
+    bgLayers.a = document.getElementById("bgA");
+    bgLayers.b = document.getElementById("bgB");
+    if (bgLayers.a) {
+      bgLayers.a.dataset.src = bgLayers.a.getAttribute("src") || "";
+      bgNow = bgLayers.a.classList.contains("in") ? "a" : "b";
+    }
+    if (bgLayers.b) bgLayers.b.dataset.src = bgLayers.b.getAttribute("src") || "";
+    applyBackground(currentPlaylistKey);
+    setTimeout(preloadThemeBackgrounds, 600);
+
     initYouTubePlayer();
 
     // Setup Background Audio MediaSession controls

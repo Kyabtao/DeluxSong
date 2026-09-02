@@ -17,7 +17,8 @@ npm start          # http://localhost:3000
 
 | Feature | Notes |
 | --- | --- |
-| 6 Curated Playlists | 🏢 **Office (TCS)**, 🛺 **Auto (Jhankar)**, 🚚 **Truck (Highway)**, 🌧️ **Monsoon (90s Romance)**, ☕ **Chai Tapri (Golden Hits)**, 🎸 **Indipop & Cassette** |
+| 6 Curated Playlists | 🏢 **Office (TCS)**, 🛺 **Auto (Jhankar)**, 🚚 **Truck (Highway)**, 🌧️ **Monsoon (90s Romance)**, ☕ **Chai Tapri (Golden Hits)**, 🎸 **Indipop & Cassette** — now **12 hand-picked tracks each** (72+ official uploads in the library) |
+| 🎨 Playlist-Matched Backgrounds | Every radio playlist has its own retro hero artwork — Office tech park, Auto bazaar street, Highway truck, Monsoon rain, Chai tapri and Cassette rooftop — that **crossfades instantly when you switch stations**, with a matching accent glow |
 | Auto-Play Next Playlist | When all songs in a playlist finish playing, TCS Radio automatically transitions to the next playlist in the cycle for endless uninterrupted streaming |
 | Song Add / Remove (Connect) | Enhanced connect form for artists, copyright holders, and listeners to suggest tracks or request removals directly with Umair instead of reporting — type-aware fields, validation, draft save, success panel, and one-tap copy of the request |
 | Audio-First Radio | Video player starts hidden by default for lightweight distraction-free listening; expandable anytime via the 📺 button |
@@ -33,8 +34,10 @@ npm start          # http://localhost:3000
 server.js                 Express static server + /api/health, /sitemap.xml
 public/index.html         Page markup & modals
 public/style.css          Retro ambient theme (amber / cream / mahogany / gold)
-public/app.js             Player, 6 playlists, auto-advance, quotes, rain synth, modals, PWA
+public/js/playlists-data.js  Song database: 6 playlists × 12 tracks, quotes, per-playlist hero artwork
+public/js/player.js          Player engine, auto-advance, playlist-backed backdrop crossfade
 public/sw.js              Service worker
+public/img/hero-*.jpg     Per-playlist hero background artwork (office/auto/truck/monsoon/tapri/indipop)
 public/manifest.webmanifest
 public/img/               Banner artwork (tcs-banner.jpg), app icons (tcs-icon.png)
 ```
