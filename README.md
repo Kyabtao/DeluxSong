@@ -35,7 +35,7 @@ token graphs, so the classic **Retro Gold** look provably never drifts.
 | Auto-Play Next Playlist | When all songs in a playlist finish playing, TCS Radio automatically transitions to the next playlist in the cycle for endless uninterrupted streaming |
 | Sidebar Playlist Browser | The hero stays uncluttered; use 📻 Choose a playlist or the player’s ☰ button to browse stations and songs in the slide-out sidebar |
 | Song Add / Remove (Connect) | A compact action before the footer opens an enhanced form for artists, copyright holders, and listeners to suggest tracks or request removals directly with Umair |
-| Audio-First Radio | The audio player remains available while its playback buttons stay hidden until a song is chosen; the full video deck stays out of the way |
+| Audio-First Radio | The audio player remains available while its playback buttons stay hidden until the player is clicked or a song is chosen; the full video deck stays out of the way |
 | Tactile Audio Controls | Golden glowing play button, prev/next, shuffle, custom volume with mute toggle, seekbar with real-time sync, keyboard shortcuts (`Space` / `←` / `→` / `M` / `S` / `R` = rain) |
 | 🌧️ Baarish Ambience | Built-in Web Audio API monsoon rain synthesizer with gentle distant thunder — plus a full on-screen rain overlay: falling drops, splash ripples and lightning flashes synced to the thunder, with intensity following the Baarish volume slider |
 | 💼 TCS Careers | Light-hearted careers modal placed after Add / Remove Songs, with an anti-scam notice (no fake links!) |

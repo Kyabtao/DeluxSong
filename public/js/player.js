@@ -113,6 +113,7 @@ const PlayerEngine = (function () {
     const wasPending = player.classList.contains("player-controls-pending");
     player.classList.remove("player-controls-pending");
     player.setAttribute("aria-hidden", "false");
+    player.title = "Playback controls";
     const hint = $("#playerHint");
     if (hint) hint.hidden = true;
     if (wasPending) player.dataset.revealed = "true";
@@ -688,6 +689,18 @@ const PlayerEngine = (function () {
     $("#next").onclick = () => nextTrack(false);
     $("#prev").onclick = prevTrack;
     $("#shuffle").onclick = toggleShuffle;
+
+    // A playing audio-first player can keep its controls quiet until the
+    // listener clicks the player; choosing a song from the sidebar also
+    // reveals them.
+    const player = $("#player");
+    if (player) {
+      player.addEventListener("click", (e) => {
+        if (!player.classList.contains("player-controls-pending")) return;
+        if (e.target.closest("button, input")) return;
+        revealPlayer();
+      });
+    }
 
     // Drawer toggles — playlist browsing now happens here, not in the hero.
     const openDrawer = () => {

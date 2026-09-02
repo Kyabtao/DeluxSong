@@ -60,6 +60,13 @@ ok('top-bar now-on-air status is removed',
 ok('drawer tabs are built for every playlist',
   doc.querySelectorAll('.drawer-tab').length === Object.keys(window.PLAYLISTS).length,
   `${doc.querySelectorAll('.drawer-tab').length} tabs`);
+ok('player buttons start hidden but remain mounted',
+  doc.querySelector('#player').classList.contains('player-controls-pending') &&
+  doc.querySelectorAll('#player .controls button').length > 0);
+
+doc.querySelector('#player').click();
+ok('clicking the player reveals its buttons',
+  !doc.querySelector('#player').classList.contains('player-controls-pending'));
 
 window.PlayerEngine.switchPlaylist('monsoon', false);
 ok('switchPlaylist keeps the top-bar status removed',
