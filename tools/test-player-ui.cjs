@@ -55,15 +55,22 @@ window.eval([
 
 window.PlayerEngine.init();
 
-ok('top nav starts on the saved/default playlist',
-  doc.querySelector('#navPlaylistName') && doc.querySelector('#navPlaylistName').textContent === 'Office (TCS)');
+ok('top-bar now-on-air status is removed',
+  !doc.querySelector('.nav-status'));
 ok('drawer tabs are built for every playlist',
   doc.querySelectorAll('.drawer-tab').length === Object.keys(window.PLAYLISTS).length,
   `${doc.querySelectorAll('.drawer-tab').length} tabs`);
+ok('player buttons start hidden but remain mounted',
+  doc.querySelector('#player').classList.contains('player-controls-pending') &&
+  doc.querySelectorAll('#player .controls button').length > 0);
+
+doc.querySelector('#player').click();
+ok('clicking the player reveals its buttons',
+  !doc.querySelector('#player').classList.contains('player-controls-pending'));
 
 window.PlayerEngine.switchPlaylist('monsoon', false);
-ok('switchPlaylist updates the top nav status',
-  doc.querySelector('#navPlaylistName').textContent === 'Monsoon (90s)');
+ok('switchPlaylist keeps the top-bar status removed',
+  !doc.querySelector('.nav-status'));
 ok('switchPlaylist updates the drawer heading',
   doc.querySelector('#drawerStnLabel').textContent === 'Monsoon (90s)');
 ok('switchPlaylist updates the hero station buttons',
@@ -86,8 +93,8 @@ const firstLatestTrack = window.PLAYLISTS.latest.tracks[0];
 doc.querySelector('#tracks li').click();
 ok('clicking a track in another drawer playlist activates that playlist',
   doc.querySelector('.station-btn.active') && doc.querySelector('.station-btn.active').dataset.playlist === 'latest');
-ok('clicking a track in another drawer playlist updates the nav status',
-  doc.querySelector('#navPlaylistName').textContent === 'Latest Hits');
+ok('clicking a track in another drawer playlist keeps the top-bar status removed',
+  !doc.querySelector('.nav-status'));
 ok('clicked track becomes the now-playing title',
   doc.querySelector('#npTitle').textContent === firstLatestTrack.title,
   doc.querySelector('#npTitle').textContent);

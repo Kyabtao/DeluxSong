@@ -219,21 +219,17 @@ const PLAYLISTS = {
 
 const FAQ_DATA = [
   ["What is TCS Radio?",
-   "TCS Radio (Total Chill Station), created by developer Umair, is a free 2000s Indian retro ambient radio that recreates the sounds and melodies of Indian tech offices, auto rickshaws, and highway trucks with timeless Bollywood tracks and ambient sounds."],
-  ["What playlists are available?",
-   "You can choose from 7 iconic soundscapes: 🏢 Office (TCS), 🛺 Auto (Jhankar), 🚚 Truck (Highway), 🌧️ Monsoon (90s Romance), ☕ Chai Tapri (Golden Hits), 🎸 Indipop & Cassette, and 🎧 Latest Hits (2024–26 chartbusters)."],
-  ["How does playlist auto-progression work?",
-   "When all songs in your active playlist have played, TCS Radio automatically transitions to the next playlist in the cycle so your music never stops!"],
-  ["Can I play TCS Radio in the background?",
-   "Yes! TCS Radio features complete background playback support with the browser MediaSession API and an audio keep-alive session, allowing you to lock your screen or switch tabs while music continues smoothly."],
-  ["How can I suggest a song or request removal?",
-   "We deeply respect all copyright owners, artists, and listeners! Click '🎵 Add / Remove Songs' in the top bar or footer to connect directly with Umair instead of reporting. We take action within 24 hours with zero hassle."],
-  ["Is TCS Radio free to use?",
-   "Yes! TCS Radio is 100% free with zero annoying pop-up ads, no login, and no payment required. All songs stream straight into your browser on desktop and mobile."],
-  ["What does the 🌧️ Baarish? button do?",
-   "One tap and the monsoon arrives — gentle rain sounds fill your speakers AND a soft baarish falls across the whole website: falling drops, splashes and an occasional distant lightning flash that syncs with the thunder. Tap again to stop the weather, and use the Baarish Volume slider to set how heavy the downpour feels (it changes both the sound and the on-screen rain)."],
-  ["How do I toggle the video player?",
-   "By default, video is hidden for an audio-first, distraction-free retro radio experience. You can toggle the 📺 Video button on the player controls anytime you want to watch the music clip."]
+   "A free, fan-made radio by Umair for 2000s Bollywood, Indipop, highway, auto, monsoon, and chai-tapri moods. No account is needed."],
+  ["How do I choose a playlist or song?",
+   "Tap 📻 Choose a playlist or ☰ Playlist in the player to open the sidebar. Select a station tab, then choose a song from its list. The large playlist cards stay out of the hero so the music remains the focus."],
+  ["When do playback buttons appear?",
+   "The playback buttons appear as soon as you choose a song in the sidebar. From there you can play or pause, skip, shuffle, seek, and change volume without opening a full player deck."],
+  ["Will the music continue to the next playlist?",
+   "Yes. When the current station finishes, TCS Radio moves to the next station automatically so the listening session can keep going."],
+  ["Can I suggest a song or request removal?",
+   "Yes. Use 🎵 Add / Remove Songs before the footer. Requests go directly to Umair, and removal requests are reviewed promptly."],
+  ["What do Baarish and TCS Careers do?",
+   "Baarish adds optional rain sound and on-screen rain. TCS Careers opens a light-hearted hiring message — it is not a real job application or payment link."]
 ];
 
 // Helper functions

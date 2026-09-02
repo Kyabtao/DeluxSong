@@ -1,5 +1,6 @@
 <!-- ============ AUDIO PLAYER DECK SECTION ============ -->
-<div class="player mini" id="player">
+<p class="player-hint" id="playerHint">Tap or click the player to reveal playback buttons.</p>
+<div class="player mini player-controls-pending" id="player" aria-label="Audio player" title="Click to show playback buttons">
   <!-- Dual-buffer slots: standby player pre-cues the next track for gapless, reload-free transitions -->
   <div class="yt-holder" id="ytHolder">
     <div class="yt-slot on" id="ytSlotA"><div id="ytplayerA"></div></div>
@@ -39,7 +40,7 @@
       <input type="range" id="vol" min="0" max="100" value="70" aria-label="Volume Slider" />
     </div>
 
-    <button class="ctl small" id="listBtn" title="Open Playlist Drawer" aria-label="Open Playlist Drawer">☰</button>
+    <button class="ctl small" id="listBtn" title="Open Playlist Sidebar" aria-label="Open Playlist Sidebar" aria-expanded="false">☰</button>
     <button class="ctl small" id="videoBtn" title="Show Video (📺)" aria-label="Toggle Video Display">📺</button>
   </div>
 
