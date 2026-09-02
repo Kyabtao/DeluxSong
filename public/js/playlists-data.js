@@ -1,0 +1,167 @@
+/* ==========================================================================
+   TCS RADIO - PLAYLISTS & CONTENT DATABASE
+   Developed by Umair
+   ========================================================================== */
+
+const PLAYLISTS = {
+  office: {
+    id: "office",
+    name: "Office (TCS)",
+    badge: "🏢 TCS Office Mode",
+    desc: "Soulful 2000s & Chai Break",
+    tracks: [
+      { id: "PqiddY3o3aY", title: "Dil Kehta Hai | Akele Hum Akele Tum | Kumar Sanu, Alka Yagnik", credit: "Ishtar Music" },
+      { id: "mNSYPtzpfd4", title: "Jab Koi Baat Bigad Jaaye | Jurm | Kumar Sanu, Sadhna Sargam", credit: "Ishtar Music" },
+      { id: "ioWh9vMixyw", title: "Tu Shayar Hai Main Teri Shayari | Saajan | Alka Yagnik", credit: "Ishtar Music" },
+      { id: "_YjSmLlmqLM", title: "Aisi Deewangi | Deewana | Shahrukh Khan, Divya Bharti", credit: "Ishtar Music" },
+      { id: "LtIJuk5te9E", title: "Pehli Baar Mile Hain | Saajan | S P Balasubramaniam", credit: "Ishtar Music" },
+      { id: "bBjVLCAAM1A", title: "Dekha Hai Pehli Baar (Duet) | Saajan | Alka Yagnik, SPB", credit: "Ishtar Music" },
+      { id: "plB0ytzIlqI", title: "Paas Woh Aane Lage | Main Khiladi Tu Anari | Kumar Sanu", credit: "Ishtar Music" }
+    ],
+    quotes: [
+      "टाइम्सशीट भर दी भाई? चलो अब चाय पीते हैं और पुराने गाने सुनते हैं!",
+      "Client call in 5 mins, meanwhile KK & Alka Yagnik on loop.",
+      "Code compiling ho raha hai... nostalgia chalne do!",
+      "Friday deployment ke baad sirf 2000s Bollywood bacha sakta hai.",
+      "Sirf ₹10 ki cutting chai, baaki corporate gyaan aur standup free.",
+      "Bug fix baad mein, pehle ye gaana poora sunenge!"
+    ]
+  },
+  auto: {
+    id: "auto",
+    name: "Auto (Jhankar)",
+    badge: "🛺 Auto Jhankar Beats",
+    desc: "Street Bass Booster & 90s/2000s Hits",
+    tracks: [
+      { id: "Yqj1_V90KJo", title: "Chura Ke Dil Mera | Main Khiladi Tu Anari | Kumar Sanu, Alka", credit: "Ishtar Music" },
+      { id: "PUO7_Gi6ipg", title: "Baazigar O Baazigar | Baazigar | Shahrukh Khan, Kajol", credit: "Ishtar Music" },
+      { id: "x_a2ZVkYw_o", title: "Tumse Milne Ki Tamanna Hai | Saajan | S P Balasubramaniam", credit: "Ishtar Music" },
+      { id: "thjRNwjmAdQ", title: "Tumse Milne Ki Tamanna (Duet) | Saajan | Salman Khan, Madhuri", credit: "Ishtar Music" },
+      { id: "_YjSmLlmqLM", title: "Aisi Deewangi | Deewana | Shahrukh Khan, Divya Bharti", credit: "Ishtar Music" },
+      { id: "ioWh9vMixyw", title: "Tu Shayar Hai Main Teri Shayari | Saajan | Alka Yagnik", credit: "Ishtar Music" },
+      { id: "plB0ytzIlqI", title: "Paas Woh Aane Lage | Main Khiladi Tu Anari | Kumar Sanu", credit: "Ishtar Music" },
+      { id: "qGOTe3KmCdY", title: "Kitna Haseen Chehra | Dilwale | Kumar Sanu", credit: "Ishtar Music" }
+    ],
+    quotes: [
+      "मीटर से चलोगे भैया? 'नहीं साहेब, ₹30 एक्स्ट्रा लगेगा!'",
+      "ऑटो में फुल बास और 90s झंकार बीट्स का मज़ा ही अलग है।",
+      "रेड सिग्नल पर अल्ताफ़ राजा और ग्रीन सिग्नल पर उदित नारायण!",
+      "ऑटो भैया का गोल्डन रूल: 'साइड नहीं दूंगा, रास्ता खुद बना लो!'",
+      "पीछे वाले शीशे पर लिखा है: 'बुरी नज़र वाले, अपना काम कर!'"
+    ]
+  },
+  truck: {
+    id: "truck",
+    name: "Truck (Highway)",
+    badge: "🚚 Highway Truck Dhaba",
+    desc: "Dhaba Melodies & Punjabi Beats",
+    tracks: [
+      { id: "PQmrmVs10X8", title: "Chaiyya Chaiyya | Dil Se | Sukhwinder Singh, Sapna Awasthi", credit: "Ishtar Music" },
+      { id: "vTIIMJ9tUc8", title: "Tunak Tunak Tun | Daler Mehndi", credit: "Daler Mehndi Official" },
+      { id: "Yqj1_V90KJo", title: "Chura Ke Dil Mera | Main Khiladi Tu Anari | Kumar Sanu", credit: "Ishtar Music" },
+      { id: "PUO7_Gi6ipg", title: "Baazigar O Baazigar | Baazigar | Shahrukh Khan, Kajol", credit: "Ishtar Music" },
+      { id: "bBjVLCAAM1A", title: "Dekha Hai Pehli Baar | Saajan | Alka Yagnik, SPB", credit: "Ishtar Music" },
+      { id: "qGOTe3KmCdY", title: "Kitna Haseen Chehra | Dilwale | Ajay Devgan", credit: "Ishtar Music" },
+      { id: "mNSYPtzpfd4", title: "Jab Koi Baat Bigad Jaaye | Jurm | Kumar Sanu, Sadhna", credit: "Ishtar Music" }
+    ],
+    quotes: [
+      "Horn OK Please — बुरी नज़र वाले तेरा मुंह मीठा!",
+      "हाईवे पर 90 km/h की स्पीड और सुखविंदर सिंह की आवाज़!",
+      "ढाबे की कड़क मलाई चाय और नॉन-स्टॉप देसी तड़का!",
+      "गाड़ी धीरे चलाएं — आगे 2000s का शुद्ध नॉस्टैल्जिया है।",
+      "ट्रक के पीछे लिखा है: 'देख मगर प्यार से, और गाना सुन ध्यान से!'"
+    ]
+  },
+  monsoon: {
+    id: "monsoon",
+    name: "Monsoon (90s)",
+    badge: "🌧️ 90s Monsoon Romance",
+    desc: "Late Night Melodies & Rain Ambience",
+    tracks: [
+      { id: "_YjSmLlmqLM", title: "Aisi Deewangi | Deewana | Shahrukh Khan, Divya Bharti", credit: "Ishtar Music" },
+      { id: "bBjVLCAAM1A", title: "Dekha Hai Pehli Baar | Saajan | Alka Yagnik, SPB", credit: "Ishtar Music" },
+      { id: "PqiddY3o3aY", title: "Dil Kehta Hai | Akele Hum Akele Tum | Kumar Sanu", credit: "Ishtar Music" },
+      { id: "LtIJuk5te9E", title: "Pehli Baar Mile Hain | Saajan | S P Balasubramaniam", credit: "Ishtar Music" },
+      { id: "mNSYPtzpfd4", title: "Jab Koi Baat Bigad Jaaye | Jurm | Kumar Sanu, Sadhna", credit: "Ishtar Music" },
+      { id: "ioWh9vMixyw", title: "Tu Shayar Hai Main Teri Shayari | Saajan | Alka Yagnik", credit: "Ishtar Music" },
+      { id: "plB0ytzIlqI", title: "Paas Woh Aane Lage | Main Khiladi Tu Anari | Kumar Sanu", credit: "Ishtar Music" }
+    ],
+    quotes: [
+      "बारिश की बूँदें, गरम चाय और 90s के रोमांटिक नगमे!",
+      "रिमझिम गिरे सावन... दिल में बजते पुराने तराने।",
+      "खिड़की के पास बैठो और अलका जी की आवाज़ महसूस करो।",
+      "पुरानी यादें और चाय की चुस्की — यही तो ज़िन्दगी है!"
+    ]
+  },
+  tapri: {
+    id: "tapri",
+    name: "Chai Tapri",
+    badge: "☕ Chai Tapri Golden Hits",
+    desc: "Roadside Tea Stall Evergreen Tunes",
+    tracks: [
+      { id: "mNSYPtzpfd4", title: "Jab Koi Baat Bigad Jaaye | Jurm | Kumar Sanu, Sadhna", credit: "Ishtar Music" },
+      { id: "PqiddY3o3aY", title: "Dil Kehta Hai | Akele Hum Akele Tum | Kumar Sanu", credit: "Ishtar Music" },
+      { id: "x_a2ZVkYw_o", title: "Tumse Milne Ki Tamanna Hai | Saajan | S P B", credit: "Ishtar Music" },
+      { id: "qGOTe3KmCdY", title: "Kitna Haseen Chehra | Dilwale | Kumar Sanu", credit: "Ishtar Music" },
+      { id: "LtIJuk5te9E", title: "Pehli Baar Mile Hain | Saajan | S P B", credit: "Ishtar Music" },
+      { id: "_YjSmLlmqLM", title: "Aisi Deewangi | Deewana | Alka Yagnik", credit: "Ishtar Music" },
+      { id: "Yqj1_V90KJo", title: "Chura Ke Dil Mera | Main Khiladi Tu Anari | Kumar Sanu", credit: "Ishtar Music" }
+    ],
+    quotes: [
+      "एक कटिंग चाय, दो पारले-जी और रेडियो पर सदाबहार तराने।",
+      "टपरी पर चाय की चुस्की और दोस्तों के साथ महफ़िल।",
+      "चाय वाले भैया: 'साहब, दो मिनट रुकिए, सबसे बेहतरीन गाना बज रहा है!'",
+      "दुनिया की टेंशन छोड़ो, पहले चाय ख़त्म करो।"
+    ]
+  },
+  indipop: {
+    id: "indipop",
+    name: "Indipop & Cassette",
+    badge: "🎸 Indipop & Cassette Era",
+    desc: "2000s Pop Bands & College Vibes",
+    tracks: [
+      { id: "PUO7_Gi6ipg", title: "Baazigar O Baazigar | Baazigar | Shahrukh Khan, Kajol", credit: "Ishtar Music" },
+      { id: "PQmrmVs10X8", title: "Chaiyya Chaiyya | Dil Se | Sukhwinder Singh", credit: "Ishtar Music" },
+      { id: "vTIIMJ9tUc8", title: "Tunak Tunak Tun | Daler Mehndi", credit: "Daler Mehndi Official" },
+      { id: "Yqj1_V90KJo", title: "Chura Ke Dil Mera | Main Khiladi Tu Anari | Kumar Sanu", credit: "Ishtar Music" },
+      { id: "_YjSmLlmqLM", title: "Aisi Deewangi | Deewana | Shahrukh Khan", credit: "Ishtar Music" },
+      { id: "thjRNwjmAdQ", title: "Tumse Milne Ki Tamanna Hai | Saajan | Salman Khan", credit: "Ishtar Music" }
+    ],
+    quotes: [
+      "2000s के वो कॉलेज के दिन और कैसेट वाले पॉप गाने!",
+      "वॉकमेन की बैटरी खत्म, लेकिन यादें हमेशा ताज़ा।",
+      "जब एमटीवी और चैनल वी पर सिर्फ अच्छे गाने आते थे।",
+      "रिमोट छोड़कर कैसेट की रील पेंसिल से घुमाने का दौर!"
+    ]
+  }
+};
+
+const FAQ_DATA = [
+  ["What is TCS Radio?",
+   "TCS Radio (Total Chill Station / Tata Chai & Symphony), created by developer Umair, is a free 2000s Indian retro ambient radio that recreates the sounds and melodies of Indian tech offices, auto rickshaws, and highway trucks with timeless Bollywood tracks and ambient sounds."],
+  ["What playlists are available?",
+   "You can choose from 6 iconic soundscapes: 🏢 Office (TCS), 🛺 Auto (Jhankar), 🚚 Truck (Highway), 🌧️ Monsoon (90s Romance), ☕ Chai Tapri (Golden Hits), and 🎸 Indipop & Cassette."],
+  ["How does playlist auto-progression work?",
+   "When all songs in your active playlist have played, TCS Radio automatically transitions to the next playlist in the cycle so your music never stops!"],
+  ["Can I play TCS Radio in the background?",
+   "Yes! TCS Radio features complete background playback support with the browser MediaSession API and an audio keep-alive session, allowing you to lock your screen or switch tabs while music continues smoothly."],
+  ["How can I suggest a song or request removal?",
+   "We deeply respect all copyright owners, artists, and listeners! Click '🎵 Add / Remove Songs' in the top bar or footer to connect directly with Umair instead of reporting. We take action within 24 hours with zero hassle."],
+  ["Is TCS Radio free to use?",
+   "Yes! TCS Radio is 100% free with zero annoying pop-up ads, no login, and no payment required. All songs stream straight into your browser on desktop and mobile."],
+  ["How do I toggle the video player?",
+   "By default, video is hidden for an audio-first, distraction-free retro radio experience. You can toggle the 📺 Video button on the player controls anytime you want to watch the music clip."]
+];
+
+// Helper functions
+const $ = (s) => document.querySelector(s);
+const fmt = (s) => {
+  if (!s || isNaN(s)) return "0:00";
+  s = Math.floor(s);
+  return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+};
+
+function storageGet(key) { try { return localStorage.getItem(key); } catch (_) { return null; } }
+function storageSet(key, val) { try { localStorage.setItem(key, val); } catch (_) { return false; } }
+function sessionGet(key) { try { return sessionStorage.getItem(key); } catch (_) { return null; } }
+function sessionSet(key, val) { try { sessionStorage.setItem(key, val); } catch (_) {} }

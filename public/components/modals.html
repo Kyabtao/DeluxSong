@@ -1,0 +1,142 @@
+<!-- ============ SUPPORT MODAL (JOKE + THANKS MESSAGE) ============ -->
+<div class="modal" id="supportModal" hidden>
+  <div class="sheet modal-sheet-support">
+    <button class="x" type="button" data-close aria-label="Close modal">×</button>
+    <div class="modal-badge-icon">☕💻❤️</div>
+    <h2>Support TCS Radio (Chai &amp; Server Gullak)</h2>
+    
+    <div class="joke-bill-card">
+      <div class="joke-bill-title">💼 TCS Radio Corporate Expense Breakdown:</div>
+      <div class="joke-bill-items">
+        <div class="joke-bill-row"><span>☕ Daily Cutting Chai &amp; Samosa Fund:</span><strong>₹20</strong></div>
+        <div class="joke-bill-row"><span>📻 2000s Nostalgic Playlist (All 6 Playlists):</span><strong class="free-tag">100% FREE</strong></div>
+        <div class="joke-bill-row"><span>🌧️ Digital Monsoon Baarish Ambience:</span><strong class="free-tag">100% FREE</strong></div>
+        <div class="joke-bill-row"><span>🗣️ Unsolicited Corporate Gyaan &amp; Manager Quotes:</span><strong class="free-tag">100% FREE</strong></div>
+        <div class="joke-bill-row joke-bill-highlight"><span>⚡ High-Speed Server &amp; Ad-Free Streaming:</span><strong class="paid-tag">Thoda mehnga hai boss! 😅</strong></div>
+      </div>
+    </div>
+
+    <div class="thanks-box">
+      <h3>🙏 Dil Se Shukriya / Heartfelt Thanks from Umair!</h3>
+      <p>
+        A huge thank you to everyone vibing with our retro radio! Your love keeps this corner of the internet running smooth and 100% ad-free forever.
+      </p>
+      <p class="thanks-note">
+        If you want to sponsor a hot cup of canteen chai ☕ for developer Umair or contribute towards our server bandwidth, feel free to scan the QR code below. Every tip is warmly appreciated! ❤️
+      </p>
+    </div>
+
+    <div class="qr-wrapper">
+      <img class="qr" src="img/qr.jpg" alt="UPI QR code to support TCS Radio" />
+      <span class="qr-caption">Scan with any UPI App (GPay / PhonePe / Paytm)</span>
+    </div>
+
+    <div class="modal-actions">
+      <a class="btn btn-primary" href="img/qr.jpg" download>📥 Download QR Code</a>
+      <button class="btn btn-secondary" id="chaiLoveBtn" type="button">☕ Treat Us to Chai &amp; Samosa</button>
+    </div>
+    <button class="link" type="button" data-close>Maza aa gaya! Back to Music 🎵</button>
+  </div>
+</div>
+
+<!-- ============ EARN / CAREERS MODAL (JOKE - NO FAKE LINKS) ============ -->
+<div class="modal" id="earnModal" hidden>
+  <div class="sheet modal-sheet-earn">
+    <button class="x" type="button" data-close aria-label="Close modal">×</button>
+    <div class="modal-badge-icon">💼☕😂</div>
+    <h2>🚨 Urgent Hiring at TCS Radio!</h2>
+    <p class="joke-subtitle">100% Entertainment • 0% Investment • 0% Scam</p>
+    
+    <div class="joke-job-card">
+      <div class="job-role-badge">📌 Role: Senior Timesheet Filler &amp; Lead Chai Break Coordinator</div>
+      <ul class="job-duties">
+        <li>📻 <strong>Sprint Goal 1:</strong> Adjust the radio antenna whenever KK or Mohit Chauhan's voice buffers.</li>
+        <li>☕ <strong>Sprint Goal 2:</strong> Coordinate 4:30 PM chai &amp; sutta breaks with 99.9% sprint velocity.</li>
+        <li>💻 <strong>Sprint Goal 3:</strong> Nod enthusiastically during 1-hour standup calls while listening to 2000s Bollywood on mute.</li>
+        <li>🛺 <strong>Sprint Goal 4:</strong> Argue with auto drivers on why meter + ₹20 is acceptable in peak hours.</li>
+      </ul>
+      <div class="job-salary-box">
+        <span class="salary-label">💰 CTC (Chai Total Compensation):</span>
+        <span class="salary-val">2 Cutting Chai ☕ + 1 Hot Samosa 🥟 per sprint</span>
+      </div>
+    </div>
+
+    <div class="anti-scam-notice">
+      <div class="notice-icon">🛡️</div>
+      <div class="notice-text">
+        <strong>PSA / Anti-Scam Notice:</strong><br />
+        No fake Telegram jobs, no suspicious WhatsApp channels, and no "25 din mein paisa double" traps here! Just sit back, enjoy pure 2000s Indian nostalgia, and keep your wallet safe. Scam links pe click mat karo, sirf gaano ka maza lo! 😉
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="applyJokeBtn" type="button">Apply Now (Submit Timesheet ☕)</button>
+      <button class="btn btn-secondary" type="button" data-close>Main toh bas gaane sunne aaya tha 😂</button>
+    </div>
+    <button class="link" type="button" data-close>Dismiss</button>
+  </div>
+</div>
+
+<!-- ============ SONG ADD / REMOVAL CONNECT MODAL (NO REPORTING - CONNECT DIRECTLY) ============ -->
+<div class="modal" id="requestModal" hidden>
+  <div class="sheet modal-sheet-request">
+    <button class="x" type="button" data-close aria-label="Close modal">×</button>
+    <div class="modal-badge-icon">🎵🤝✨</div>
+    <h2>Song Additions &amp; Removal Requests</h2>
+    <p class="joke-subtitle">Connect directly with developer Umair — Zero hassle, fast 24h resolution!</p>
+
+    <div class="creator-notice-box">
+      <div class="creator-notice-icon">🛡️</div>
+      <div class="creator-notice-text">
+        <strong>Dear Artists, Rights Holders &amp; Listeners:</strong><br />
+        We deeply respect all copyright owners, music labels, and creators. All songs stream directly through official YouTube player embeds without hosting copyrighted audio on our servers.<br /><br />
+        <strong>If you want a song removed</strong>, or if you are a listener who wants an iconic 2000s Bollywood melody <strong>added</strong>, please <em>connect directly with us below instead of reporting or striking</em>. We value your collaboration and resolve all requests promptly within 24 hours!
+      </div>
+    </div>
+
+    <form class="request-form" id="requestForm">
+      <div class="form-group">
+        <label for="reqType"><strong>Request Type:</strong></label>
+        <select id="reqType" class="form-input">
+          <option value="add">➕ Suggest an Iconic Song to Add</option>
+          <option value="remove">✂️ Request Song Removal (Copyright Holder / Artist)</option>
+          <option value="other">💬 General Feedback / Hi to Umair</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="reqName"><strong>Your Name / Channel Name:</strong></label>
+        <input type="text" id="reqName" class="form-input" placeholder="e.g. Rahul / Ishtar Music Rep" required />
+      </div>
+
+      <div class="form-group">
+        <label for="reqSong"><strong>Song Title &amp; YouTube Link:</strong></label>
+        <input type="text" id="reqSong" class="form-input" placeholder="e.g. KK - Kya Mujhe Pyaar Hai (youtube link)" required />
+      </div>
+
+      <div class="form-group">
+        <label for="reqMessage"><strong>Message / Reason (Optional):</strong></label>
+        <textarea id="reqMessage" class="form-input form-textarea" rows="3" placeholder="Tell Umair any specifics or details..."></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" type="submit">🚀 Send Request to Umair</button>
+        <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+      </div>
+    </form>
+    <button class="link" type="button" data-close>Close</button>
+  </div>
+</div>
+
+<!-- ============ INSTALL PROMPT ============ -->
+<div class="install" id="install" hidden>
+  <img src="img/tcs-icon.png" alt="TCS Radio app icon" />
+  <div>
+    <strong>Install TCS Radio App</strong>
+    <span>One-tap 2000s retro radio anywhere.</span>
+  </div>
+  <button class="btn sm btn-primary" type="button" id="installBtn">Install</button>
+  <button class="x" type="button" id="installClose" aria-label="Close">×</button>
+</div>
+
+<div class="toast" id="toast" hidden></div>

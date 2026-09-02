@@ -3,49 +3,134 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Deluxe Salon | Delux Salon 2000s Indian Retro Ambient Radio – deluxsalon.in</title>
-<meta name="description" content="Deluxe Saloon is a free 2000s Indian retro ambient radio — nonstop Bollywood hits, barber chatter and the sound of a neighbourhood saloon. Press play, no sign-up." />
-<meta name="theme-color" content="#1a0f0a" />
+<title>TCS Radio | 2000s Indian Corporate, Auto &amp; Truck Retro Ambient Radio</title>
+<meta name="description" content="TCS Radio is a free 2000s Indian retro ambient radio developed by Umair. Stream nonstop nostalgic Bollywood hits across Office, Auto, Truck, Monsoon, Chai Tapri, and Indipop playlists with background playback and ambient audio." />
+<meta name="author" content="Umair" />
+<meta name="theme-color" content="#120904" />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
-<link rel="icon" href="img/favicon.png" />
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+<link rel="icon" href="img/tcs-icon.png" />
+<link rel="apple-touch-icon" href="img/tcs-icon.png" />
 <link rel="manifest" href="manifest.webmanifest" />
-<meta property="og:title" content="Deluxe Saloon — 2000s Indian Retro Ambient Saloon Radio" />
-<meta property="og:description" content="A 2000s Indian saloon, rebuilt in sound. Free nonstop Bollywood radio." />
-<meta property="og:image" content="img/newbanner.jpg" />
+<meta property="og:title" content="TCS Radio — 2000s Indian Office, Auto &amp; Truck Retro Radio" />
+<meta property="og:description" content="Revisit 2000s India in sound — IT office cubicles, Auto Rickshaws, and Highway Trucks with nonstop retro Bollywood music. Developed by Umair." />
+<meta property="og:image" content="img/tcs-banner.jpg" />
 <meta property="og:type" content="website" />
 <link rel="preconnect" href="https://www.youtube.com" />
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <a class="skip" href="#about">Skip to content</a>
 
-<!-- ============ HERO / PLAYER ============ -->
+<!-- ============ HERO & PLAYER WRAPPER ============ -->
 <header class="hero" id="top">
-  <img class="hero-bg" src="img/newbanner.jpg" alt="Illustrated 2000s Indian saloon storefront at golden hour, the visual theme of Deluxe Saloon" />
+  <img class="hero-bg" src="img/tcs-banner.jpg" alt="TCS Radio retro Indian tech park, auto rickshaw, and highway truck illustration at golden hour" />
   <div class="hero-shade"></div>
 
+  <!-- SECTION 1: Top Navigation Bar (public/components/topbar.html) -->
   <div class="topbar">
-    <button class="pill" id="chatOpen">💬 Live Chat <span class="badge" id="chatCount">0</span></button>
+    <div class="topbar-left">
+      <button class="pill pill-support" id="supportBtn" title="Support TCS Radio Server Fund">
+        <span class="pill-icon">❤️</span> <span>Support Us</span>
+      </button>
+      <button class="pill" id="requestBtn" title="Suggest a song to add or request removal">
+        <span class="pill-icon">🎵</span> <span>Add / Remove Songs</span>
+      </button>
+    </div>
+    
     <div class="topbar-right">
-      <button class="pill" id="rainBtn" title="Toggle rain ambience">🌧️ Baarish?</button>
-      <button class="pill" id="earnBtn">💰 Part Time Earning</button>
-      <button class="pill" id="shareBtn">Share</button>
+      <button class="pill" id="rainBtn" title="Toggle monsoon rain ambience">
+        <span class="pill-icon">🌧️</span> <span>Baarish?</span>
+      </button>
+      <button class="pill" id="earnBtn" title="TCS Campus Hiring &amp; Job Opening">
+        <span class="pill-icon">💼</span> <span>TCS Careers (Joke)</span>
+      </button>
+      <button class="pill" id="shareBtn" title="Share with friends">
+        <span class="pill-icon">🔗</span> <span>Share</span>
+      </button>
     </div>
   </div>
 
   <div class="hero-inner">
-    <h1 class="brand">डीलक्स <span>सैलून</span></h1>
-    <p class="tagline" id="quote">हमारे यहाँ हर स्टाइल की कटिंग की जाती है!</p>
+    <!-- SECTION 2: Brand & Rotating Quotes (public/components/hero.html) -->
+    <div class="brand-wrapper">
+      <div class="brand-badge">✨ 2000s Retro Ambient Radio • By Umair</div>
+      <h1 class="brand">टीसीएस <span>रेडियो</span></h1>
+      <p class="brand-sub">TCS Radio • Total Chill Station • Tata Chai &amp; Symphony</p>
+    </div>
+    <p class="tagline" id="quote">टाइम्सशीट भर दी भाई? चलो अब चाय पीते हैं और पुराने गाने सुनते हैं!</p>
 
-    <div class="player" id="player">
+    <!-- SECTION 3: Playlist Selector (public/components/playlist-selector.html) -->
+    <div class="playlist-nav-wrapper">
+      <div class="playlist-nav-header">
+        <span class="nav-title">📻 Select Radio Playlist:</span>
+        <span class="auto-advance-badge" title="When a playlist finishes, the next one automatically plays!">🔁 Auto-Play Next Enabled</span>
+      </div>
+
+      <div class="station-switcher" role="tablist" aria-label="Select Radio Station">
+        <button class="station-btn active" data-playlist="office" role="tab" aria-selected="true">
+          <span class="stn-emoji">🏢</span>
+          <span class="stn-info">
+            <strong class="stn-name">Office (TCS)</strong>
+            <small class="stn-desc">Soulful 2000s &amp; Chai</small>
+          </span>
+        </button>
+
+        <button class="station-btn" data-playlist="auto" role="tab" aria-selected="false">
+          <span class="stn-emoji">🛺</span>
+          <span class="stn-info">
+            <strong class="stn-name">Auto (Jhankar)</strong>
+            <small class="stn-desc">Street Bass Booster</small>
+          </span>
+        </button>
+
+        <button class="station-btn" data-playlist="truck" role="tab" aria-selected="false">
+          <span class="stn-emoji">🚚</span>
+          <span class="stn-info">
+            <strong class="stn-name">Truck (Highway)</strong>
+            <small class="stn-desc">Dhaba Punjabi Beats</small>
+          </span>
+        </button>
+
+        <button class="station-btn" data-playlist="monsoon" role="tab" aria-selected="false">
+          <span class="stn-emoji">🌧️</span>
+          <span class="stn-info">
+            <strong class="stn-name">Monsoon (90s)</strong>
+            <small class="stn-desc">Late Night Melodies</small>
+          </span>
+        </button>
+
+        <button class="station-btn" data-playlist="tapri" role="tab" aria-selected="false">
+          <span class="stn-emoji">☕</span>
+          <span class="stn-info">
+            <strong class="stn-name">Chai Tapri</strong>
+            <small class="stn-desc">Roadside Golden Hits</small>
+          </span>
+        </button>
+
+        <button class="station-btn" data-playlist="indipop" role="tab" aria-selected="false">
+          <span class="stn-emoji">🎸</span>
+          <span class="stn-info">
+            <strong class="stn-name">Indipop &amp; Cassette</strong>
+            <small class="stn-desc">College 2000s Bands</small>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- SECTION 4: Audio Player Deck (public/components/player.html) -->
+    <div class="player mini" id="player">
       <div class="yt-holder" id="ytHolder"><div id="ytplayer"></div></div>
+      
       <div class="np">
-        <div class="disc" id="disc">
+        <div class="disc" id="disc" title="Spinning retro vinyl record">
           <div class="disc-hole"></div>
         </div>
         <div class="np-text">
+          <div class="np-badge-row">
+            <span class="np-badge" id="stationBadge">🏢 TCS Office Mode</span>
+            <span class="np-track-counter" id="trackCounter">Track 1 / 7</span>
+          </div>
           <div class="np-title" id="npTitle">Nostalgia Loading...</div>
           <div class="np-credit">Credits: <span id="npCredit">YouTube</span></div>
         </div>
@@ -53,165 +138,275 @@
 
       <div class="seek">
         <span class="time" id="cur">0:00</span>
-        <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Seek" />
+        <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Seek track position" />
         <span class="time" id="dur">0:00</span>
       </div>
 
       <div class="controls">
-        <button class="ctl" id="prev" title="Previous" aria-label="Previous">⏮</button>
-        <button class="ctl play" id="play" title="Play" aria-label="Play">▶</button>
-        <button class="ctl" id="next" title="Next" aria-label="Next">⏭</button>
-        <button class="ctl small" id="shuffle" title="Shuffle" aria-label="Shuffle">🔀</button>
-        <div class="vol">
-          <span id="volIcon">🔊</span>
-          <input type="range" id="vol" min="0" max="100" value="70" aria-label="Volume" />
+        <button class="ctl" id="prev" title="Previous Track (Left Arrow)" aria-label="Previous Track">⏮</button>
+        <button class="ctl play" id="play" title="Play / Pause (Space)" aria-label="Play or Pause Track">▶</button>
+        <button class="ctl" id="next" title="Next Track (Right Arrow)" aria-label="Next Track">⏭</button>
+        <button class="ctl small on" id="shuffle" title="Toggle Shuffle Mode" aria-label="Shuffle Track Order">🔀</button>
+        
+        <div class="vol" title="Volume Slider">
+          <button class="vol-btn" id="volBtn" title="Mute / Unmute" aria-label="Toggle Mute">
+            <span id="volIcon">🔊</span>
+          </button>
+          <input type="range" id="vol" min="0" max="100" value="70" aria-label="Volume Slider" />
         </div>
-        <button class="ctl small" id="listBtn" title="Playlist" aria-label="Playlist">☰</button>
-        <button class="ctl small" id="videoBtn" title="Show / hide video" aria-label="Toggle video">📺</button>
+
+        <button class="ctl small" id="listBtn" title="Open Playlist Drawer" aria-label="Open Playlist Drawer">☰</button>
+        <button class="ctl small" id="videoBtn" title="Show Video (📺)" aria-label="Toggle Video Display">📺</button>
       </div>
 
+      <!-- Ambient Sound Mixer Row -->
       <div class="rainrow" id="rainRow" hidden>
-        <span>🌧️ Baarish</span>
-        <input type="range" id="rainVol" min="0" max="100" value="45" aria-label="Rain volume" />
+        <span>🌧️ Baarish Volume</span>
+        <input type="range" id="rainVol" min="0" max="100" value="45" aria-label="Rain Sound Volume" />
       </div>
     </div>
 
-    <a class="scroll" href="#about">Scroll <span>▾</span></a>
+    <a class="scroll" href="#about">Explore The Soundscapes <span>▾</span></a>
   </div>
 </header>
 
-<!-- ============ PLAYLIST DRAWER ============ -->
+<!-- SECTION 5: Slide-out Playlist Drawer (public/components/drawer.html) -->
 <aside class="drawer" id="drawer" aria-hidden="true">
   <div class="drawer-head">
-    <h3>Aaj ka Playlist</h3>
-    <button class="x" type="button" id="drawerClose" aria-label="Close">×</button>
+    <div class="drawer-title-box">
+      <h3>📻 Aaj ki Playlist</h3>
+      <span class="drawer-active-stn" id="drawerStnLabel">Office (TCS)</span>
+    </div>
+    <button class="x" type="button" id="drawerClose" aria-label="Close Playlist">×</button>
   </div>
+  
+  <div class="drawer-tabs" id="drawerTabs">
+    <!-- Populated dynamically via JS -->
+  </div>
+
+  <div class="drawer-connect-banner">
+    <span>🎵 Want a song added or removed?</span>
+    <button class="btn-link-sm" id="drawerConnectBtn" type="button">Connect with Umair →</button>
+  </div>
+
   <ol class="tracks" id="tracks"></ol>
-  <p class="drawer-note">Shuffles forever. Songs stream from YouTube.</p>
+  <p class="drawer-note">✨ Auto-advance is on. When this playlist ends, the next playlist plays automatically!</p>
 </aside>
 
-<!-- ============ ABOUT ============ -->
+<!-- ============ MAIN CONTENT ============ -->
 <main>
+<!-- SECTION 6: About Section (public/components/about.html) -->
 <section class="about" id="about">
   <p class="eyebrow">Welcome to</p>
-  <h2>Deluxe Saloon — a 2000s Indian Saloon, Rebuilt in Sound</h2>
+  <h2>TCS Radio — 2000s India Rebuilt in Ambient Sound</h2>
   <p class="lede">
-    Deluxe Saloon (also spelled <strong>Deluxe Salon</strong> or <strong>Delux Salon</strong>) is a free ambient
-    radio built to recreate one very specific memory: the neighbourhood hair-cutting saloon of 2000s India, with a
-    battered radio in the corner playing Bollywood hits between the buzz of clippers and the snip of scissors.
-    Press play, and Deluxe Saloon streams a nonstop mix of 2000s Bollywood radio nostalgia, styled around the
-    sights, sounds and one-liners of a classic Indian barbershop.
+    <strong>TCS Radio</strong> is a free retro ambient radio created by <strong>Umair</strong> to capture the unforgettable sounds,
+    humor, and music of 2000s India. Whether you're coding in an IT tech park cubicle, zipping through city traffic
+    in an auto rickshaw, or cruising down the GT Road with dhaba trucks, TCS Radio brings the golden era of
+    Bollywood right to your browser with zero sign-up.
   </p>
 
   <div class="cards">
     <article class="card">
-      <div class="ico">📻</div>
-      <h3>2000s Bollywood Radio</h3>
-      <p>A curated playlist of the era's biggest saloon-radio staples, tuned to keep playing in the background all day.</p>
+      <div class="ico">🏢</div>
+      <h3>Office (TCS Tech Park)</h3>
+      <p>Soulful 2000s Bollywood staples by KK, Mohit Chauhan, Lucky Ali, and A.R. Rahman — perfect for debugging, timesheet filling, and chai breaks.</p>
     </article>
+    
     <article class="card">
-      <div class="ico">✂️</div>
-      <h3>Barber Chatter &amp; Quotes</h3>
-      <p>Rotating one-liners from Deluxe Saloon's cast of barbers, woven into the retro soundtrack.</p>
+      <div class="ico">🛺</div>
+      <h3>Auto Rickshaw (Jhankar)</h3>
+      <p>High-octane 90s/2000s Jhankar beats with heavy bass, cassette nostalgia, and iconic tracks that rule Indian city streets.</p>
     </article>
+    
     <article class="card">
-      <div class="ico">🕰️</div>
-      <h3>Always Open</h3>
-      <p>Deluxe Saloon is free, streams straight from your browser, and never closes — no sign-up, no app.</p>
+      <div class="ico">🚚</div>
+      <h3>Highway Truck (Dhaba Beats)</h3>
+      <p>Loud, celebratory Punjabi and Bollywood highway anthems with 'Horn OK Please' energy, dhol rhythms, and road trip vibes.</p>
+    </article>
+
+    <article class="card">
+      <div class="ico">🌧️</div>
+      <h3>Monsoon &amp; Chai Tapri</h3>
+      <p>Romantic late-night rain melodies and roadside tea-stall classics that take you straight back to the 90s cassette player days.</p>
     </article>
   </div>
 </section>
 
-<!-- ============ FAQ ============ -->
+<!-- SECTION 7: FAQ Section (public/components/faq.html) -->
 <section class="faq" id="faq">
   <p class="eyebrow">FAQ</p>
-  <h2>Deluxe Saloon, Explained</h2>
+  <h2>TCS Radio, Explained</h2>
   <div class="acc" id="acc"></div>
 </section>
 </main>
 
+<!-- SECTION 8: Footer (public/components/footer.html) -->
 <footer class="foot">
-  <div class="foot-brand">डीलक्स सैलून</div>
+  <div class="foot-brand">टीसीएस रेडियो • TCS Radio</div>
+  <p class="author-tag">Developed &amp; Crafted with ❤️ by <strong>Umair</strong></p>
   <nav>
     <a href="#about">About</a>
     <a href="#faq">FAQ</a>
-    <a href="https://www.youtube.com/@IshtarMusic" target="_blank" rel="noopener">YouTube Playlist</a>
+    <a href="#" id="requestFooterLink">🎵 Add / Remove Songs</a>
+    <a href="https://www.youtube.com/@IshtarMusic" target="_blank" rel="noopener">YouTube Originals</a>
     <a href="#" id="supportLink">Support ❤️</a>
   </nav>
-  <p>Made with ❤️ for everyone who grew up with a radio in the corner of the saloon.</p>
-  <p class="small">A working clone of deluxsalon.in — built for demonstration. All songs stream from YouTube and belong to their respective owners.</p>
+  <p class="credit-note">Inspired by deluxsalon.in • Built with ❤️ for Indian retro nostalgia by Umair.</p>
+  <p class="small">All music streams directly from YouTube and belongs to their respective owners and copyright holders. For removal or additions, please connect with us!</p>
 </footer>
 
-<!-- ============ SUPPORT MODAL ============ -->
+<!-- SECTION 9: Modals, Connect Form & Toast (public/components/modals.html) -->
+<!-- ============ SUPPORT MODAL (JOKE + THANKS MESSAGE) ============ -->
 <div class="modal" id="supportModal" hidden>
-  <div class="sheet">
-    <button class="x" type="button" data-close aria-label="Close">×</button>
-    <div class="big">❤️</div>
-    <h2>No ads - Just memories. Support the Platform to Stay FOREVER</h2>
-    <p>With over 1 Lac daily visitors, We promise never to put ads and ruin your experience. But web server costs
-      are high to keep this website smooth, Please send any amount you wish. Thank you in advance! ❤️️</p>
-    <img class="qr" src="img/qr.jpg" alt="QR code to support Deluxe Saloon" />
-    <a class="btn" href="img/qr.jpg" download>Download QR Code</a>
-    <p class="small">Save it and scan with any UPI app.<br />(GPay / PhonePe / Paytm)</p>
+  <div class="sheet modal-sheet-support">
+    <button class="x" type="button" data-close aria-label="Close modal">×</button>
+    <div class="modal-badge-icon">☕💻❤️</div>
+    <h2>Support TCS Radio (Chai &amp; Server Gullak)</h2>
+    
+    <div class="joke-bill-card">
+      <div class="joke-bill-title">💼 TCS Radio Corporate Expense Breakdown:</div>
+      <div class="joke-bill-items">
+        <div class="joke-bill-row"><span>☕ Daily Cutting Chai &amp; Samosa Fund:</span><strong>₹20</strong></div>
+        <div class="joke-bill-row"><span>📻 2000s Nostalgic Playlist (All 6 Playlists):</span><strong class="free-tag">100% FREE</strong></div>
+        <div class="joke-bill-row"><span>🌧️ Digital Monsoon Baarish Ambience:</span><strong class="free-tag">100% FREE</strong></div>
+        <div class="joke-bill-row"><span>🗣️ Unsolicited Corporate Gyaan &amp; Manager Quotes:</span><strong class="free-tag">100% FREE</strong></div>
+        <div class="joke-bill-row joke-bill-highlight"><span>⚡ High-Speed Server &amp; Ad-Free Streaming:</span><strong class="paid-tag">Thoda mehnga hai boss! 😅</strong></div>
+      </div>
+    </div>
+
+    <div class="thanks-box">
+      <h3>🙏 Dil Se Shukriya / Heartfelt Thanks from Umair!</h3>
+      <p>
+        A huge thank you to everyone vibing with our retro radio! Your love keeps this corner of the internet running smooth and 100% ad-free forever.
+      </p>
+      <p class="thanks-note">
+        If you want to sponsor a hot cup of canteen chai ☕ for developer Umair or contribute towards our server bandwidth, feel free to scan the QR code below. Every tip is warmly appreciated! ❤️
+      </p>
+    </div>
+
+    <div class="qr-wrapper">
+      <img class="qr" src="img/qr.jpg" alt="UPI QR code to support TCS Radio" />
+      <span class="qr-caption">Scan with any UPI App (GPay / PhonePe / Paytm)</span>
+    </div>
+
+    <div class="modal-actions">
+      <a class="btn btn-primary" href="img/qr.jpg" download>📥 Download QR Code</a>
+      <button class="btn btn-secondary" id="chaiLoveBtn" type="button">☕ Treat Us to Chai &amp; Samosa</button>
+    </div>
+    <button class="link" type="button" data-close>Maza aa gaya! Back to Music 🎵</button>
+  </div>
+</div>
+
+<!-- ============ EARN / CAREERS MODAL (JOKE - NO FAKE LINKS) ============ -->
+<div class="modal" id="earnModal" hidden>
+  <div class="sheet modal-sheet-earn">
+    <button class="x" type="button" data-close aria-label="Close modal">×</button>
+    <div class="modal-badge-icon">💼☕😂</div>
+    <h2>🚨 Urgent Hiring at TCS Radio!</h2>
+    <p class="joke-subtitle">100% Entertainment • 0% Investment • 0% Scam</p>
+    
+    <div class="joke-job-card">
+      <div class="job-role-badge">📌 Role: Senior Timesheet Filler &amp; Lead Chai Break Coordinator</div>
+      <ul class="job-duties">
+        <li>📻 <strong>Sprint Goal 1:</strong> Adjust the radio antenna whenever KK or Mohit Chauhan's voice buffers.</li>
+        <li>☕ <strong>Sprint Goal 2:</strong> Coordinate 4:30 PM chai &amp; sutta breaks with 99.9% sprint velocity.</li>
+        <li>💻 <strong>Sprint Goal 3:</strong> Nod enthusiastically during 1-hour standup calls while listening to 2000s Bollywood on mute.</li>
+        <li>🛺 <strong>Sprint Goal 4:</strong> Argue with auto drivers on why meter + ₹20 is acceptable in peak hours.</li>
+      </ul>
+      <div class="job-salary-box">
+        <span class="salary-label">💰 CTC (Chai Total Compensation):</span>
+        <span class="salary-val">2 Cutting Chai ☕ + 1 Hot Samosa 🥟 per sprint</span>
+      </div>
+    </div>
+
+    <div class="anti-scam-notice">
+      <div class="notice-icon">🛡️</div>
+      <div class="notice-text">
+        <strong>PSA / Anti-Scam Notice:</strong><br />
+        No fake Telegram jobs, no suspicious WhatsApp channels, and no "25 din mein paisa double" traps here! Just sit back, enjoy pure 2000s Indian nostalgia, and keep your wallet safe. Scam links pe click mat karo, sirf gaano ka maza lo! 😉
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="applyJokeBtn" type="button">Apply Now (Submit Timesheet ☕)</button>
+      <button class="btn btn-secondary" type="button" data-close>Main toh bas gaane sunne aaya tha 😂</button>
+    </div>
     <button class="link" type="button" data-close>Dismiss</button>
   </div>
 </div>
 
-<!-- ============ EARN MODAL ============ -->
-<div class="modal" id="earnModal" hidden>
-  <div class="sheet">
-    <button class="x" type="button" data-close aria-label="Close">×</button>
-    <div class="big">💰</div>
-    <h2>Part Time Earning</h2>
-    <p>We provide simple tasks you can do in your free time and get instant UPI payment. Amount won't be big, but
-      it's enough for your pocket money.</p>
-    <a class="btn" href="https://whatsapp.com/channel/0029VajyupYAjPXTOvgg2Z41" target="_blank" rel="noopener">Join Now</a>
-    <button class="link" type="button" data-close>Dismiss</button>
+<!-- ============ SONG ADD / REMOVAL CONNECT MODAL (NO REPORTING - CONNECT DIRECTLY) ============ -->
+<div class="modal" id="requestModal" hidden>
+  <div class="sheet modal-sheet-request">
+    <button class="x" type="button" data-close aria-label="Close modal">×</button>
+    <div class="modal-badge-icon">🎵🤝✨</div>
+    <h2>Song Additions &amp; Removal Requests</h2>
+    <p class="joke-subtitle">Connect directly with developer Umair — Zero hassle, fast 24h resolution!</p>
+
+    <div class="creator-notice-box">
+      <div class="creator-notice-icon">🛡️</div>
+      <div class="creator-notice-text">
+        <strong>Dear Artists, Rights Holders &amp; Listeners:</strong><br />
+        We deeply respect all copyright owners, music labels, and creators. All songs stream directly through official YouTube player embeds without hosting copyrighted audio on our servers.<br /><br />
+        <strong>If you want a song removed</strong>, or if you are a listener who wants an iconic 2000s Bollywood melody <strong>added</strong>, please <em>connect directly with us below instead of reporting or striking</em>. We value your collaboration and resolve all requests promptly within 24 hours!
+      </div>
+    </div>
+
+    <form class="request-form" id="requestForm">
+      <div class="form-group">
+        <label for="reqType"><strong>Request Type:</strong></label>
+        <select id="reqType" class="form-input">
+          <option value="add">➕ Suggest an Iconic Song to Add</option>
+          <option value="remove">✂️ Request Song Removal (Copyright Holder / Artist)</option>
+          <option value="other">💬 General Feedback / Hi to Umair</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="reqName"><strong>Your Name / Channel Name:</strong></label>
+        <input type="text" id="reqName" class="form-input" placeholder="e.g. Rahul / Ishtar Music Rep" required />
+      </div>
+
+      <div class="form-group">
+        <label for="reqSong"><strong>Song Title &amp; YouTube Link:</strong></label>
+        <input type="text" id="reqSong" class="form-input" placeholder="e.g. KK - Kya Mujhe Pyaar Hai (youtube link)" required />
+      </div>
+
+      <div class="form-group">
+        <label for="reqMessage"><strong>Message / Reason (Optional):</strong></label>
+        <textarea id="reqMessage" class="form-input form-textarea" rows="3" placeholder="Tell Umair any specifics or details..."></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" type="submit">🚀 Send Request to Umair</button>
+        <button class="btn btn-secondary" type="button" data-close>Cancel</button>
+      </div>
+    </form>
+    <button class="link" type="button" data-close>Close</button>
   </div>
 </div>
 
 <!-- ============ INSTALL PROMPT ============ -->
 <div class="install" id="install" hidden>
-  <img src="img/icon-192.png" alt="Deluxe Saloon app icon" />
+  <img src="img/tcs-icon.png" alt="TCS Radio app icon" />
   <div>
-    <strong>Install Our APP</strong>
-    <span>One tap listen anywhere.</span>
+    <strong>Install TCS Radio App</strong>
+    <span>One-tap 2000s retro radio anywhere.</span>
   </div>
-  <button class="btn sm" type="button" id="installBtn">Install</button>
+  <button class="btn sm btn-primary" type="button" id="installBtn">Install</button>
   <button class="x" type="button" id="installClose" aria-label="Close">×</button>
-</div>
-
-<!-- ============ CHAT ============ -->
-<div class="chat" id="chat" hidden>
-  <div class="chat-head">
-    <h3>Live Chat <span class="dot" id="liveDot"></span><small id="online">0 online</small></h3>
-    <button class="x" type="button" id="chatClose" aria-label="Close">×</button>
-  </div>
-  <div class="pinned">📌 <b>Deluxe Salon Admin :</b> Welcome! Be kind, no spam. Say hello and tell everyone where
-    you're listening from. ❤️</div>
-  <div class="msgs" id="msgs"></div>
-  <form class="chat-form" id="chatForm">
-    <input id="chatInput" maxlength="200" placeholder="Type a message…" autocomplete="off" />
-    <button class="btn sm" type="submit">Send</button>
-  </form>
-</div>
-
-<div class="modal" id="nameModal" hidden>
-  <div class="sheet small-sheet">
-    <h3>One last step — what's your name?</h3>
-    <p class="small">We'll send this as soon as you enter it:</p>
-    <p class="pending" id="pendingMsg"></p>
-    <input id="nameInput" maxlength="24" placeholder="Your name" autocomplete="off" />
-    <div class="row">
-      <button class="btn" type="button" id="nameSend">Send</button>
-      <button class="link" type="button" data-close>Cancel</button>
-    </div>
-  </div>
 </div>
 
 <div class="toast" id="toast" hidden></div>
 
+<!-- ============ MODULAR JAVASCRIPT MODULES ============ -->
 <script src="https://www.youtube.com/iframe_api"></script>
-<script src="app.js"></script>
+<script src="js/playlists-data.js"></script>
+<script src="js/background-audio.js"></script>
+<script src="js/rain-ambient.js"></script>
+<script src="js/modals.js"></script>
+<script src="js/player.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

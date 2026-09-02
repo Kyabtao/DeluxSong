@@ -1,0 +1,184 @@
+/* ==========================================================================
+   HERO & TOPBAR
+   ========================================================================== */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.08) brightness(0.92);
+  transform: scale(1.02);
+}
+
+.hero-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 20%, rgba(18, 9, 4, 0.25), rgba(18, 9, 4, 0.9) 75%),
+    linear-gradient(to bottom, rgba(18, 9, 4, 0.8), rgba(18, 9, 4, 0.35) 35%, rgba(18, 9, 4, 0.98));
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 94px 18px 42px;
+  text-align: center;
+}
+
+/* Topbar */
+.topbar {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  flex-wrap: wrap;
+}
+
+.topbar-left, .topbar-right {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Topbar Pill Buttons */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(145deg, rgba(42, 23, 14, 0.88), rgba(22, 12, 7, 0.92));
+  color: var(--cream);
+  border: 1px solid var(--line-light);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  user-select: none;
+}
+
+.pill-icon {
+  font-size: 15px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.pill:hover {
+  background: linear-gradient(145deg, rgba(74, 35, 18, 0.95), rgba(38, 19, 10, 0.98));
+  border-color: rgba(245, 179, 36, 0.65);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(245, 179, 36, 0.22), 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.pill:hover .pill-icon {
+  transform: scale(1.18);
+}
+
+.pill:active {
+  transform: translateY(1px) scale(0.97);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.pill.on {
+  background: linear-gradient(135deg, #ffd56b 0%, #f5b324 50%, #c48208 100%);
+  color: #261203;
+  border-color: #ffe89e;
+  font-weight: 700;
+  box-shadow: 0 0 18px rgba(245, 179, 36, 0.6), 0 4px 14px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+.pill-support {
+  border-color: rgba(245, 179, 36, 0.45);
+}
+
+.pill-support:hover {
+  border-color: rgba(245, 179, 36, 0.9);
+  box-shadow: 0 8px 24px rgba(245, 179, 36, 0.35);
+}
+
+/* Brand & Tagline */
+.brand-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.brand-badge {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--amber-light);
+  background: rgba(245, 179, 36, 0.15);
+  border: 1px solid rgba(245, 179, 36, 0.35);
+  padding: 4px 14px;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.brand {
+  margin: 0;
+  font-size: clamp(2.8rem, 9.5vw, 5.6rem);
+  line-height: 1.05;
+  font-weight: 800;
+  color: var(--cream);
+  text-shadow:
+    0 8px 36px rgba(0, 0, 0, 0.85),
+    0 2px 0 rgba(194, 50, 31, 0.7),
+    0 0 28px rgba(245, 179, 36, 0.35);
+  letter-spacing: -0.01em;
+}
+
+.brand span {
+  color: var(--amber);
+  text-shadow: 0 0 32px rgba(245, 179, 36, 0.55);
+}
+
+.brand-sub {
+  margin: 0;
+  font-size: clamp(0.85rem, 2.2vw, 1.05rem);
+  color: var(--cream-dim);
+  opacity: 0.9;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.tagline {
+  margin: 2px 0 0;
+  color: #eedcc0;
+  opacity: 0.95;
+  font-size: clamp(0.95rem, 2.6vw, 1.15rem);
+  font-weight: 500;
+  min-height: 1.6em;
+  max-width: 680px;
+  transition: opacity 0.35s ease;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
+}
