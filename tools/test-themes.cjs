@@ -63,9 +63,12 @@ const cards = [...doc.querySelectorAll('.theme-card')];
 ok('all 7 skins are listed', cards.length === 7, cards.map(c => c.dataset.themeId).join(', '));
 ok('switcher button exists in the topbar', !!doc.querySelector('#themeBtn'));
 ok('texture overlay is present', !!doc.querySelector('.fx-overlay .fx-vignette'));
+ok('theme swatches render with real colors', cards.every(c => !c.innerHTML.includes('undefined')));
 
 const activeCard = () => doc.querySelector('.theme-card.active');
 ok('Retro Gold starts selected', activeCard() && activeCard().dataset.themeId === 'retro');
+ok('theme pill shows the active theme name', doc.querySelector('#themePillName') && doc.querySelector('#themePillName').textContent === 'Retro Gold');
+ok('top nav theme badge mirrors the current theme', doc.querySelector('#navThemeBadge') && /Retro Gold/.test(doc.querySelector('#navThemeBadge').textContent));
 
 ok('the default skin fetches no extra webfonts', appendedFonts.length === 0, appendedFonts.join(' | ') || 'none fetched');
 
@@ -83,6 +86,8 @@ ok('choice is persisted', window.localStorage.getItem('tcs_theme') === 'synthwav
 ok('tcs:themechange fired', event && event.theme === 'synthwave');
 ok('panel closes after picking', panel.hidden === true);
 ok('selected card is marked', activeCard().dataset.themeId === 'synthwave');
+ok('theme pill updates after switching skins', doc.querySelector('#themePillName').textContent === "Synthwave '84");
+ok('nav theme badge updates after switching skins', /Synthwave '84/.test(doc.querySelector('#navThemeBadge').textContent));
 
 /* --- light skin --- */
 const poster = cards.find(c => c.dataset.themeId === 'poster');

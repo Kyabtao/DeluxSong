@@ -219,7 +219,7 @@ const PLAYLISTS = {
 
 const FAQ_DATA = [
   ["What is TCS Radio?",
-   "TCS Radio (Total Chill Station / Tata Chai & Symphony), created by developer Umair, is a free 2000s Indian retro ambient radio that recreates the sounds and melodies of Indian tech offices, auto rickshaws, and highway trucks with timeless Bollywood tracks and ambient sounds."],
+   "TCS Radio (Total Chill Station), created by developer Umair, is a free 2000s Indian retro ambient radio that recreates the sounds and melodies of Indian tech offices, auto rickshaws, and highway trucks with timeless Bollywood tracks and ambient sounds."],
   ["What playlists are available?",
    "You can choose from 7 iconic soundscapes: 🏢 Office (TCS), 🛺 Auto (Jhankar), 🚚 Truck (Highway), 🌧️ Monsoon (90s Romance), ☕ Chai Tapri (Golden Hits), 🎸 Indipop & Cassette, and 🎧 Latest Hits (2024–26 chartbusters)."],
   ["How does playlist auto-progression work?",

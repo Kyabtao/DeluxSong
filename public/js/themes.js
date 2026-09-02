@@ -148,6 +148,16 @@ const Themes = (function () {
     if (meta && hex) meta.setAttribute("content", hex);
   }
 
+  function syncThemeLabels(theme) {
+    if (!theme) return;
+    const pill = get("#themePillIcon");
+    if (pill) pill.setAttribute("title", theme.name);
+    const pillName = get("#themePillName");
+    if (pillName) pillName.textContent = theme.name;
+    const navBadge = get("#navThemeBadge");
+    if (navBadge) navBadge.textContent = autoStation ? `${theme.name} • Station Auto` : `${theme.name} theme`;
+  }
+
   /* ------------------------------------------------------------------
      Applying a theme
      ------------------------------------------------------------------ */
@@ -164,10 +174,7 @@ const Themes = (function () {
     loadFonts(theme);
     setMetaColor(theme.metaColor);
 
-    const pill = get("#themePillIcon");
-    if (pill) pill.textContent = theme.emoji;
-    const pillName = get("#themePillName");
-    if (pillName) pillName.textContent = "Theme";
+    syncThemeLabels(theme);
     const btn = get("#themeBtn");
     if (btn) {
       btn.title = "Switch theme — current: " + theme.name;
@@ -223,6 +230,7 @@ const Themes = (function () {
     root.style.removeProperty("--accent-rgb");
     root.style.removeProperty("--pl-glow");
     if (autoStation) syncStationTint();
+    syncThemeLabels(BY_ID[current]);
     markActive();
   }
 
@@ -282,8 +290,8 @@ const Themes = (function () {
       '<button class="theme-card" type="button" role="radio" aria-checked="false" data-theme-id="' + t.id + '">' +
         '<span class="theme-swatch" aria-hidden="true">' +
           '<i style="background:rgb(' + t.channels.accent + ')"></i>' +
-          '<i style="background:' + t.bg + '"></i>' +
-          '<i style="background:' + t.text + '"></i>' +
+          '<i style="background:' + t.channels.bg + '"></i>' +
+          '<i style="background:' + t.channels.text + '"></i>' +
         "</span>" +
         '<span class="theme-card-text">' +
           "<strong>" + t.emoji + " " + t.name + "</strong>" +
