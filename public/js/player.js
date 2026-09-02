@@ -105,8 +105,8 @@ const PlayerEngine = (function () {
     return activePlaylist[order[pos]] || activePlaylist[0];
   }
 
-  /* The first screen stays calm: the full player is revealed only after the
-     listener chooses an actual song from the playlist sidebar. */
+  /* The first screen stays calm: compact playback buttons are revealed only
+     after the listener chooses an actual song from the playlist sidebar. */
   function revealPlayer() {
     const player = $("#player");
     if (!player) return;
