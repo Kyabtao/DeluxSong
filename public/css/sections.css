@@ -364,28 +364,84 @@ main {
 }
 
 /* Support & quick actions: one strip after the main content, right before
-   the short footer. Support Us, Add / Remove Songs and TCS Careers live here. */
+   the short footer. Support Us, Add / Remove Songs and TCS Careers live here.
+   Rendered as a glowing glass card sitting on a soft accent wash. */
 .support-actions {
+  position: relative;
   flex-direction: column;
   justify-content: center;
-  gap: 18px;
-  max-width: none;
-  padding: 34px 22px;
-  border-top: 1px solid var(--line);
-  background: var(--main-grad);
+  gap: 20px;
+  max-width: 760px;
+  margin: 0 auto 56px;
+  padding: 40px 34px 36px;
+  border: 1px solid var(--line-light);
+  border-radius: 24px;
+  background:
+    radial-gradient(120% 140% at 50% -20%, var(--accent-rgb-12) 0%, transparent 55%),
+    linear-gradient(165deg, var(--surface-rgb-88) 0%, var(--surface-2-rgb-92) 100%);
+  box-shadow:
+    0 18px 44px var(--black-rgb-40),
+    0 0 34px var(--accent-rgb-12),
+    inset 0 1px 1px var(--white-rgb-10);
   text-align: center;
+  overflow: hidden;
+}
+
+/* Hairline gold beam across the top edge of the card. */
+.support-actions::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, var(--accent) 50%, transparent);
+  opacity: 0.85;
+}
+
+/* Faint warm glow pooling behind the copy. */
+.support-actions::after {
+  content: "";
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  width: 320px;
+  height: 160px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--accent-rgb-22), transparent);
+  filter: blur(14px);
+  pointer-events: none;
+}
+
+/* A little breathing room around the card instead of a bare edge-to-edge band. */
+main + .support-actions,
+.faq + .support-actions {
+  margin-top: 8px;
 }
 
 .support-actions .action-copy {
+  position: relative;
+  z-index: 1;
   align-items: center;
+  gap: 4px;
+}
+
+.support-actions .action-copy strong {
+  font-size: clamp(22px, 4vw, 27px);
+  letter-spacing: 0.01em;
 }
 
 .support-buttons {
+  position: relative;
+  z-index: 1;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 14px;
+  width: 100%;
 }
 
 .action-copy {
@@ -416,20 +472,42 @@ main {
 }
 
 .section-action {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
-  padding: 10px 18px;
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 22px;
   border: 1px solid var(--line-light);
   border-radius: 999px;
   background: linear-gradient(145deg, var(--surface-rgb-88), var(--surface-2-rgb-92));
   color: var(--text);
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 700;
+  letter-spacing: 0.01em;
   cursor: pointer;
+  overflow: hidden;
   box-shadow: 0 5px 16px var(--black-rgb-35), inset 0 1px 1px var(--white-rgb-10);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Shine sweep that glides across on hover. */
+.section-action::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -80%;
+  width: 55%;
+  background: linear-gradient(105deg, transparent, var(--white-rgb-20), transparent);
+  transform: skewX(-18deg);
+  transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.section-action:hover::after {
+  left: 130%;
 }
 
 .section-action:hover {
@@ -443,6 +521,11 @@ main {
   transform: translateY(1px) scale(0.98);
 }
 
+.section-action:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
 .section-action-primary {
   background: linear-gradient(135deg, var(--chip-light), var(--accent) 60%, var(--chip-dark));
   color: var(--on-accent);
@@ -450,10 +533,38 @@ main {
   box-shadow: 0 8px 24px var(--accent-rgb-35), inset 0 1px 2px var(--white-rgb-50);
 }
 
+.section-action-primary::after {
+  background: linear-gradient(105deg, transparent, var(--white-rgb-50), transparent);
+}
+
 .section-action-primary:hover {
   color: var(--on-accent);
   border-color: var(--chip-border-2);
-  box-shadow: 0 10px 28px var(--accent-rgb-50), inset 0 1px 2px var(--white-rgb-60);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 30px var(--accent-rgb-50), inset 0 1px 2px var(--white-rgb-60);
+}
+
+/* Gentle heartbeat on the primary CTA so the strip reads as alive. */
+@keyframes support-pulse {
+  0%, 100% { box-shadow: 0 8px 24px var(--accent-rgb-35), inset 0 1px 2px var(--white-rgb-50); }
+  50%      { box-shadow: 0 8px 30px var(--accent-rgb-50), inset 0 1px 2px var(--white-rgb-50); }
+}
+
+.support-buttons .section-action-primary {
+  animation: support-pulse 2.6s ease-in-out infinite;
+}
+
+.support-buttons .section-action-primary:hover {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .support-buttons .section-action-primary {
+    animation: none;
+  }
+  .section-action::after {
+    display: none;
+  }
 }
 
 /* Short footer: the useful actions live immediately above it. */
@@ -503,16 +614,21 @@ main {
   }
 
   .support-actions {
-    padding: 26px 16px;
+    margin-left: 14px;
+    margin-right: 14px;
+    margin-bottom: 40px;
+    padding: 30px 18px 26px;
+    border-radius: 20px;
   }
 
   .support-buttons {
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
   }
 
   .support-buttons .section-action {
-    width: auto;
-    flex: 1 1 150px;
+    width: 100%;
+    flex: none;
   }
 }
