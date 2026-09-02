@@ -13,8 +13,8 @@ html {
 body {
   margin: 0;
   background: var(--bg);
-  color: var(--cream);
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--text);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -44,8 +44,8 @@ img {
 }
 
 ::selection {
-  background: var(--amber);
-  color: #241103;
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 *:focus {
@@ -55,7 +55,7 @@ img {
 :focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 3px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
 }
 
 /* Custom scrollbar */
@@ -65,17 +65,17 @@ img {
 }
 
 ::-webkit-scrollbar-track {
-  background: #140b05;
+  background: var(--scroll-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(#4a2a12, #35200c);
-  border-radius: 99px;
-  border: 2px solid #140b05;
+  background: linear-gradient(var(--scroll-thumb), var(--scroll-thumb-2));
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--scroll-track);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6b3f1d;
+  background: var(--scroll-thumb-hover);
 }
 
 .skip {
@@ -87,8 +87,8 @@ img {
   left: 12px;
   top: 12px;
   z-index: 99;
-  background: var(--amber);
-  color: #2a1608;
+  background: var(--accent);
+  color: var(--on-accent);
   padding: 8px 16px;
   border-radius: 8px;
   font-weight: 700;

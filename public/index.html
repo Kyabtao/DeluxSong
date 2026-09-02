@@ -18,6 +18,9 @@
 <link rel="preconnect" href="https://www.youtube.com" />
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- Theme engine boots in <head> so the saved skin is applied before first paint -->
+<script src="js/themes.js"></script>
 </head>
 <body>
 <a class="skip" href="#about">Skip to content</a>
@@ -41,6 +44,11 @@
     </div>
     
     <div class="topbar-right">
+      <div class="theme-pill">
+        <button class="pill" id="themeBtn" title="Switch theme — Retro Gold, Synthwave, Monsoon &amp; more" aria-haspopup="dialog" aria-expanded="false" aria-controls="themePanel">
+          <span class="theme-swatch-dot" id="themePillIcon" aria-hidden="true"></span> <span id="themePillName">Theme</span>
+        </button>
+      </div>
       <button class="pill" id="rainBtn" title="Toggle monsoon rain ambience">
         <span class="pill-icon">🌧️</span> <span>Baarish?</span>
       </button>
@@ -406,6 +414,9 @@
   <button class="btn sm btn-primary" type="button" id="installBtn">Install</button>
   <button class="x" type="button" id="installClose" aria-label="Close">×</button>
 </div>
+
+<!-- Theme texture overlay: scanlines, film grain & vignette (see css/themes.css) -->
+<div class="fx-overlay" aria-hidden="true"><div class="fx-vignette"></div></div>
 
 <div class="toast" id="toast" hidden></div>
 

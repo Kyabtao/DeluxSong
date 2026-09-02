@@ -1,10 +1,16 @@
 {
   "name": "tcs-radio",
   "version": "2.1.0",
-  "description": "TCS Radio — 2000s Indian Corporate Office, Auto Rickshaw & Highway Truck Retro Ambient Radio.",
+  "description": "TCS Radio \u2014 2000s Indian Corporate Office, Auto Rickshaw & Highway Truck Retro Ambient Radio.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "npm run check",
+    "check": "npm run check:tokens && npm run check:render && npm run check:contrast && npm run check:engine",
+    "check:tokens": "node tools/audit-css.cjs",
+    "check:render": "python3 tools/audit-render.py",
+    "check:contrast": "python3 tools/audit-contrast.py",
+    "check:engine": "node tools/test-themes.cjs"
   },
   "repository": {
     "type": "git",
@@ -29,5 +35,8 @@
   "homepage": "https://github.com/Kyabtao/DeluxSong#readme",
   "dependencies": {
     "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "jsdom": "^26.0.0"
   }
 }

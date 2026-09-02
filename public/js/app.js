@@ -4,6 +4,9 @@
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Theme packs (Retro Gold, Synthwave, Monsoon, Poster, Phosphor, Noir, Daylight)
+  if (window.Themes) Themes.init();
+
   // Initialize Background Audio Session
   BackgroundAudio.init();
 
@@ -37,6 +40,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.code === "ArrowLeft") PlayerEngine.prevTrack();
     if (e.key === "m" || e.key === "M") $("#volBtn").click();
     if (e.key === "s" || e.key === "S") $("#shuffle").click();
+    if (e.key === "t" || e.key === "T") {
+      if (window.Themes) Themes.cycle(1);
+    }
+    if (e.key === "Escape" && window.Themes) Themes.close();
   });
 
   // Share Button

@@ -1,30 +1,334 @@
+/* ==========================================================================
+   TCS RADIO — MASTER DESIGN TOKENS
+   Developed by Umair
+
+   Every colour in the UI resolves through this file, which is what makes the
+   multi-theme engine possible:
+
+     1. `:root` below holds the DEFAULT theme ("Retro Gold" — the original
+        2000s amber / cream / mahogany look) plus the shared alpha ladder.
+     2. `css/themes.css` re-maps these same tokens for each extra theme via
+        `:root[data-theme="…"]`, so a theme swap never touches component CSS.
+     3. `--accent-rgb` holds raw channels ("245, 179, 36"). The whole accent
+        ramp and its alpha ladder derive from it, so when player.js re-tints
+        the accent to match the active radio station, every glow, border and
+        wash follows along automatically.
+
+   Naming convention
+     --*-rgb          raw channels — for rgba() ladders & JS tinting
+     --*-rgb-NN       pre-mixed alpha step (NN ≈ opacity × 100)
+     --text / --text-dim / --text-hi    foreground ramp
+     --accent … --accent-border         brand / station highlight ramp
+   ========================================================================== */
+
 :root {
-  /* Core palette */
+  color-scheme: dark;
+
+  /* ---------- Channel triplets (theme + station aware) ---------- */
+  --accent-rgb: 245, 179, 36;      /* gold — overridden per station by player.js */
+  --cream-rgb: 251, 241, 222;      /* warm paper white — solid text */
+  --paper-rgb: 246, 231, 205;      /* same family as a wash: fills & hairlines */
+  --cream-dim-rgb: 216, 195, 165;
+  --white-rgb: 255, 255, 255;
+  --black-rgb: 0, 0, 0;
+  --shade-rgb: 18, 9, 4;           /* hero scrim / modal backdrop */
+  --surface-rgb: 42, 23, 14;       /* raised panel gradient — top stop */
+  --surface-hi-rgb: 74, 35, 18;    /* raised panel gradient — hover top stop */
+  --surface-2-rgb: 22, 12, 7;      /* raised panel gradient — bottom stop */
+  --surface-3-rgb: 20, 10, 6;      /* deepest well / input background */
+  --surface-hi-2-rgb: 38, 19, 10;  /* raised panel gradient — hover bottom stop */
+  --deep-rgb: 21, 11, 6;           /* deepest panel stop */
+  --panel-rgb: 26, 15, 9;          /* the glass deck panel */
+  --red-rgb: 194, 50, 31;
+  --ok-rgb: 72, 216, 122;
+  --danger-rgb: 255, 107, 94;
+
+  /* ---------- Accent ramp ----------
+     Light / dark / border steps are mixed from the live accent, so a station
+     tint (or a whole theme swap) recolours them without extra bookkeeping.
+     Themes may still pin explicit values when a hand-tuned neon is wanted. */
+  --accent: rgb(var(--accent-rgb));
+  --accent-glow: rgba(var(--accent-rgb), 0.4);
+
+  /* The original artwork hand-tuned three separate gold ramps rather than one.
+     They are kept as distinct tokens so the default skin stays pixel-exact, and
+     every theme in css/themes.css re-pins all three.
+       chip  — toggles, tabs, active station cards
+       key   — the play button and primary CTAs
+       thumb — range-slider thumb (a touch deeper than chip) */
+  --chip-light: #ffd56b;
+  --chip-dark: #c48208;
+  --chip-border: #ffe699;
+  --chip-text: var(--chip-light);  /* small copy tinted with the accent; light
+                                      skins pin a darker value for contrast */
+  --chip-border-2: #ffe89e;        /* the topbar pill's slightly paler edge */
+  --chip-grad: linear-gradient(135deg, var(--chip-light) 0%, var(--accent) 50%, var(--chip-dark) 100%);
+  --key-light: #ffe07a;
+  --key-dark: #c77a03;
+  --key-border: #ffecad;
+  --key-grad: linear-gradient(135deg, var(--key-light) 0%, var(--accent) 45%, var(--key-dark) 100%);
+  --thumb-dark: #b87500;
+  --disc-core: #804a00;
+
+  /* Generic light/dark steps — derived from the live accent so Station Auto
+     tinting still has something sensible to fall back on. */
+  --accent-light: color-mix(in srgb, var(--accent) 74%, white);
+  --accent-dark: color-mix(in srgb, var(--accent) 76%, black);
+  --accent-border: color-mix(in srgb, var(--accent) 55%, white);
+  --on-accent: #241103;            /* text sitting on a filled accent chip */
+  --on-accent-2: #241205;          /* slider thumb ring etc. */
+  --on-accent-3: #3b1f07;          /* secondary line inside a filled chip */
+  --ring: rgba(var(--accent-rgb), 0.75);
+
+  /* Legacy aliases — older rules and bookmarks keep resolving */
+  --amber: var(--accent);
+  --amber-light: var(--accent-light);
+  --amber-dark: var(--accent-dark);
+  --amber-glow: var(--accent-glow);
+
+  /* ---------- Foreground ramp ---------- */
+  --text: rgb(var(--cream-rgb));
+  /* Body-copy inks. The default skin keeps the original's hand-picked creams;
+     the values below are the exact 2000s hexes, and every theme re-pins them. */
+  --text-soft: #eedbc2;            /* body copy — warm cream */
+  --text-gold: #fff1d0;            /* highlighted track / active row ink */
+  --text-thanks: #f4e4cf;          /* the thank-you note inside the support modal */
+  --text-dim: rgb(var(--cream-dim-rgb));
+  --text-hi: rgb(var(--white-rgb));
+  --cream: var(--text);
+  --cream-dim: var(--text-dim);
+
+  /* ---------- Backgrounds & surfaces ---------- */
   --bg: #120a05;
-  --bg-gradient: radial-gradient(circle at 50% 15%, #26140a 0%, #120a05 85%);
-  --panel: rgba(26, 15, 9, 0.88);
+  --bg-2: #26140a;
+  --bg-deep: #0f0703;
+  --bg-image: radial-gradient(circle at 50% 15%, var(--bg-2) 0%, var(--bg) 85%);
+  --bg-gradient: var(--bg-image);   /* legacy alias */
+  --panel: var(--panel-rgb-88);
   --panel-solid: #1c1008;
-  --cream: #fbf1de;
-  --cream-dim: #d8c3a5;
-  --amber: #f5b324;
-  --amber-light: #ffd56b;
-  --amber-dark: #c48208;
-  --amber-glow: rgba(245, 179, 36, 0.4);
-  --red: #c2321f;
+  --surface-2: #2a170b;
+  --surface-3: #180d05;
+  --surface-sunken: rgba(12, 6, 2, 0.72);   /* bill cards, drawer tab strip */
+  --well: rgba(18, 9, 4, 0.55);             /* volume well */
+  --well-deep: rgba(12, 6, 2, 0.5);         /* now-playing well */
+  --tab-strip: rgba(14, 7, 3, 0.6);         /* drawer tab strip */
+  --field: rgba(10, 5, 2, 0.85);            /* text inputs */
+  --field-focus: rgba(20, 10, 5, 0.95);     /* text inputs — focused */
+  --sheet-grad: linear-gradient(170deg, var(--surface-2) 0%, var(--surface-3) 100%);
+  --install-grad: linear-gradient(135deg, var(--surface-2), var(--surface-3));
+  --media-bg: #000000;              /* video well */
+  --disc-a: #1a0e05;                /* vinyl groove rings */
+  --disc-b: #2a170b;
+  --main-grad: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 100%);
+  --foot-bg: #0f0703;
+  --toast-grad: linear-gradient(135deg, var(--surface-2) 0%, var(--surface-3) 100%);
+
+  /* ---------- Hairlines ---------- */
+  --line: rgba(var(--paper-rgb), 0.16);
+  --line-light: rgba(var(--paper-rgb), 0.28);
+
+  /* ---------- Semantic ---------- */
+  --red: rgb(var(--red-rgb));
   --red-dark: #8b1e10;
-  --line: rgba(246, 231, 205, 0.16);
-  --line-light: rgba(246, 231, 205, 0.28);
+  --danger: rgb(var(--danger-rgb));
+  --danger-text: #ff9b90;
   --ok: #3fbf6a;
+  --ok-text: #4ee089;
 
-  /* Shadows */
-  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.7);
+  /* ---------- Scrollbar ---------- */
+  --scroll-track: #140b05;
+  --scroll-thumb: #4a2a12;
+  --scroll-thumb-2: #35200c;
+  --scroll-thumb-hover: #6b3f1d;
 
-  /* Polish tokens */
-  --ring: rgba(245, 179, 36, 0.75);
-  --grad-gold: linear-gradient(135deg, #ffe07a 0%, #f5b324 50%, #c77a03 100%);
-  --glass: linear-gradient(145deg, rgba(42, 23, 14, 0.9), rgba(20, 11, 6, 0.94));
-  --font-display: "Baloo 2", Inter, system-ui, sans-serif;
+  /* ---------- Elevation ---------- */
+  --shadow-sm: 0 4px 14px rgba(var(--black-rgb), 0.35);
+  --shadow-md: 0 10px 30px rgba(var(--black-rgb), 0.5);
+  --shadow-lg: 0 20px 60px rgba(var(--black-rgb), 0.7);
+
+  /* ---------- Shape & type ---------- */
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+  --font-display: "Baloo 2", "Noto Sans Devanagari", Inter, system-ui, sans-serif;
+  --font-body: Inter, "Noto Sans Devanagari", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---------- Hero artwork & brand treatment ---------- */
+  --hero-img-filter: saturate(1.08) brightness(0.92);
+  --hero-shade:
+    radial-gradient(80% 55% at 50% 4%, var(--pl-glow), transparent 60%),
+    radial-gradient(120% 90% at 50% 20%, var(--shade-rgb-22), var(--shade-rgb-90) 75%),
+    linear-gradient(to bottom, var(--shade-rgb-82), var(--shade-rgb-32) 35%, var(--shade-rgb-98));
+  --brand-shadow:
+    0 10px 44px var(--black-rgb-90),
+    0 3px 0 var(--red-rgb-65),
+    0 0 34px var(--accent-rgb-40);
+  --brand-span-shadow: 0 0 32px var(--accent-rgb-55);
+  --grad-gold: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 50%, var(--accent-dark) 100%);
+
+  /* Station tint — themes.js / player.js overwrite these inline at runtime.
+     Declared here so the tokens always resolve, even before JS runs. */
+  --pl-accent: var(--accent);
+  --pl-glow: rgba(var(--accent-rgb), 0.12);
+
+  /* ---------- Per-theme texture overlays (all off in Retro Gold) ---------- */
+  --fx-scanline-opacity: 0;
+  --fx-scanline-size: 3px;
+  --fx-scanline-color: rgba(var(--black-rgb), 0.5);
+  --fx-scanline-blend: multiply;   /* dark skins: scanlines subtract light */
+  --fx-grain-blend: overlay;       /* light skins flip both in css/themes.css */
+  --fx-grain-opacity: 0;
+  --fx-vignette: transparent;
+  --fx-text-shadow: none;
+
+  /* ==========================================================================
+     ALPHA LADDERS — one step per alpha the original artwork actually used,
+     so every skin resolves to exact colours and nothing is quantised away.
+     ========================================================================== */
+  /* --accent-rgb */
+  --accent-rgb-90: rgba(var(--accent-rgb), 0.9);
+  --accent-rgb-80: rgba(var(--accent-rgb), 0.8);
+  --accent-rgb-75: rgba(var(--accent-rgb), 0.75);
+  --accent-rgb-65: rgba(var(--accent-rgb), 0.65);
+  --accent-rgb-60: rgba(var(--accent-rgb), 0.6);
+  --accent-rgb-55: rgba(var(--accent-rgb), 0.55);
+  --accent-rgb-50: rgba(var(--accent-rgb), 0.5);
+  --accent-rgb-45: rgba(var(--accent-rgb), 0.45);
+  --accent-rgb-40: rgba(var(--accent-rgb), 0.4);
+  --accent-rgb-38: rgba(var(--accent-rgb), 0.38);
+  --accent-rgb-35: rgba(var(--accent-rgb), 0.35);
+  --accent-rgb-32: rgba(var(--accent-rgb), 0.32);
+  --accent-rgb-30: rgba(var(--accent-rgb), 0.3);
+  --accent-rgb-28: rgba(var(--accent-rgb), 0.28);
+  --accent-rgb-25: rgba(var(--accent-rgb), 0.25);
+  --accent-rgb-22: rgba(var(--accent-rgb), 0.22);
+  --accent-rgb-20: rgba(var(--accent-rgb), 0.2);
+  --accent-rgb-18: rgba(var(--accent-rgb), 0.18);
+  --accent-rgb-15: rgba(var(--accent-rgb), 0.15);
+  --accent-rgb-14: rgba(var(--accent-rgb), 0.14);
+  --accent-rgb-13: rgba(var(--accent-rgb), 0.13);
+  --accent-rgb-12: rgba(var(--accent-rgb), 0.12);
+  --accent-rgb-10: rgba(var(--accent-rgb), 0.1);
+  --accent-rgb-09: rgba(var(--accent-rgb), 0.09);
+  --accent-rgb-08: rgba(var(--accent-rgb), 0.08);
+  --accent-rgb-07: rgba(var(--accent-rgb), 0.07);
+  --accent-rgb-06: rgba(var(--accent-rgb), 0.06);
+  --accent-rgb-05: rgba(var(--accent-rgb), 0.05);
+  --accent-rgb-04: rgba(var(--accent-rgb), 0.04);
+
+  /* --black-rgb */
+  --black-rgb-90: rgba(var(--black-rgb), 0.9);
+  --black-rgb-85: rgba(var(--black-rgb), 0.85);
+  --black-rgb-80: rgba(var(--black-rgb), 0.8);
+  --black-rgb-75: rgba(var(--black-rgb), 0.75);
+  --black-rgb-70: rgba(var(--black-rgb), 0.7);
+  --black-rgb-65: rgba(var(--black-rgb), 0.65);
+  --black-rgb-60: rgba(var(--black-rgb), 0.6);
+  --black-rgb-50: rgba(var(--black-rgb), 0.5);
+  --black-rgb-45: rgba(var(--black-rgb), 0.45);
+  --black-rgb-40: rgba(var(--black-rgb), 0.4);
+  --black-rgb-35: rgba(var(--black-rgb), 0.35);
+  --black-rgb-30: rgba(var(--black-rgb), 0.3);
+  --black-rgb-25: rgba(var(--black-rgb), 0.25);
+
+  /* --cream-dim-rgb */
+  --cream-dim-rgb-45: rgba(var(--cream-dim-rgb), 0.45);
+
+  /* --cream-rgb */
+  --cream-rgb-07: rgba(var(--cream-rgb), 0.07);
+  --cream-rgb-05: rgba(var(--cream-rgb), 0.05);
+
+  /* --danger-rgb */
+  --danger-rgb-16: rgba(var(--danger-rgb), 0.16);
+
+  /* --ok-rgb */
+  --ok-rgb-50: rgba(var(--ok-rgb), 0.5);
+  --ok-rgb-28: rgba(var(--ok-rgb), 0.28);
+  --ok-rgb-22: rgba(var(--ok-rgb), 0.22);
+  --ok-rgb-14: rgba(var(--ok-rgb), 0.14);
+  --ok-rgb-08: rgba(var(--ok-rgb), 0.08);
+
+  /* --panel-rgb */
+  --panel-rgb-94: rgba(var(--panel-rgb), 0.94);
+  --panel-rgb-92: rgba(var(--panel-rgb), 0.92);
+  --panel-rgb-88: rgba(var(--panel-rgb), 0.88);
+
+  /* --deep-rgb */
+  --deep-rgb-94: rgba(var(--deep-rgb), 0.94);
+
+  /* --surface-hi-2-rgb */
+  --surface-hi-2-rgb-95: rgba(var(--surface-hi-2-rgb), 0.95);
+
+  /* --paper-rgb (washes & hairlines) */
+  --paper-rgb-40: rgba(var(--paper-rgb), 0.4);
+  --paper-rgb-28: rgba(var(--paper-rgb), 0.28);
+  --paper-rgb-22: rgba(var(--paper-rgb), 0.22);
+  --paper-rgb-18: rgba(var(--paper-rgb), 0.18);
+  --paper-rgb-15: rgba(var(--paper-rgb), 0.15);
+  --paper-rgb-14: rgba(var(--paper-rgb), 0.14);
+  --paper-rgb-12: rgba(var(--paper-rgb), 0.12);
+  --paper-rgb-11: rgba(var(--paper-rgb), 0.11);
+  --paper-rgb-09: rgba(var(--paper-rgb), 0.09);
+  --paper-rgb-08: rgba(var(--paper-rgb), 0.08);
+  --paper-rgb-075: rgba(var(--paper-rgb), 0.075);
+  --paper-rgb-07: rgba(var(--paper-rgb), 0.07);
+  --paper-rgb-06: rgba(var(--paper-rgb), 0.06);
+  --paper-rgb-05: rgba(var(--paper-rgb), 0.05);
+  --paper-rgb-045: rgba(var(--paper-rgb), 0.045);
+  --paper-rgb-04: rgba(var(--paper-rgb), 0.04);
+  --paper-rgb-02: rgba(var(--paper-rgb), 0.02);
+
+  /* --red-rgb */
+  --red-rgb-65: rgba(var(--red-rgb), 0.65);
+  --red-rgb-38: rgba(var(--red-rgb), 0.38);
+  --red-rgb-12: rgba(var(--red-rgb), 0.12);
+  --red-rgb-08: rgba(var(--red-rgb), 0.08);
+
+  /* --shade-rgb */
+  --shade-rgb-98: rgba(var(--shade-rgb), 0.98);
+  --shade-rgb-90: rgba(var(--shade-rgb), 0.9);
+  --shade-rgb-82: rgba(var(--shade-rgb), 0.82);
+  --shade-rgb-80: rgba(var(--shade-rgb), 0.8);
+  --shade-rgb-32: rgba(var(--shade-rgb), 0.32);
+  --shade-rgb-28: rgba(var(--shade-rgb), 0.28);
+  --shade-rgb-22: rgba(var(--shade-rgb), 0.22);
+
+  /* --surface-2-rgb */
+  --surface-2-rgb-92: rgba(var(--surface-2-rgb), 0.92);
+
+  /* --surface-3-rgb */
+  --surface-3-rgb-92: rgba(var(--surface-3-rgb), 0.92);
+
+  /* --surface-hi-2-rgb */
+  --surface-hi-2-rgb-98: rgba(var(--surface-hi-2-rgb), 0.98);
+  --surface-hi-2-rgb-95: rgba(var(--surface-hi-2-rgb), 0.95);
+
+  /* --surface-hi-rgb */
+  --surface-hi-rgb-95: rgba(var(--surface-hi-rgb), 0.95);
+  --surface-hi-rgb-90: rgba(var(--surface-hi-rgb), 0.9);
+
+  /* --shade-rgb */
+  --shade-rgb-20: rgba(var(--shade-rgb), 0.2);
+
+  /* --surface-rgb */
+  --surface-rgb-92: rgba(var(--surface-rgb), 0.92);
+  --surface-rgb-88: rgba(var(--surface-rgb), 0.88);
+  --surface-rgb-85: rgba(var(--surface-rgb), 0.85);
+
+  /* --white-rgb */
+  --white-rgb-70: rgba(var(--white-rgb), 0.7);
+  --white-rgb-60: rgba(var(--white-rgb), 0.6);
+  --white-rgb-50: rgba(var(--white-rgb), 0.5);
+  --white-rgb-30: rgba(var(--white-rgb), 0.3);
+  --white-rgb-25: rgba(var(--white-rgb), 0.25);
+  --white-rgb-20: rgba(var(--white-rgb), 0.2);
+  --white-rgb-14: rgba(var(--white-rgb), 0.14);
+  --white-rgb-12: rgba(var(--white-rgb), 0.12);
+  --white-rgb-10: rgba(var(--white-rgb), 0.1);
+  --white-rgb-08: rgba(var(--white-rgb), 0.08);
+  --white-rgb-06: rgba(var(--white-rgb), 0.06);
+  --white-rgb-05: rgba(var(--white-rgb), 0.05);
 }
