@@ -142,6 +142,9 @@ main{background:linear-gradient(#1b0f08,#140c07)}
 /* ---------- MODALS ---------- */
 .modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:18px;
   background:rgba(8,4,2,.72);backdrop-filter:blur(4px);animation:fade .2s}
+/* The name dialog is the one the user is actively typing in — keep it on top
+   even if another overlay tries to appear at the same time. */
+#nameModal{z-index:62}
 @keyframes fade{from{opacity:0}}
 .sheet{position:relative;width:min(430px,100%);max-height:90dvh;overflow:auto;text-align:center;
   background:#1e1108;border:1px solid var(--line);border-radius:20px;padding:30px 24px 24px}

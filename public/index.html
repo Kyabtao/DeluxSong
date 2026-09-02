@@ -84,7 +84,7 @@
 <aside class="drawer" id="drawer" aria-hidden="true">
   <div class="drawer-head">
     <h3>Aaj ka Playlist</h3>
-    <button class="x" id="drawerClose" aria-label="Close">×</button>
+    <button class="x" type="button" id="drawerClose" aria-label="Close">×</button>
   </div>
   <ol class="tracks" id="tracks"></ol>
   <p class="drawer-note">Shuffles forever. Songs stream from YouTube.</p>
@@ -145,7 +145,7 @@
 <!-- ============ SUPPORT MODAL ============ -->
 <div class="modal" id="supportModal" hidden>
   <div class="sheet">
-    <button class="x" data-close aria-label="Close">×</button>
+    <button class="x" type="button" data-close aria-label="Close">×</button>
     <div class="big">❤️</div>
     <h2>No ads - Just memories. Support the Platform to Stay FOREVER</h2>
     <p>With over 1 Lac daily visitors, We promise never to put ads and ruin your experience. But web server costs
@@ -153,20 +153,20 @@
     <img class="qr" src="img/qr.jpg" alt="QR code to support Deluxe Saloon" />
     <a class="btn" href="img/qr.jpg" download>Download QR Code</a>
     <p class="small">Save it and scan with any UPI app.<br />(GPay / PhonePe / Paytm)</p>
-    <button class="link" data-close>Dismiss</button>
+    <button class="link" type="button" data-close>Dismiss</button>
   </div>
 </div>
 
 <!-- ============ EARN MODAL ============ -->
 <div class="modal" id="earnModal" hidden>
   <div class="sheet">
-    <button class="x" data-close aria-label="Close">×</button>
+    <button class="x" type="button" data-close aria-label="Close">×</button>
     <div class="big">💰</div>
     <h2>Part Time Earning</h2>
     <p>We provide simple tasks you can do in your free time and get instant UPI payment. Amount won't be big, but
       it's enough for your pocket money.</p>
     <a class="btn" href="https://whatsapp.com/channel/0029VajyupYAjPXTOvgg2Z41" target="_blank" rel="noopener">Join Now</a>
-    <button class="link" data-close>Dismiss</button>
+    <button class="link" type="button" data-close>Dismiss</button>
   </div>
 </div>
 
@@ -177,15 +177,15 @@
     <strong>Install Our APP</strong>
     <span>One tap listen anywhere.</span>
   </div>
-  <button class="btn sm" id="installBtn">Install</button>
-  <button class="x" id="installClose" aria-label="Close">×</button>
+  <button class="btn sm" type="button" id="installBtn">Install</button>
+  <button class="x" type="button" id="installClose" aria-label="Close">×</button>
 </div>
 
 <!-- ============ CHAT ============ -->
 <div class="chat" id="chat" hidden>
   <div class="chat-head">
     <h3>Live Chat <span class="dot" id="liveDot"></span><small id="online">0 online</small></h3>
-    <button class="x" id="chatClose" aria-label="Close">×</button>
+    <button class="x" type="button" id="chatClose" aria-label="Close">×</button>
   </div>
   <div class="pinned">📌 <b>Deluxe Salon Admin :</b> Welcome! Be kind, no spam. Say hello and tell everyone where
     you're listening from. ❤️</div>
@@ -201,10 +201,10 @@
     <h3>One last step — what's your name?</h3>
     <p class="small">We'll send this as soon as you enter it:</p>
     <p class="pending" id="pendingMsg"></p>
-    <input id="nameInput" maxlength="24" placeholder="Your name" />
+    <input id="nameInput" maxlength="24" placeholder="Your name" autocomplete="off" />
     <div class="row">
-      <button class="btn" id="nameSend">Send</button>
-      <button class="link" data-close>Cancel</button>
+      <button class="btn" type="button" id="nameSend">Send</button>
+      <button class="link" type="button" data-close>Cancel</button>
     </div>
   </div>
 </div>

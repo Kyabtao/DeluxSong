@@ -51,6 +51,11 @@ public/img/               Banner artwork, app icons, UPI QR
 
 ## Deploying
 
+> This project is deployed to **GitHub Pages only** (see `deploy/github-pages.yml`). GitHub Pages is
+> a static host, so there is **no Node/WebSocket chat server** in production. The live chat room
+> degrades to a clean read-only "offline" state there — the chat input stays disabled and the
+> "what's your name?" prompt is never shown, so users are never trapped by Send/Cancel.
+
 ### GitHub Pages (static — no live chat)
 
 A ready-made workflow is provided at `deploy/github-pages.yml`. Copy it to `.github/workflows/pages.yml`

@@ -54,6 +54,12 @@ function toast(msg) {
   t.textContent = msg; t.hidden = false;
   clearTimeout(t._t); t._t = setTimeout(() => (t.hidden = true), 2600);
 }
+// Storage can be blocked in privacy mode / sandboxed frames. Never let a
+// storage exception stop a button from working.
+function storageGet(key) { try { return localStorage.getItem(key); } catch (_) { return null; } }
+function storageSet(key, val) { try { localStorage.setItem(key, val); } catch (_) { return false; } }
+function sessionGet(key) { try { return sessionStorage.getItem(key); } catch (_) { return null; } }
+function sessionSet(key, val) { try { sessionStorage.setItem(key, val); } catch (_) {} }
 
 /* ---------------- radio ---------------- */
 let yt = null, ready = false, order = [], pos = 0, shuffle = true, wantPlay = false, tick = null, seeking = false, skips = 0;
@@ -171,9 +177,9 @@ $("#vol").oninput = (e) => {
   const v = Number(e.target.value);
   if (ready) { yt.setVolume(v); v === 0 ? yt.mute() : yt.unMute(); }
   $("#volIcon").textContent = v === 0 ? "🔇" : v < 45 ? "🔉" : "🔊";
-  localStorage.setItem("ds_vol", v);
+  storageSet("ds_vol", v);
 };
-const savedVol = localStorage.getItem("ds_vol");
+const savedVol = storageGet("ds_vol");
 if (savedVol !== null) { $("#vol").value = savedVol; $("#vol").dispatchEvent(new Event("input")); }
 
 $("#seek").addEventListener("input", () => (seeking = true));
@@ -198,9 +204,9 @@ renderTracks();
 $("#videoBtn").onclick = (e) => {
   const mini = $("#player").classList.toggle("mini");
   e.currentTarget.classList.toggle("on", !mini);
-  localStorage.setItem("ds_mini", mini ? "1" : "");
+  storageSet("ds_mini", mini ? "1" : "");
 };
-if (localStorage.getItem("ds_mini")) $("#player").classList.add("mini");
+if (storageGet("ds_mini")) $("#player").classList.add("mini");
 else $("#videoBtn").classList.add("on");
 
 $("#listBtn").onclick = () => $("#drawer").classList.toggle("open");
@@ -266,7 +272,14 @@ $("#rainVol").oninput = (e) => {
 };
 
 /* ---------------- modals ---------------- */
-function open(id) { $(id).hidden = false; }
+function open(id) {
+  // Never stack two modals on top of each other. If a pop-up is already showing,
+  // close it first so the new one is the one the user is actually interacting with.
+  document.querySelectorAll(".modal").forEach((m) => (m.hidden = true));
+  $(id).hidden = false;
+  const first = $(id).querySelector("input");
+  if (first) first.focus();
+}
 function close(id) { $(id).hidden = true; }
 function dismiss(modal) {
   if (!modal) return;
@@ -284,7 +297,17 @@ document.addEventListener("keydown", (e) => {
 
 $("#earnBtn").onclick = () => open("#earnModal");
 $("#supportLink").onclick = (e) => { e.preventDefault(); open("#supportModal"); };
-setTimeout(() => { if (!sessionStorage.getItem("ds_support")) { open("#supportModal"); sessionStorage.setItem("ds_support", "1"); } }, 45000);
+// The support pop-up is polite, not a hostage. Show it only when no other pop-up is
+// open and chat is not visible; otherwise retry a bit later.
+let supportTimer = null;
+function maybeSupport() {
+  if (sessionGet("ds_support")) return;
+  const busy = document.querySelector(".modal:not([hidden])") || !$("#chat").hidden;
+  if (document.hidden || busy) { supportTimer = setTimeout(maybeSupport, 12000); return; }
+  open("#supportModal");
+  sessionSet("ds_support", "1");
+}
+supportTimer = setTimeout(maybeSupport, 45000);
 
 $("#shareBtn").onclick = async () => {
   const data = { title: "Deluxe Saloon", text: "2000s Indian saloon radio — nonstop Bollywood nostalgia.", url: location.href };
@@ -299,18 +322,16 @@ $("#acc").innerHTML = FAQ.map(([q, a]) => `<details><summary>${q}</summary><p>${
 let deferred = null;
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault(); deferred = e;
-  if (!localStorage.getItem("ds_install_x")) $("#install").hidden = false;
+  if (!storageGet("ds_install_x")) $("#install").hidden = false;
 });
 $("#installBtn").onclick = async () => {
   if (!deferred) { toast("Use your browser menu → Add to Home Screen"); return; }
   deferred.prompt(); await deferred.userChoice; deferred = null; $("#install").hidden = true;
 };
-$("#installClose").onclick = () => { $("#install").hidden = true; localStorage.setItem("ds_install_x", "1"); };
+$("#installClose").onclick = () => { $("#install").hidden = true; storageSet("ds_install_x", "1"); };
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 
 /* ---------------- live chat (websocket) ---------------- */
-let ws = null, myName = localStorage.getItem("ds_name") || "", pending = null, unread = 0, chatOpen = false;
-
 function addMsg(m) {
   const box = $("#msgs");
   const el = document.createElement("div");
@@ -325,35 +346,72 @@ function addMsg(m) {
 }
 function esc(s) { return String(s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c])); }
 
-// Chat needs the Node server (server.js). On a static host (e.g. GitHub Pages) there is no
-// WebSocket endpoint, so the room degrades to a read-only "offline" state instead of erroring.
-// Point CHAT_URL at a hosted chat server to switch it back on from a static deployment.
-const CHAT_URL = window.DELUX_CHAT_URL ||
-  (location.protocol.startsWith("http") && !/github\.io$/.test(location.hostname)
-    ? `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/ws`
-    : null);
-let chatTries = 0;
+// Live chat needs the Node server (server.js). This project deploys to GitHub
+// Pages only, where there is no WebSocket endpoint — so the room must stay in a
+// clean read-only "offline" state instead of showing the name prompt and then
+// failing on Send.
+// To host the chat elsewhere, set window.DELUX_CHAT_URL before app.js loads.
+let ws = null, myName = storageGet("ds_name") || "", pending = null, unread = 0, chatOpen = false;
+let chatServerReady = null; // null = unknown, false = no server on this host, true = online
+
+function chatConnecting() {
+  $("#liveDot").style.background = "#c8a03a";
+  $("#online").textContent = "connecting…";
+  $("#chatInput").disabled = true;
+  $("#chatInput").placeholder = "Connecting to live chat…";
+}
 
 function chatOffline() {
   $("#liveDot").style.background = "#c2321f";
   $("#online").textContent = "offline";
   $("#chatInput").disabled = true;
-  $("#chatInput").placeholder = "Live chat is offline on this build";
+  $("#chatInput").placeholder = "Live chat is not available here";
   if (!$("#msgs").querySelector(".sys")) {
-    addMsg({ sys: true, text: "Live chat needs the Deluxe Saloon server (npm start). Everything else works right here.", ts: Date.now() });
+    addMsg({ sys: true, text: "Live chat is not available in this hosted build — everything else works right here.", ts: Date.now() });
   }
 }
 
-function connect() {
-  if (!CHAT_URL) { chatOffline(); return; }
-  try { ws = new WebSocket(CHAT_URL); } catch { chatOffline(); return; }
+function chatUrl() {
+  if (window.DELUX_CHAT_URL) return window.DELUX_CHAT_URL;
+  const proto = location.protocol === "https:" ? "wss" : "ws";
+  return `${proto}://${location.host}/ws`;
+}
+
+// GitHub Pages (including a custom domain) has no /api/health route, so this
+// resolves to false and the chat stays offline. Only a real Deluxe Saloon
+// Node server returns { ok: true }.
+async function detectChatServer() {
+  if (window.DELUX_CHAT_URL) return true;
+  if (!location.protocol.startsWith("http")) return false;
+  try {
+    const res = await fetch("/api/health", { cache: "no-store" });
+    const data = await res.json();
+    return !!(data && data.ok);
+  } catch (_) {
+    return false;
+  }
+}
+
+let chatTries = 0;
+async function connect() {
+  if (chatServerReady === null) {
+    chatConnecting();
+    chatServerReady = await detectChatServer();
+  }
+  if (!chatServerReady) { chatOffline(); return; }
+  try { ws = new WebSocket(chatUrl()); } catch { chatOffline(); return; }
   ws.onmessage = (ev) => {
     const d = JSON.parse(ev.data);
     if (d.type === "history") { $("#msgs").innerHTML = ""; d.messages.forEach(addMsg); }
     else if (d.type === "msg") addMsg(d.message);
     else if (d.type === "online") $("#online").textContent = d.count + " online";
   };
-  ws.onopen = () => { chatTries = 0; $("#liveDot").style.background = "#3fbf6a"; $("#chatInput").disabled = false; };
+  ws.onopen = () => {
+    chatTries = 0; chatServerReady = true;
+    $("#liveDot").style.background = "#3fbf6a";
+    $("#chatInput").disabled = false;
+    $("#chatInput").placeholder = "Type a message…";
+  };
   ws.onclose = () => {
     $("#liveDot").style.background = "#c2321f";
     if (++chatTries > 3) { chatOffline(); return; }
@@ -364,7 +422,15 @@ connect();
 
 $("#chatOpen").onclick = () => {
   chatOpen = true; unread = 0; $("#chatCount").textContent = 0;
-  $("#chat").hidden = false; $("#chatInput").focus();
+  // While connecting keep the box locked so a static build never traps the
+  // user in the name dialog; offline state already locked it too.
+  if (chatServerReady !== false) chatConnecting();
+  $("#chat").hidden = false;
+  if (ws && ws.readyState === 1) {
+    $("#chatInput").disabled = false;
+    $("#chatInput").placeholder = "Type a message…";
+  }
+  $("#chatInput").focus();
   $("#msgs").scrollTop = $("#msgs").scrollHeight;
 };
 $("#chatClose").onclick = () => { chatOpen = false; $("#chat").hidden = true; };
@@ -373,26 +439,50 @@ $("#chatForm").onsubmit = (e) => {
   e.preventDefault();
   const text = $("#chatInput").value.trim();
   if (!text) return;
-  $("#chatInput").value = "";
-  if (!myName) { pending = text; $("#pendingMsg").textContent = text; open("#nameModal"); $("#nameInput").focus(); return; }
-  send(text);
+  // Never show the name prompt unless the chat server is actually connected.
+  if (!(chatServerReady === true && ws && ws.readyState === 1)) {
+    toast("Live chat isn't connected yet");
+    return;
+  }
+  if (!myName) {
+    pending = text;
+    $("#pendingMsg").textContent = text;
+    $("#chatInput").value = "";
+    open("#nameModal");
+    return;
+  }
+  if (send(text)) $("#chatInput").value = "";
+  else toast("Live chat isn't connected yet — keep your message in the box");
 };
 function send(text) {
-  if (ws && ws.readyState === 1) ws.send(JSON.stringify({ type: "msg", name: myName, text }));
-  else toast("Reconnecting to chat…");
+  if (ws && ws.readyState === 1) { ws.send(JSON.stringify({ type: "msg", name: myName, text })); return true; }
+  toast("Live chat isn't connected yet");
+  return false;
 }
 $("#nameSend").onclick = () => {
   const n = $("#nameInput").value.trim();
   if (!n) { $("#nameInput").focus(); toast("Please enter a name first"); return; }
-  myName = n; localStorage.setItem("ds_name", n);
-  close("#nameModal");
   const text = pending; pending = null;
-  if (text) send(text);
+  myName = n; storageSet("ds_name", n);
+  // If the socket isn't ready the message is still the user's: put it back in the
+  // chat box instead of silently deleting it.
+  if (text && !send(text)) {
+    $("#chatInput").value = text;
+    toast("Your name is saved — press Send again once chat is connected");
+  }
+  $("#pendingMsg").textContent = "";
+  close("#nameModal");
 };
 // Cancel / backdrop / Escape: drop the pending message back into the chat box
 // so nothing the user typed is lost.
 function cancelName() {
-  if (pending) { $("#chatInput").value = pending; pending = null; }
+  const text = pending; pending = null;
   $("#pendingMsg").textContent = "";
+  $("#nameModal").hidden = true;
+  if (text) {
+    $("#chatInput").value = text;
+    $("#chat").hidden = false;
+    toast("Message cancelled — it's back in the box");
+  }
 }
 $("#nameInput").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); $("#nameSend").click(); } });
