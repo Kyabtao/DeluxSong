@@ -8,11 +8,23 @@
       <span class="pill-icon">🎵</span> <span>Add / Remove Songs</span>
     </button>
   </div>
+
+  <div class="topbar-center">
+    <div class="nav-status" aria-live="polite">
+      <span class="nav-status-label">Now on air</span>
+      <strong id="navPlaylistName">Office (TCS)</strong>
+      <span class="nav-status-meta" id="navThemeBadge">Retro Gold theme</span>
+    </div>
+  </div>
   
   <div class="topbar-right">
     <div class="theme-pill">
-      <button class="pill" id="themeBtn" title="Switch theme — Retro Gold, Synthwave, Monsoon &amp; more" aria-haspopup="dialog" aria-expanded="false" aria-controls="themePanel">
-        <span class="theme-swatch-dot" id="themePillIcon" aria-hidden="true"></span> <span id="themePillName">Theme</span>
+      <button class="pill pill-theme" id="themeBtn" title="Switch theme — Retro Gold, Synthwave, Monsoon &amp; more" aria-haspopup="dialog" aria-expanded="false" aria-controls="themePanel">
+        <span class="theme-swatch-dot" id="themePillIcon" aria-hidden="true"></span>
+        <span class="theme-pill-copy">
+          <small>Theme</small>
+          <span id="themePillName">Retro Gold</span>
+        </span>
       </button>
     </div>
     <button class="pill" id="rainBtn" title="Toggle monsoon rain ambience">

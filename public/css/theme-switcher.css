@@ -7,6 +7,11 @@
   position: relative;
 }
 
+.pill-theme {
+  min-width: 146px;
+  justify-content: flex-start;
+}
+
 .theme-swatch-dot {
   width: 13px;
   height: 13px;
@@ -16,6 +21,33 @@
   border: 1px solid var(--chip-border);
   box-shadow: 0 0 10px var(--accent-rgb-60);
   transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.theme-pill-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.08;
+  min-width: 0;
+}
+
+.theme-pill-copy small {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  opacity: 0.72;
+}
+
+#themePillName {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-hi);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
 }
 
 #themeBtn[aria-expanded="true"] {
@@ -245,6 +277,12 @@
     width: auto;
     max-height: 68dvh;
     transform: translateY(12px) scale(0.98);
+  }
+  .pill-theme {
+    min-width: 0;
+  }
+  #themePillName {
+    max-width: 104px;
   }
   .theme-card-text small {
     font-size: 10px;

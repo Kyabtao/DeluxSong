@@ -1,6 +1,6 @@
 # TCS Radio — 2000s Indian Retro Ambient Radio
 
-**TCS Radio** (Total Chill Station / Tata Chai & Symphony) is a free 2000s Indian nostalgia ambient radio created and developed by **Umair**. It brings together iconic Indian soundscapes — IT corporate offices, auto rickshaws, highway trucks, monsoon rains, and roadside chai tapris — with nonstop Bollywood music and ambient sound.
+**TCS Radio** (Total Chill Station) is a free 2000s Indian nostalgia ambient radio created and developed by **Umair**. It brings together iconic Indian soundscapes — IT corporate offices, auto rickshaws, highway trucks, monsoon rains, and roadside chai tapris — with nonstop Bollywood music and ambient sound.
 
 ## Developed By
 

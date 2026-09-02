@@ -47,39 +47,64 @@
 }
 
 .drawer-tabs {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  padding: 10px 14px;
+  display: flex;
+  gap: 8px;
+  padding: 12px 14px;
   background: var(--tab-strip);
   border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
 
 .drawer-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  min-width: 128px;
+  padding: 9px 10px;
   background: var(--paper-rgb-06);
   border: 1px solid var(--line);
   color: var(--text-dim);
-  border-radius: 8px;
-  padding: 7px 8px;
+  border-radius: 12px;
   font-size: 11.5px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.18s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
+  text-align: left;
+  flex: 0 0 auto;
 }
 
 .drawer-tab:hover {
   background: var(--paper-rgb-12);
   color: var(--text-hi);
+  transform: translateY(-1px);
+}
+
+.drawer-tab-name {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.drawer-tab small {
+  font-size: 10px;
+  color: inherit;
+  opacity: 0.72;
 }
 
 .drawer-tab.active {
   background: var(--accent);
   color: var(--on-accent);
   border-color: var(--chip-light);
+  box-shadow: 0 8px 22px var(--accent-rgb-22);
+}
+
+.drawer-tab.live:not(.active) {
+  border-color: var(--accent-rgb-45);
+  color: var(--text-hi);
 }
 
 .drawer-connect-banner {

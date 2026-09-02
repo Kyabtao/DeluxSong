@@ -109,6 +109,60 @@ const PlayerEngine = (function () {
     return activePlaylist[order[pos]] || activePlaylist[0];
   }
 
+  function updateStationButtons() {
+    document.querySelectorAll(".station-btn").forEach((btn) => {
+      const isActive = btn.dataset.playlist === currentPlaylistKey;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+  }
+
+  function updateTopbarStatus() {
+    const navPlaylist = $("#navPlaylistName");
+    if (navPlaylist) navPlaylist.textContent = PLAYLISTS[currentPlaylistKey].name;
+  }
+
+  function syncDrawerState(renderList = true) {
+    const drawerLabel = $("#drawerStnLabel");
+    if (drawerLabel) drawerLabel.textContent = PLAYLISTS[activeDrawerFilter].name;
+
+    document.querySelectorAll(".drawer-tab").forEach((tab) => {
+      const isViewing = tab.dataset.filter === activeDrawerFilter;
+      const isLive = tab.dataset.filter === currentPlaylistKey;
+      tab.classList.toggle("active", isViewing);
+      tab.classList.toggle("live", isLive);
+      tab.setAttribute("aria-pressed", isViewing ? "true" : "false");
+      if (isLive) tab.setAttribute("aria-current", "true");
+      else tab.removeAttribute("aria-current");
+    });
+
+    if (renderList) renderTracks();
+  }
+
+  function resetBufferState() {
+    cuedOn.a = null;
+    cuedOn.b = null;
+  }
+
+  function activatePlaylist(playlistKey, opts = {}) {
+    if (!PLAYLISTS[playlistKey]) return false;
+    currentPlaylistKey = playlistKey;
+    activeDrawerFilter = opts.drawerFilter || playlistKey;
+    storageSet("tcs_playlist", playlistKey);
+
+    activePlaylist = PLAYLISTS[playlistKey].tracks;
+    buildOrder();
+    if (opts.resetPosition !== false) pos = 0;
+    resetBufferState();
+
+    updateStationButtons();
+    updateTopbarStatus();
+    syncDrawerState(true);
+    updateStationQuote();
+    applyBackground(playlistKey);
+    return true;
+  }
+
   // The track that SHOULD be waiting pre-buffered on the standby player.
   function peekNextTrack() {
     if (pos >= order.length - 1) return null; // station change — handled by advanceToNextPlaylist
@@ -438,37 +492,8 @@ const PlayerEngine = (function () {
   }
 
   function switchPlaylist(playlistKey, shouldPlay = true) {
-    if (!PLAYLISTS[playlistKey]) return;
-    currentPlaylistKey = playlistKey;
-    activeDrawerFilter = playlistKey;
-    storageSet("tcs_playlist", playlistKey);
-
-    activePlaylist = PLAYLISTS[playlistKey].tracks;
-    buildOrder();
-    pos = 0;
-
-    // New station, new pipeline — drop stale pre-buffer state
-    cuedOn.a = null;
-    cuedOn.b = null;
-
-    // Update switcher buttons in hero
-    document.querySelectorAll(".station-btn").forEach((btn) => {
-      const isActive = btn.dataset.playlist === playlistKey;
-      btn.classList.toggle("active", isActive);
-      btn.setAttribute("aria-selected", isActive);
-    });
-
-    // Update drawer active label & tabs
-    const drawerLabel = $("#drawerStnLabel");
-    if (drawerLabel) drawerLabel.textContent = PLAYLISTS[playlistKey].name;
-
-    document.querySelectorAll(".drawer-tab").forEach((tab) => {
-      tab.classList.toggle("active", tab.dataset.filter === playlistKey);
-    });
-
-    updateStationQuote();
-    applyBackground(playlistKey);
-    loadTrack(0, shouldPlay && activeReady());
+    if (!activatePlaylist(playlistKey)) return;
+    loadTrack(0, shouldPlay);
   }
 
   function renderTracks() {
@@ -488,18 +513,7 @@ const PlayerEngine = (function () {
 
       li.onclick = () => {
         if (activeDrawerFilter !== currentPlaylistKey) {
-          currentPlaylistKey = activeDrawerFilter;
-          storageSet("tcs_playlist", currentPlaylistKey);
-          activePlaylist = PLAYLISTS[currentPlaylistKey].tracks;
-          buildOrder();
-          cuedOn.a = null;
-          cuedOn.b = null;
-
-          document.querySelectorAll(".station-btn").forEach((b) => {
-            b.classList.toggle("active", b.dataset.playlist === currentPlaylistKey);
-          });
-          updateStationQuote();
-          applyBackground(currentPlaylistKey);
+          activatePlaylist(activeDrawerFilter, { drawerFilter: activeDrawerFilter });
         }
 
         const targetIdx = order.indexOf(i);
@@ -518,19 +532,19 @@ const PlayerEngine = (function () {
     Object.keys(PLAYLISTS).forEach((key) => {
       const p = PLAYLISTS[key];
       const btn = document.createElement("button");
-      btn.className = "drawer-tab" + (key === activeDrawerFilter ? " active" : "");
+      btn.className = "drawer-tab";
       btn.dataset.filter = key;
-      btn.textContent = p.name;
+      btn.type = "button";
+      btn.innerHTML = `<span class="drawer-tab-name">${p.name}</span><small>${p.tracks.length} tracks</small>`;
+      btn.title = `${p.name} • ${p.tracks.length} tracks`;
       btn.onclick = () => {
-        document.querySelectorAll(".drawer-tab").forEach((t) => t.classList.remove("active"));
-        btn.classList.add("active");
         activeDrawerFilter = key;
-        const drawerLabel = $("#drawerStnLabel");
-        if (drawerLabel) drawerLabel.textContent = PLAYLISTS[activeDrawerFilter].name;
-        renderTracks();
+        syncDrawerState(true);
       };
       container.appendChild(btn);
     });
+
+    syncDrawerState(false);
   }
 
   let quoteIdx = 0;
@@ -549,6 +563,8 @@ const PlayerEngine = (function () {
   function init() {
     buildOrder();
     buildDrawerTabs();
+    updateStationButtons();
+    updateTopbarStatus();
 
     // Set up the crossfading playlist backdrops
     bgLayers.a = document.getElementById("bgA");
@@ -658,12 +674,7 @@ const PlayerEngine = (function () {
     // Drawer toggles
     $("#listBtn").onclick = () => {
       activeDrawerFilter = currentPlaylistKey;
-      document.querySelectorAll(".drawer-tab").forEach((t) => {
-        t.classList.toggle("active", t.dataset.filter === currentPlaylistKey);
-      });
-      const drawerLabel = $("#drawerStnLabel");
-      if (drawerLabel) drawerLabel.textContent = PLAYLISTS[currentPlaylistKey].name;
-      renderTracks();
+      syncDrawerState(true);
       $("#drawer").classList.toggle("open");
     };
     $("#drawerClose").onclick = () => $("#drawer").classList.remove("open");
