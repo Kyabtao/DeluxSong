@@ -230,8 +230,8 @@ const FAQ_DATA = [
    "We deeply respect all copyright owners, artists, and listeners! Click '🎵 Add / Remove Songs' in the top bar or footer to connect directly with Umair instead of reporting. We take action within 24 hours with zero hassle."],
   ["Is TCS Radio free to use?",
    "Yes! TCS Radio is 100% free with zero annoying pop-up ads, no login, and no payment required. All songs stream straight into your browser on desktop and mobile."],
-  ["Can I change the look of the radio? Are there other themes?",
-   "Yes! Tap the 🎨 Theme button in the top bar (or press the T key) to switch between 7 hand-made skins: 📻 Retro Gold (the classic 2000s amber look), 🌆 Synthwave '84, 🌧️ Monsoon Blue, 🎞️ Old Poster, 🟢 Phosphor CRT, 🖤 Midnight Noir and ☀️ Chai Daylight. Each theme changes colours, fonts and screen texture (scanlines, film grain, vignette) — and your choice is remembered on this device. Turn on 🔁 Station Auto and the accent colour also follows whichever playlist is playing. You can even deep-link a skin with ?theme=synthwave."],
+  ["What does the 🌧️ Baarish? button do?",
+   "One tap and the monsoon arrives — gentle rain sounds fill your speakers AND a soft baarish falls across the whole website: falling drops, splashes and an occasional distant lightning flash that syncs with the thunder. Tap again to stop the weather, and use the Baarish Volume slider to set how heavy the downpour feels (it changes both the sound and the on-screen rain)."],
   ["How do I toggle the video player?",
    "By default, video is hidden for an audio-first, distraction-free retro radio experience. You can toggle the 📺 Video button on the player controls anytime you want to watch the music clip."]
 ];

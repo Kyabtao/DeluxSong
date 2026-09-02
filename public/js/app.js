@@ -4,9 +4,6 @@
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Theme packs (Retro Gold, Synthwave, Monsoon, Poster, Phosphor, Noir, Daylight)
-  if (window.Themes) Themes.init();
-
   // Initialize Background Audio Session
   BackgroundAudio.init();
 
@@ -16,16 +13,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize Audio Player Engine
   PlayerEngine.init();
 
-  // Monsoon Baarish Ambience Controls
+  // Monsoon Baarish Ambience Controls (sound + on-screen rain)
+  RainVisual.setIntensity($("#rainVol").value / 100);
   $("#rainBtn").onclick = (e) => {
     const isPlaying = RainAmbient.toggle($("#rainVol").value);
     e.currentTarget.classList.toggle("on", isPlaying);
     $("#rainRow").hidden = !isPlaying;
+    if (isPlaying) RainVisual.start(); else RainVisual.stop();
     Modals.toast(isPlaying ? "🌧️ Baarish on — Garam chai aur purane gaane ☕" : "Baarish sound off");
   };
 
   $("#rainVol").oninput = (e) => {
     RainAmbient.setVolume(e.target.value);
+    RainVisual.setIntensity(e.target.value / 100);
   };
 
   // Keyboard Shortcuts
@@ -40,10 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.code === "ArrowLeft") PlayerEngine.prevTrack();
     if (e.key === "m" || e.key === "M") $("#volBtn").click();
     if (e.key === "s" || e.key === "S") $("#shuffle").click();
-    if (e.key === "t" || e.key === "T") {
-      if (window.Themes) Themes.cycle(1);
-    }
-    if (e.key === "Escape" && window.Themes) Themes.close();
+    if (e.key === "r" || e.key === "R") $("#rainBtn").click();
   });
 
   // Share Button

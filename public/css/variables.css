@@ -2,14 +2,12 @@
    TCS RADIO — MASTER DESIGN TOKENS
    Developed by Umair
 
-   Every colour in the UI resolves through this file, which is what makes the
-   multi-theme engine possible:
+   Every colour in the UI resolves through this file:
 
-     1. `:root` below holds the DEFAULT theme ("Retro Gold" — the original
-        2000s amber / cream / mahogany look) plus the shared alpha ladder.
-     2. `css/themes.css` re-maps these same tokens for each extra theme via
-        `:root[data-theme="…"]`, so a theme swap never touches component CSS.
-     3. `--accent-rgb` holds raw channels ("245, 179, 36"). The whole accent
+     1. `:root` below holds the one classic palette ("Retro Gold" — the
+        original 2000s amber / cream / mahogany look) plus the shared
+        alpha ladder.
+     2. `--accent-rgb` holds raw channels ("245, 179, 36"). The whole accent
         ramp and its alpha ladder derive from it, so when player.js re-tints
         the accent to match the active radio station, every glow, border and
         wash follows along automatically.
@@ -51,8 +49,7 @@
   --accent-glow: rgba(var(--accent-rgb), 0.4);
 
   /* The original artwork hand-tuned three separate gold ramps rather than one.
-     They are kept as distinct tokens so the default skin stays pixel-exact, and
-     every theme in css/themes.css re-pins all three.
+     They are kept as distinct tokens so the look stays pixel-exact:
        chip  — toggles, tabs, active station cards
        key   — the play button and primary CTAs
        thumb — range-slider thumb (a touch deeper than chip) */
@@ -70,8 +67,8 @@
   --thumb-dark: #b87500;
   --disc-core: #804a00;
 
-  /* Generic light/dark steps — derived from the live accent so Station Auto
-     tinting still has something sensible to fall back on. */
+  /* Generic light/dark steps — derived from the live accent so station
+     tinting always has something sensible to fall back on. */
   --accent-light: color-mix(in srgb, var(--accent) 74%, white);
   --accent-dark: color-mix(in srgb, var(--accent) 76%, black);
   --accent-border: color-mix(in srgb, var(--accent) 55%, white);
@@ -169,24 +166,14 @@
   --brand-span-shadow: 0 0 32px var(--accent-rgb-55);
   --grad-gold: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 50%, var(--accent-dark) 100%);
 
-  /* Station tint — themes.js / player.js overwrite these inline at runtime.
+  /* Station tint — player.js overwrites these inline at runtime.
      Declared here so the tokens always resolve, even before JS runs. */
   --pl-accent: var(--accent);
   --pl-glow: rgba(var(--accent-rgb), 0.12);
 
-  /* ---------- Per-theme texture overlays (all off in Retro Gold) ---------- */
-  --fx-scanline-opacity: 0;
-  --fx-scanline-size: 3px;
-  --fx-scanline-color: rgba(var(--black-rgb), 0.5);
-  --fx-scanline-blend: multiply;   /* dark skins: scanlines subtract light */
-  --fx-grain-blend: overlay;       /* light skins flip both in css/themes.css */
-  --fx-grain-opacity: 0;
-  --fx-vignette: transparent;
-  --fx-text-shadow: none;
-
   /* ==========================================================================
      ALPHA LADDERS — one step per alpha the original artwork actually used,
-     so every skin resolves to exact colours and nothing is quantised away.
+     so every colour resolves to exact values and nothing is quantised away.
      ========================================================================== */
   /* --accent-rgb */
   --accent-rgb-90: rgba(var(--accent-rgb), 0.9);

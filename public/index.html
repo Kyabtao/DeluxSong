@@ -19,8 +19,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<!-- Theme engine boots in <head> so the saved skin is applied before first paint -->
-<script src="js/themes.js"></script>
 </head>
 <body>
 <a class="skip" href="#about">Skip to content</a>
@@ -47,21 +45,11 @@
       <div class="nav-status" aria-live="polite">
         <span class="nav-status-label">Now on air</span>
         <strong id="navPlaylistName">Office (TCS)</strong>
-        <span class="nav-status-meta" id="navThemeBadge">Retro Gold theme</span>
       </div>
     </div>
     
     <div class="topbar-right">
-      <div class="theme-pill">
-        <button class="pill pill-theme" id="themeBtn" title="Switch theme — Retro Gold, Synthwave, Monsoon &amp; more" aria-haspopup="dialog" aria-expanded="false" aria-controls="themePanel">
-          <span class="theme-swatch-dot" id="themePillIcon" aria-hidden="true"></span>
-          <span class="theme-pill-copy">
-            <small>Theme</small>
-            <span id="themePillName">Retro Gold</span>
-          </span>
-        </button>
-      </div>
-      <button class="pill" id="rainBtn" title="Toggle monsoon rain ambience">
+      <button class="pill" id="rainBtn" title="Toggle monsoon rain — sound + on-screen baarish">
         <span class="pill-icon">🌧️</span> <span>Baarish?</span>
       </button>
       <button class="pill" id="earnBtn" title="TCS Campus Hiring &amp; Job Opening">
@@ -435,8 +423,9 @@
   <button class="x" type="button" id="installClose" aria-label="Close">×</button>
 </div>
 
-<!-- Theme texture overlay: scanlines, film grain & vignette (see css/themes.css) -->
-<div class="fx-overlay" aria-hidden="true"><div class="fx-vignette"></div></div>
+<!-- On-screen monsoon rain overlay: drops, splashes & lightning (see css/rain.css + js/rain-visual.js).
+     Switched on by the 🌧️ Baarish? button in the top bar. -->
+<canvas class="rain-canvas" id="rainCanvas" aria-hidden="true"></canvas>
 
 <div class="toast" id="toast" hidden></div>
 
@@ -445,6 +434,7 @@
 <script src="js/playlists-data.js"></script>
 <script src="js/background-audio.js"></script>
 <script src="js/rain-ambient.js"></script>
+<script src="js/rain-visual.js"></script>
 <script src="js/modals.js"></script>
 <script src="js/player.js"></script>
 <script src="js/app.js"></script>

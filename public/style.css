@@ -2,7 +2,6 @@
    Imports modular component stylesheets */
 
 @import url("css/variables.css");
-@import url("css/themes.css");
 @import url("css/base.css");
 @import url("css/hero.css");
 @import url("css/playlist-selector.css");
@@ -10,4 +9,4 @@
 @import url("css/drawer.css");
 @import url("css/sections.css");
 @import url("css/modals.css");
-@import url("css/theme-switcher.css");
+@import url("css/rain.css");

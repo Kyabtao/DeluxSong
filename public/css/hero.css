@@ -120,12 +120,6 @@
   color: var(--text-hi);
 }
 
-.nav-status-meta {
-  font-size: 11px;
-  color: var(--accent);
-  font-weight: 600;
-}
-
 /* Topbar Pill Buttons */
 .pill {
   display: inline-flex;
@@ -248,7 +242,7 @@
    UI POLISH — refined details & responsive tuning
    ========================================================================== */
 /* The scrim is themed through --hero-shade (css/variables.css); its first glow
-   layer is tinted per active playlist via --pl-glow, set from js/themes.js. */
+   layer is tinted per active playlist via --pl-glow, set from js/player.js. */
 .hero-shade {
   transition: opacity 1s ease;
 }
@@ -323,9 +317,6 @@
   }
   #navPlaylistName {
     font-size: 13px;
-  }
-  .nav-status-meta {
-    font-size: 10.5px;
   }
   .pill {
     padding: 7px 11px;
