@@ -105,13 +105,13 @@ const PlayerEngine = (function () {
     return activePlaylist[order[pos]] || activePlaylist[0];
   }
 
-  /* The first screen stays calm: compact playback buttons are revealed only
-     after the listener chooses an actual song from the playlist sidebar. */
+  /* Keep the player and selected-track area available, but keep its controls
+     quiet until the listener chooses an actual song from the sidebar. */
   function revealPlayer() {
     const player = $("#player");
     if (!player) return;
-    const wasPending = player.classList.contains("player-pending");
-    player.classList.remove("player-pending");
+    const wasPending = player.classList.contains("player-controls-pending");
+    player.classList.remove("player-controls-pending");
     player.setAttribute("aria-hidden", "false");
     const hint = $("#playerHint");
     if (hint) hint.hidden = true;
