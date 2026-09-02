@@ -239,10 +239,41 @@
 </section>
 
 <!-- SECTION 7: FAQ Section (public/components/faq.html) -->
+<!-- Questions ship as static HTML so the FAQ is never missing — even while
+     scripts are still loading or if a third-party script stalls. -->
 <section class="faq" id="faq">
   <p class="eyebrow">FAQ</p>
   <h2>Quick answers before you tune in.</h2>
-  <div class="acc" id="acc"></div>
+  <div class="acc" id="acc">
+    <details>
+      <summary>What is TCS Radio?</summary>
+      <p>A free, fan-made radio by Umair for 2000s Bollywood, Indipop, highway, auto, monsoon, and chai-tapri moods. No account is needed.</p>
+    </details>
+    <details>
+      <summary>How do I choose a playlist or song?</summary>
+      <p>Tap the ☰ Playlist button on the player deck to open the sidebar. Select a station tab, then choose a song from its list — the hero stays focused on the music.</p>
+    </details>
+    <details>
+      <summary>Where are the playback buttons?</summary>
+      <p>Always visible on the player deck — play or pause, skip, shuffle, seek, volume and the 📺 video toggle are ready from the moment the page loads.</p>
+    </details>
+    <details>
+      <summary>Will the music continue to the next playlist?</summary>
+      <p>Yes. When the current station finishes, TCS Radio moves to the next station automatically so the listening session can keep going.</p>
+    </details>
+    <details>
+      <summary>Can I suggest a song or request removal?</summary>
+      <p>Yes. Use 🎵 Add / Remove Songs in the Support strip above the footer. Requests go directly to Umair, and removal requests are reviewed promptly.</p>
+    </details>
+    <details>
+      <summary>How can I support the station?</summary>
+      <p>Tap ❤️ Support Us in the same strip — sharing TCS Radio with a friend keeps the station free and ad-free.</p>
+    </details>
+    <details>
+      <summary>What do Baarish and TCS Careers do?</summary>
+      <p>Baarish adds optional rain sound and on-screen rain. TCS Careers opens a light-hearted hiring message — it is not a real job application or payment link.</p>
+    </details>
+  </div>
 </section>
 </main>
 
@@ -432,7 +463,8 @@
 <div class="toast" id="toast" hidden></div>
 
 <!-- ============ MODULAR JAVASCRIPT MODULES ============ -->
-<script src="https://www.youtube.com/iframe_api"></script>
+<!-- The YouTube IFrame API is injected asynchronously by js/player.js so a
+     slow or unreachable third-party script can never stall the page. -->
 <script src="js/playlists-data.js"></script>
 <script src="js/background-audio.js"></script>
 <script src="js/rain-ambient.js"></script>

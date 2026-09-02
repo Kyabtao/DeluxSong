@@ -197,6 +197,22 @@ const PlayerEngine = (function () {
     };
   }
 
+  /* Load the YouTube IFrame API asynchronously (the documented pattern). A
+     synchronous <script src> here used to block EVERY later module — so one
+     stalled third-party request could leave the FAQ empty and the player
+     dead. Loading it this way, local UI always boots first. */
+  function loadYouTubeAPI() {
+    if (window.YT && window.YT.Player) {
+      window.onYouTubeIframeAPIReady(); // API already available (tests, warm cache)
+      return;
+    }
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    tag.async = true;
+    tag.onerror = () => Modals.toast("Radio engine offline — check your connection and refresh 📻");
+    document.head.appendChild(tag);
+  }
+
   function onSlotReady(slot) {
     slotReady[slot] = true;
     applyVolumeTo(slot);
@@ -578,6 +594,7 @@ const PlayerEngine = (function () {
     setTimeout(preloadBackgrounds, 600);
 
     initYouTubePlayer();
+    loadYouTubeAPI();
     updateSlotVisibility();
 
     // Setup Background Audio MediaSession controls

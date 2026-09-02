@@ -83,6 +83,18 @@ ok('Support Us and Add / Remove buttons share the pre-footer strip',
   !!supportSection.querySelector('#requestFooterLink'),
   supportSection ? 'support-actions strip present' : 'support-actions strip missing');
 
+/* --- FAQ: static content, current answers, nothing blocking the page --- */
+const faqItems = doc.querySelectorAll('#acc details');
+ok('FAQ ships static content (never missing, even without JavaScript)',
+  faqItems.length >= 6, `${faqItems.length} questions`);
+ok('FAQ answers match the current UI (no removed launcher / hidden buttons)',
+  ![...faqItems].some((d) =>
+    d.textContent.includes('📻 Choose a playlist') ||
+    d.textContent.includes('buttons appear as soon as you choose a song')));
+ok('YouTube API loads asynchronously and cannot block the page',
+  !html.includes('src="https://www.youtube.com/iframe_api"') &&
+  src('js/player.js').includes('iframe_api'));
+
 window.PlayerEngine.switchPlaylist('monsoon', false);
 ok('switchPlaylist keeps the top-bar status removed',
   !doc.querySelector('.nav-status'));

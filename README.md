@@ -40,6 +40,7 @@ token graphs, so the classic **Retro Gold** look provably never drifts.
 | 🌧️ Baarish Ambience | Built-in Web Audio API monsoon rain synthesizer with gentle distant thunder — plus a full on-screen rain overlay: falling drops, splash ripples and lightning flashes synced to the thunder, with intensity following the Baarish volume slider |
 | 💼 TCS Careers | Light-hearted careers modal placed after Add / Remove Songs, with an anti-scam notice (no fake links!) |
 | ❤️ Support Us | Support action joins Add / Remove Songs and TCS Careers in the strip after the content, right before the short footer; the station stays ad-free and is supported by sharing |
+| Static FAQ | The FAQ ships as real HTML with 7 current answers — it renders even before (or without) JavaScript, and the YouTube engine now loads asynchronously so no third-party script can leave the page blank |
 | Short footer | A small brand line, three useful links, and one ownership note — the longer promotional copy stays out of the footer |
 | PWA & SEO | Installable Progressive Web App, service worker, manifest, SEO meta tags, sitemap.xml |
 
