@@ -1,9 +1,17 @@
-const CACHE = 'tcs-radio-v11';
+const CACHE = 'tcs-radio-v12';
 const BASE = new URL('./', self.registration.scope).pathname;
 const ASSETS = [
   BASE,
   BASE + 'index.html',
   BASE + 'style.css',
+  BASE + 'css/variables.css',
+  BASE + 'css/base.css',
+  BASE + 'css/hero.css',
+  BASE + 'css/playlist-selector.css',
+  BASE + 'css/player.css',
+  BASE + 'css/drawer.css',
+  BASE + 'css/sections.css',
+  BASE + 'css/modals.css',
   BASE + 'css/rain.css',
   BASE + 'css/redesign.css',
   BASE + 'js/playlists-data.js',
@@ -39,6 +47,21 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const u = new URL(e.request.url);
   if (e.request.method !== 'GET' || u.origin !== location.origin) return;
+
+  /* Stylesheets go network-first: a new deploy is visible on the very next
+     reload instead of one visit later, while offline still falls back to the
+     cached copy. (Cache-first here is what made freshly deployed designs
+     invisible to returning visitors until a second refresh.) */
+  if (u.pathname.endsWith('.css')) {
+    e.respondWith(
+      fetch(e.request).then(res => {
+        const copy = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, copy)).catch(() => {});
+        return res;
+      }).catch(() => caches.match(e.request))
+    );
+    return;
+  }
 
   if (e.request.mode === 'navigate') {
     e.respondWith(

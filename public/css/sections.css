@@ -544,6 +544,67 @@ main + .support-actions,
   box-shadow: 0 12px 30px var(--accent-rgb-50), inset 0 1px 2px var(--white-rgb-60);
 }
 
+/* Emoji chip: gives every strip button the same designed icon slot. */
+.section-action-ico {
+  display: inline-grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  margin-right: 1px;
+  border-radius: 50%;
+  background: var(--paper-rgb-09);
+  box-shadow: inset 0 1px 0 var(--white-rgb-08), 0 2px 6px var(--black-rgb-25);
+  font-size: 14px;
+  line-height: 1;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-action:hover .section-action-ico {
+  transform: scale(1.12) rotate(-6deg);
+}
+
+.section-action-primary .section-action-ico {
+  background: var(--white-rgb-25);
+  box-shadow: inset 0 1px 0 var(--white-rgb-50), 0 2px 8px var(--black-rgb-30);
+}
+
+/* Button 2 — "Add / Remove Songs" as a ticket stub: dashed gold perforation
+   with a faint accent wash, echoing the ticket rows & dividers used across
+   the Golden Hour deck. Perforation "seals" (turns solid) on hover. */
+.section-action-ticket {
+  border-style: dashed;
+  border-color: var(--accent-rgb-38);
+  background:
+    linear-gradient(145deg, var(--accent-rgb-08), var(--surface-2-rgb-92) 65%);
+}
+
+.section-action-ticket:hover {
+  border-style: solid;
+  background:
+    linear-gradient(145deg, var(--accent-rgb-14), var(--surface-2-rgb-92) 65%);
+}
+
+/* Button 3 — "TCS Careers" carries the decorative ON-AIR lamp from the top
+   bar: a small blinking red hiring lamp in its own icon slot. */
+.section-action-lamp .section-action-lamp-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffb4a8, var(--red) 60%);
+  box-shadow: 0 0 8px var(--red-rgb-65), inset 0 1px 1px var(--white-rgb-50);
+  animation: support-lamp 2.4s ease-in-out infinite;
+}
+
+.section-action-lamp:hover .section-action-lamp-dot {
+  animation-play-state: paused;
+  box-shadow: 0 0 12px var(--red-rgb-65), inset 0 1px 1px var(--white-rgb-50);
+}
+
+@keyframes support-lamp {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+
 /* Gentle heartbeat on the primary CTA so the strip reads as alive. */
 @keyframes support-pulse {
   0%, 100% { box-shadow: 0 8px 24px var(--accent-rgb-35), inset 0 1px 2px var(--white-rgb-50); }
@@ -560,6 +621,9 @@ main + .support-actions,
 
 @media (prefers-reduced-motion: reduce) {
   .support-buttons .section-action-primary {
+    animation: none;
+  }
+  .section-action-lamp .section-action-lamp-dot {
     animation: none;
   }
   .section-action::after {
