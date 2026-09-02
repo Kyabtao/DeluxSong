@@ -16,16 +16,66 @@ body {
   color: var(--cream);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   overflow-x: hidden;
   background-color: var(--bg);
+  line-height: 1.5;
 }
 
 h1, h2, h3, .brand {
-  font-family: "Baloo 2", Inter, sans-serif;
+  font-family: var(--font-display);
+  text-wrap: balance;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
 }
 
 a {
   color: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--amber);
+  color: #241103;
+}
+
+*:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background: #140b05;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#4a2a12, #35200c);
+  border-radius: 99px;
+  border: 2px solid #140b05;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b3f1d;
 }
 
 .skip {
@@ -42,4 +92,14 @@ a {
   padding: 8px 16px;
   border-radius: 8px;
   font-weight: 700;
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
