@@ -105,6 +105,33 @@ const PlayerEngine = (function () {
     return activePlaylist[order[pos]] || activePlaylist[0];
   }
 
+  /* The first screen stays calm: the full player is revealed only after the
+     listener chooses an actual song from the playlist sidebar. */
+  function revealPlayer() {
+    const player = $("#player");
+    if (!player) return;
+    const wasPending = player.classList.contains("player-pending");
+    player.classList.remove("player-pending");
+    player.setAttribute("aria-hidden", "false");
+    const hint = $("#playerHint");
+    if (hint) hint.hidden = true;
+    if (wasPending) player.dataset.revealed = "true";
+  }
+
+  function setDrawerOpen(isOpen) {
+    const drawer = $("#drawer");
+    if (drawer) {
+      drawer.classList.toggle("open", isOpen);
+      drawer.setAttribute("aria-hidden", isOpen ? "false" : "true");
+    }
+
+    const launcher = $("#playlistBtn");
+    if (launcher) launcher.setAttribute("aria-expanded", isOpen ? "true" : "false");
+
+    const listBtn = $("#listBtn");
+    if (listBtn) listBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  }
+
   function updateStationButtons() {
     document.querySelectorAll(".station-btn").forEach((btn) => {
       const isActive = btn.dataset.playlist === currentPlaylistKey;
@@ -513,8 +540,10 @@ const PlayerEngine = (function () {
         }
 
         const targetIdx = order.indexOf(i);
+        // Selecting a song is the moment the player becomes useful and visible.
+        revealPlayer();
         loadTrack(targetIdx !== -1 ? targetIdx : i, true);
-        $("#drawer").classList.remove("open");
+        setDrawerOpen(false);
       };
       ol.appendChild(li);
     });
@@ -667,13 +696,25 @@ const PlayerEngine = (function () {
     $("#prev").onclick = prevTrack;
     $("#shuffle").onclick = toggleShuffle;
 
-    // Drawer toggles
-    $("#listBtn").onclick = () => {
+    // Drawer toggles — playlist browsing now happens here, not in the hero.
+    const openDrawer = () => {
       activeDrawerFilter = currentPlaylistKey;
       syncDrawerState(true);
-      $("#drawer").classList.toggle("open");
+      setDrawerOpen(true);
     };
-    $("#drawerClose").onclick = () => $("#drawer").classList.remove("open");
+
+    const listBtn = $("#listBtn");
+    if (listBtn) {
+      listBtn.title = "Open Playlist Sidebar";
+      listBtn.setAttribute("aria-label", "Open Playlist Sidebar");
+      listBtn.onclick = openDrawer;
+    }
+
+    const playlistBtn = $("#playlistBtn");
+    if (playlistBtn) playlistBtn.onclick = openDrawer;
+
+    const drawerClose = $("#drawerClose");
+    if (drawerClose) drawerClose.onclick = () => setDrawerOpen(false);
 
     // Rotating quotes
     setInterval(updateStationQuote, 7000);

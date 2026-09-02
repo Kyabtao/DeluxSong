@@ -336,3 +336,15 @@
     padding: 8px 14px;
   }
 }
+
+/* Only the compact rain/share utilities remain in the top bar. */
+.topbar-tools {
+  margin-left: auto;
+  justify-content: flex-end;
+}
+
+@media (max-width: 720px) {
+  .topbar-tools {
+    flex: 1 1 100%;
+  }
+}

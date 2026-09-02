@@ -1,30 +1,15 @@
 <!-- ============ TOPBAR NAVIGATION SECTION ============ -->
 <div class="topbar">
-  <div class="topbar-left">
-    <button class="pill pill-support" id="supportBtn" title="Support TCS Radio Server Fund">
-      <span class="pill-icon">❤️</span> <span>Support Us</span>
-    </button>
-    <button class="pill" id="requestBtn" title="Suggest a song to add or request removal">
-      <span class="pill-icon">🎵</span> <span>Add / Remove Songs</span>
-    </button>
-  </div>
-
-  <div class="topbar-center">
-    <div class="nav-status" aria-live="polite">
-      <span class="nav-status-label">Now on air</span>
-      <strong id="navPlaylistName">Office (TCS)</strong>
-    </div>
-  </div>
-  
-  <div class="topbar-right">
+  <div class="topbar-right topbar-tools">
     <button class="pill" id="rainBtn" title="Toggle monsoon rain — sound + on-screen baarish">
       <span class="pill-icon">🌧️</span> <span>Baarish?</span>
-    </button>
-    <button class="pill" id="earnBtn" title="TCS Campus Hiring &amp; Job Opening">
-      <span class="pill-icon">💼</span> <span>TCS Careers (Joke)</span>
     </button>
     <button class="pill" id="shareBtn" title="Share with friends">
       <span class="pill-icon">🔗</span> <span>Share</span>
     </button>
   </div>
+
+  <!-- Playlist status is intentionally not shown in the top bar. The sidebar
+       is the single place to browse stations and songs. -->
+  <span id="navPlaylistName" hidden>Office (TCS)</span>
 </div>

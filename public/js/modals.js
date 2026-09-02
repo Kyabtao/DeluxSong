@@ -290,34 +290,60 @@ const Modals = (function () {
     });
 
     /* ---------- Support modal ---------- */
-    $("#supportBtn").onclick = () => open("#supportModal");
-    $("#supportLink").onclick = (e) => {
-      e.preventDefault();
-      open("#supportModal");
-    };
-    $("#chaiLoveBtn").onclick = () => {
-      dismiss($("#supportModal"));
-      shareTCS();
-    };
+    const supportBtn = $("#supportBtn");
+    if (supportBtn) supportBtn.onclick = () => open("#supportModal");
 
-    /* ---------- Careers joke modal ---------- */
-    $("#earnBtn").onclick = () => open("#earnModal");
-    $("#applyJokeBtn").onclick = () => {
-      dismiss($("#earnModal"));
-      toast("🎉 Timesheet submitted! Cutting chai & samosa is on the way ☕🥟😂");
-    };
+    const supportLink = $("#supportLink");
+    if (supportLink) {
+      supportLink.onclick = (e) => {
+        e.preventDefault();
+        open("#supportModal");
+      };
+    }
+
+    const chaiLoveBtn = $("#chaiLoveBtn");
+    if (chaiLoveBtn) {
+      chaiLoveBtn.onclick = () => {
+        dismiss($("#supportModal"));
+        shareTCS();
+      };
+    }
+
+    /* ---------- Careers modal ---------- */
+    const earnBtn = $("#earnBtn");
+    if (earnBtn) earnBtn.onclick = () => open("#earnModal");
+
+    const applyJokeBtn = $("#applyJokeBtn");
+    if (applyJokeBtn) {
+      applyJokeBtn.onclick = () => {
+        dismiss($("#earnModal"));
+        toast("🎉 Timesheet submitted! Cutting chai & samosa is on the way ☕🥟😂");
+      };
+    }
 
     /* ---------- Connect (Add / Remove) modal triggers ---------- */
-    $("#requestBtn").onclick = openRequest;
-    $("#requestFooterLink").onclick = (e) => {
-      e.preventDefault();
-      openRequest();
-    };
+    const requestBtn = $("#requestBtn");
+    if (requestBtn) requestBtn.onclick = openRequest;
+
+    const requestFooterLink = $("#requestFooterLink");
+    if (requestFooterLink) {
+      requestFooterLink.onclick = (e) => {
+        e.preventDefault();
+        openRequest();
+      };
+    }
     const drawerConnect = $("#drawerConnectBtn");
     if (drawerConnect) {
       drawerConnect.onclick = () => {
         const drawer = $("#drawer");
-        if (drawer) drawer.classList.remove("open");
+        if (drawer) {
+          drawer.classList.remove("open");
+          drawer.setAttribute("aria-hidden", "true");
+        }
+        const launcher = $("#playlistBtn");
+        if (launcher) launcher.setAttribute("aria-expanded", "false");
+        const listBtn = $("#listBtn");
+        if (listBtn) listBtn.setAttribute("aria-expanded", "false");
         openRequest();
       };
     }
