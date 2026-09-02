@@ -140,11 +140,6 @@ const PlayerEngine = (function () {
     });
   }
 
-  function updateTopbarStatus() {
-    const navPlaylist = $("#navPlaylistName");
-    if (navPlaylist) navPlaylist.textContent = PLAYLISTS[currentPlaylistKey].name;
-  }
-
   function syncDrawerState(renderList = true) {
     const drawerLabel = $("#drawerStnLabel");
     if (drawerLabel) drawerLabel.textContent = PLAYLISTS[activeDrawerFilter].name;
@@ -179,7 +174,6 @@ const PlayerEngine = (function () {
     resetBufferState();
 
     updateStationButtons();
-    updateTopbarStatus();
     syncDrawerState(true);
     updateStationQuote();
     applyBackground(playlistKey);
@@ -589,7 +583,6 @@ const PlayerEngine = (function () {
     buildOrder();
     buildDrawerTabs();
     updateStationButtons();
-    updateTopbarStatus();
 
     // Set up the crossfading playlist backdrops
     bgLayers.a = document.getElementById("bgA");
