@@ -340,8 +340,6 @@ const Modals = (function () {
           drawer.classList.remove("open");
           drawer.setAttribute("aria-hidden", "true");
         }
-        const launcher = $("#playlistBtn");
-        if (launcher) launcher.setAttribute("aria-expanded", "false");
         const listBtn = $("#listBtn");
         if (listBtn) listBtn.setAttribute("aria-expanded", "false");
         openRequest();
@@ -388,8 +386,10 @@ const Modals = (function () {
     }
 
     /* ---------- FAQ accordion ---------- */
+    // The questions ship as static HTML in the page; only fill the accordion
+    // if it is somehow empty (e.g. an integration replaced the markup).
     const acc = $("#acc");
-    if (acc) {
+    if (acc && !acc.children.length) {
       acc.innerHTML = FAQ_DATA.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("");
     }
 

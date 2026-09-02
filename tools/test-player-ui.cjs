@@ -60,13 +60,40 @@ ok('top-bar now-on-air status is removed',
 ok('drawer tabs are built for every playlist',
   doc.querySelectorAll('.drawer-tab').length === Object.keys(window.PLAYLISTS).length,
   `${doc.querySelectorAll('.drawer-tab').length} tabs`);
-ok('player buttons start hidden but remain mounted',
-  doc.querySelector('#player').classList.contains('player-controls-pending') &&
+ok('player controls are visible and mounted from the start',
+  !doc.querySelector('#player').classList.contains('player-controls-pending') &&
   doc.querySelectorAll('#player .controls button').length > 0);
+ok('player reveal hint message is removed',
+  !doc.querySelector('#playerHint'));
+ok('playlist launcher message is removed',
+  !doc.querySelector('#playlistBtn') && !doc.querySelector('.playlist-launcher'));
 
-doc.querySelector('#player').click();
-ok('clicking the player reveals its buttons',
-  !doc.querySelector('#player').classList.contains('player-controls-pending'));
+doc.querySelector('#listBtn').click();
+ok('the player ☰ button opens the playlist sidebar',
+  doc.querySelector('#drawer').classList.contains('open') &&
+  doc.querySelector('#drawer').getAttribute('aria-hidden') === 'false');
+doc.querySelector('#drawerClose').click();
+ok('the sidebar ✕ button closes the playlist sidebar',
+  !doc.querySelector('#drawer').classList.contains('open'));
+
+const supportSection = doc.querySelector('.support-actions');
+ok('Support Us and Add / Remove buttons share the pre-footer strip',
+  !!supportSection &&
+  !!supportSection.querySelector('#supportBtn') &&
+  !!supportSection.querySelector('#requestFooterLink'),
+  supportSection ? 'support-actions strip present' : 'support-actions strip missing');
+
+/* --- FAQ: static content, current answers, nothing blocking the page --- */
+const faqItems = doc.querySelectorAll('#acc details');
+ok('FAQ ships static content (never missing, even without JavaScript)',
+  faqItems.length >= 6, `${faqItems.length} questions`);
+ok('FAQ answers match the current UI (no removed launcher / hidden buttons)',
+  ![...faqItems].some((d) =>
+    d.textContent.includes('📻 Choose a playlist') ||
+    d.textContent.includes('buttons appear as soon as you choose a song')));
+ok('YouTube API loads asynchronously and cannot block the page',
+  !html.includes('src="https://www.youtube.com/iframe_api"') &&
+  src('js/player.js').includes('iframe_api'));
 
 window.PlayerEngine.switchPlaylist('monsoon', false);
 ok('switchPlaylist keeps the top-bar status removed',

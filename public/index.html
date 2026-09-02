@@ -52,15 +52,6 @@
     </div>
     <p class="tagline" id="quote">टाइम्सशीट भर दी भाई? चलो अब चाय पीते हैं और पुराने गाने सुनते हैं!</p>
 
-    <button class="playlist-launcher" id="playlistBtn" type="button" aria-controls="drawer" aria-expanded="false">
-      <span class="playlist-launcher-icon">📻</span>
-      <span class="playlist-launcher-copy">
-        <strong>Choose a playlist</strong>
-        <small>Open the sidebar to pick a station or song</small>
-      </span>
-      <span class="playlist-launcher-arrow" aria-hidden="true">→</span>
-    </button>
-
     <!-- The sidebar is now the only playlist browser. This compact legacy
          markup remains hidden so saved integrations can still sync its state. -->
     <!-- SECTION 3: Playlist Selector (public/components/playlist-selector.html) -->
@@ -130,8 +121,7 @@
     </div>
 
     <!-- SECTION 4: Audio Player Deck (public/components/player.html) -->
-    <p class="player-hint" id="playerHint">Tap or click the player to reveal playback buttons.</p>
-    <div class="player mini player-controls-pending" id="player" aria-label="Audio player" title="Click to show playback buttons">
+    <div class="player mini" id="player" aria-label="Audio player">
       <!-- Dual-buffer slots: standby player pre-cues the next track for gapless, reload-free transitions -->
       <div class="yt-holder" id="ytHolder">
         <div class="yt-slot on" id="ytSlotA"><div id="ytplayerA"></div></div>
@@ -248,34 +238,64 @@
   </div>
 </section>
 
-<!-- Support is deliberately placed after About, not in the top navigation. -->
-<section class="page-actions about-actions" aria-label="Support TCS Radio">
+<!-- SECTION 7: FAQ Section (public/components/faq.html) -->
+<!-- Questions ship as static HTML so the FAQ is never missing — even while
+     scripts are still loading or if a third-party script stalls. -->
+<section class="faq" id="faq">
+  <p class="eyebrow">FAQ</p>
+  <h2>Quick answers before you tune in.</h2>
+  <div class="acc" id="acc">
+    <details>
+      <summary>What is TCS Radio?</summary>
+      <p>A free, fan-made radio by Umair for 2000s Bollywood, Indipop, highway, auto, monsoon, and chai-tapri moods. No account is needed.</p>
+    </details>
+    <details>
+      <summary>How do I choose a playlist or song?</summary>
+      <p>Tap the ☰ Playlist button on the player deck to open the sidebar. Select a station tab, then choose a song from its list — the hero stays focused on the music.</p>
+    </details>
+    <details>
+      <summary>Where are the playback buttons?</summary>
+      <p>Always visible on the player deck — play or pause, skip, shuffle, seek, volume and the 📺 video toggle are ready from the moment the page loads.</p>
+    </details>
+    <details>
+      <summary>Will the music continue to the next playlist?</summary>
+      <p>Yes. When the current station finishes, TCS Radio moves to the next station automatically so the listening session can keep going.</p>
+    </details>
+    <details>
+      <summary>Can I suggest a song or request removal?</summary>
+      <p>Yes. Use 🎵 Add / Remove Songs in the Support strip above the footer. Requests go directly to Umair, and removal requests are reviewed promptly.</p>
+    </details>
+    <details>
+      <summary>How can I support the station?</summary>
+      <p>Tap ❤️ Support Us in the same strip — sharing TCS Radio with a friend keeps the station free and ad-free.</p>
+    </details>
+    <details>
+      <summary>What do Baarish and TCS Careers do?</summary>
+      <p>Baarish adds optional rain sound and on-screen rain. TCS Careers opens a light-hearted hiring message — it is not a real job application or payment link.</p>
+    </details>
+  </div>
+</section>
+</main>
+
+<!-- Support & quick actions sit together immediately before the short footer.
+     The ☰ button on the player opens the playlist sidebar. -->
+<section class="page-actions support-actions" aria-label="Support TCS Radio">
   <div class="action-copy">
     <span class="action-kicker">Keep the radio going</span>
     <strong>Enjoying the break?</strong>
     <span>Support the ad-free station by sharing it with a friend.</span>
   </div>
-  <button class="section-action section-action-primary" id="supportBtn" type="button" title="Support TCS Radio">
-    ❤️ Support TCS Radio
-  </button>
-</section>
-
-<!-- SECTION 7: FAQ Section (public/components/faq.html) -->
-<section class="faq" id="faq">
-  <p class="eyebrow">FAQ</p>
-  <h2>Quick answers before you tune in.</h2>
-  <div class="acc" id="acc"></div>
-</section>
-</main>
-
-<!-- These actions sit immediately before the short footer. -->
-<section class="page-actions pre-footer-actions" aria-label="More from TCS Radio">
-  <button class="section-action" id="requestFooterLink" type="button" title="Suggest a song or request removal">
-    🎵 Add / Remove Songs
-  </button>
-  <button class="section-action" id="earnBtn" type="button" title="TCS Careers">
-    💼 TCS Careers
-  </button>
+  <div class="support-buttons">
+    <button class="section-action section-action-primary" id="supportBtn" type="button" title="Support TCS Radio">
+      ❤️ Support Us
+    </button>
+    <button class="section-action" id="requestFooterLink" type="button" title="Suggest a song or request removal">
+      🎵 Add / Remove Songs
+    </button>
+    <button class="section-action" id="earnBtn" type="button" title="TCS Careers">
+      💼 TCS Careers
+    </button>
+  </div>
 </section>
 
 <!-- SECTION 8: Footer (public/components/footer.html) -->
@@ -443,7 +463,8 @@
 <div class="toast" id="toast" hidden></div>
 
 <!-- ============ MODULAR JAVASCRIPT MODULES ============ -->
-<script src="https://www.youtube.com/iframe_api"></script>
+<!-- The YouTube IFrame API is injected asynchronously by js/player.js so a
+     slow or unreachable third-party script can never stall the page. -->
 <script src="js/playlists-data.js"></script>
 <script src="js/background-audio.js"></script>
 <script src="js/rain-ambient.js"></script>
