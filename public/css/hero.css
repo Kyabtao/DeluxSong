@@ -54,7 +54,7 @@
   left: 0;
   right: 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 14px;
   padding: 16px 20px;
@@ -138,31 +138,6 @@
   border-color: var(--chip-border-2);
   font-weight: 700;
   box-shadow: 0 0 18px var(--accent-rgb-60), 0 4px 14px var(--black-rgb-40), inset 0 1px 2px var(--white-rgb-60);
-}
-
-/* TCS AIR pill — glowing red live indicator, to the LEFT of Baarish? */
-.pill-air {
-  gap: 7px;
-}
-
-.pill-air-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #ffb4a8, #e53935 60%);
-  box-shadow: 0 0 10px rgba(229, 57, 53, 0.75), inset 0 1px 1px rgba(255, 255, 255, 0.5);
-  animation: air-blink 1.6s ease-in-out infinite;
-}
-
-.pill-air.on .pill-air-dot {
-  background: radial-gradient(circle at 35% 30%, #c8f7c5, #2ecc71 60%);
-  box-shadow: 0 0 12px rgba(46, 204, 113, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.5);
-  animation: air-blink 1s ease-in-out infinite;
-}
-
-@keyframes air-blink {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.35; }
 }
 
 .pill-support {
@@ -323,12 +298,11 @@
   }
 }
 
-/* Only the compact rain/share utilities remain in the top bar.
-   nowrap keeps TCS AIR, Baarish? and Share on ONE row so the Share
-   button never drops to a second line. */
+/* Only the compact rain/share utilities remain in the top bar,
+   now centered. nowrap keeps Baarish? and Share on ONE row so the
+   Share button never drops to a second line. */
 .topbar-tools {
-  margin-left: auto;
-  justify-content: flex-end;
+  justify-content: center;
   flex-wrap: nowrap;
   flex-shrink: 0;
 }

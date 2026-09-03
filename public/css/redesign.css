@@ -33,9 +33,9 @@
 }
 
 /* --------------------------------------------------------------------------
-   1. TOPBAR — floating glass strip.
-   The single ON-AIR indicator is the real #airBtn "📻 TCS AIR" pill
-   (public/components/topbar.html); there is no decorative duplicate.
+   1. TOPBAR — floating glass strip, centered.
+   Holds the compact Baarish? and Share utilities
+   (public/components/topbar.html).
    -------------------------------------------------------------------------- */
 .topbar {
   padding: 14px 20px;
