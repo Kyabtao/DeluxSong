@@ -32,7 +32,7 @@
 <div class="modal" id="earnModal" hidden>
   <div class="sheet modal-sheet-earn">
     <button class="x" type="button" data-close aria-label="Close modal">×</button>
-    <div class="modal-badge-icon">💼☕😂</div>
+    <div class="modal-badge-icon">💼</div>
     <h2>TCS Radio — Urgent Hiring!</h2>
     <p class="joke-subtitle">100% maza • 0% investment • 0% scam</p>
 
@@ -66,7 +66,7 @@
 <div class="modal" id="requestModal" hidden>
   <div class="sheet modal-sheet-request">
     <button class="x" type="button" data-close aria-label="Close modal">×</button>
-    <div class="modal-badge-icon">🎵🤝✨</div>
+    <div class="modal-badge-icon">🎵</div>
     <h2>Connect with Umair</h2>
     <p class="joke-subtitle">Add • Remove • Feedback — direct line, 24h reply, no reports</p>
 
@@ -121,9 +121,14 @@
       <div class="success-icon">✅</div>
       <h3 id="successTitle">Request received!</h3>
       <p id="successSummary">Thank you! Your request is with Umair.</p>
+      <p class="success-sub">Request saved locally. Tap one of the options below to deliver it:</p>
       <div class="success-actions">
-        <button class="btn btn-primary" id="copyReqBtn" type="button">📋 Copy request</button>
-        <button class="btn btn-secondary" id="againReqBtn" type="button">Send another</button>
+        <a class="btn btn-primary" id="emailReqBtn" href="mailto:?subject=TCS%20Radio%20Request" target="_blank" rel="noopener">📧 Email Umair</a>
+        <button class="btn btn-secondary" id="copyReqBtn" type="button">📋 Copy request</button>
+      </div>
+      <div class="success-actions success-actions-row">
+        <button class="btn btn-ghost" id="waReqBtn" type="button">💬 Send via WhatsApp</button>
+        <button class="btn btn-ghost" id="againReqBtn" type="button">Send another</button>
       </div>
     </div>
 

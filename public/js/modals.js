@@ -6,6 +6,9 @@
 
 const Modals = (function () {
   const REQ_DRAFT_KEY = "tcs_req_draft";
+  const REQ_INBOX_KEY = "tcs_req_inbox";
+  const OWNER_EMAIL = "umair@tcsradio.local"; // Replace with your real email
+  const OWNER_WA = "910000000000";            // Replace with your WhatsApp number (intl, no +)
   const MAX_MSG = 500;
 
   const REQ_META = {
@@ -245,7 +248,14 @@ const Modals = (function () {
     }
     if (!ok) return;
 
-    lastRequest = { type: reqType, name, song, message };
+    lastRequest = { type: reqType, name, song, message, ts: new Date().toISOString() };
+
+    // Persist locally so you can see submissions even without a backend.
+    try {
+      const inbox = JSON.parse(localStorage.getItem(REQ_INBOX_KEY) || "[]");
+      inbox.unshift(lastRequest);
+      localStorage.setItem(REQ_INBOX_KEY, JSON.stringify(inbox.slice(0, 50)));
+    } catch (_) {}
 
     // Success panel
     const form = $("#requestForm");
@@ -257,6 +267,20 @@ const Modals = (function () {
       const summary = $("#successSummary");
       if (title) title.textContent = meta.successTitle;
       if (summary) summary.textContent = meta.successBody(name, song);
+      // Wire dynamic mailto / whatsapp links using the freshly composed request
+      const emailBtn = $("#emailReqBtn");
+      if (emailBtn) {
+        const subj = encodeURIComponent("TCS Radio — " + meta.typeName);
+        const body = encodeURIComponent(meta.copyBody(name, song, message));
+        emailBtn.href = `mailto:${OWNER_EMAIL}?subject=${subj}&body=${body}`;
+      }
+      const waBtn = $("#waReqBtn");
+      if (waBtn) {
+        const waText = encodeURIComponent(meta.copyBody(name, song, message));
+        waBtn.onclick = () => {
+          window.open(`https://wa.me/${OWNER_WA}?text=${waText}`, "_blank", "noopener");
+        };
+      }
       success.classList.remove("pop");
       void success.offsetWidth; /* restart pop animation */
       success.classList.add("pop");

@@ -385,6 +385,10 @@ const PlayerEngine = (function () {
     playBtn.title = on ? "Pause Track (Space)" : "Play Track (Space)";
     playBtn.classList.toggle("playing", on);
     $("#disc").classList.toggle("spin", on);
+    const reelA = $("#reelA");
+    const reelB = $("#reelB");
+    if (reelA) reelA.classList.toggle("spin", on);
+    if (reelB) reelB.classList.toggle("spin", on);
   }
 
   function startTick() {
@@ -398,7 +402,11 @@ const PlayerEngine = (function () {
       } catch (_) { return; }
       $("#cur").textContent = fmt(c);
       $("#dur").textContent = fmt(d);
-      if (d) $("#seek").value = Math.round((c / d) * 1000);
+      if (d) {
+        const pct = Math.round((c / d) * 1000) / 10;
+        $("#seek").value = Math.round((c / d) * 1000);
+        $("#seek").style.setProperty("--seek-pct", pct + "%");
+      }
 
       BackgroundAudio.setPositionState(d, c);
 

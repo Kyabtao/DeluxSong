@@ -18,6 +18,7 @@
 <link rel="preconnect" href="https://www.youtube.com" />
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="css/player-redesign.css" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 </head>
 <body>
@@ -33,6 +34,9 @@
   <!-- SECTION 1: Top Navigation Bar (public/components/topbar.html) -->
   <div class="topbar">
     <div class="topbar-right topbar-tools">
+      <button class="pill pill-air" id="airBtn" title="TCS AIR — Live On Air indicator">
+        <span class="pill-air-dot" aria-hidden="true"></span><span class="pill-icon">📻</span> <span>TCS AIR</span>
+      </button>
       <button class="pill" id="rainBtn" title="Toggle monsoon rain — sound + on-screen baarish">
         <span class="pill-icon">🌧️</span> <span>Baarish?</span>
       </button>
@@ -127,18 +131,31 @@
         <div class="yt-slot on" id="ytSlotA"><div id="ytplayerA"></div></div>
         <div class="yt-slot" id="ytSlotB"><div id="ytplayerB"></div></div>
       </div>
-      
-      <div class="np">
-        <div class="disc" id="disc" title="Spinning retro vinyl record">
-          <div class="disc-hole"></div>
+
+      <!-- Top strip: brand + live lamp + station chip -->
+      <div class="player-top-strip">
+        <div class="player-brand"><span class="brand-dot" aria-hidden="true"></span>टीसीएस • BOOMBOX</div>
+        <span class="player-station-chip" id="stationBadge">🏢 TCS Office Mode</span>
+      </div>
+
+      <!-- Cassette well: spinning reels + LCD info -->
+      <div class="cassette-well">
+        <div class="reels" aria-hidden="true">
+          <div class="reel" id="reelA"></div>
+          <div class="reel" id="reelB"></div>
         </div>
-        <div class="np-text">
-          <div class="np-badge-row">
-            <span class="np-badge" id="stationBadge">🏢 TCS Office Mode</span>
-            <span class="np-track-counter" id="trackCounter">Track 1 / 7</span>
+        <div class="np">
+          <div class="disc" id="disc" title="Spinning retro vinyl record">
+            <div class="disc-hole"></div>
           </div>
-          <div class="np-title" id="npTitle">Nostalgia Loading...</div>
-          <div class="np-credit">Credits: <span id="npCredit">YouTube</span></div>
+          <div class="np-text">
+            <div class="np-badge-row">
+              <span class="np-track-counter" id="trackCounter">Track 1 / 7</span>
+              <span class="np-deck-label" style="font-family:var(--font-mono);font-size:9px;color:var(--deck-lcd-dim);letter-spacing:.2em;text-transform:uppercase">◉ PLAYING</span>
+            </div>
+            <div class="np-title" id="npTitle">Nostalgia Loading...</div>
+            <div class="np-credit">Credits: <span id="npCredit">YouTube</span></div>
+          </div>
         </div>
       </div>
 
@@ -291,9 +308,8 @@
     </button>
     <button class="section-action section-action-ticket" id="requestFooterLink" type="button" title="Suggest a song or request removal">
       <span class="section-action-ico" aria-hidden="true">🎵</span>Add / Remove Songs
-    </button>
-    <button class="section-action section-action-lamp" id="earnBtn" type="button" title="TCS Careers">
-      <span class="section-action-ico section-action-lamp-dot" aria-hidden="true"></span>TCS Careers
+    </button>    <button class="section-action section-action-lamp" id="earnBtn" type="button" title="TCS Careers">
+      <span class="section-action-ico" aria-hidden="true">💼</span>TCS Careers
     </button>
   </div>
 </section>
@@ -346,7 +362,7 @@
 <div class="modal" id="earnModal" hidden>
   <div class="sheet modal-sheet-earn">
     <button class="x" type="button" data-close aria-label="Close modal">×</button>
-    <div class="modal-badge-icon">💼☕😂</div>
+    <div class="modal-badge-icon">💼</div>
     <h2>TCS Radio — Urgent Hiring!</h2>
     <p class="joke-subtitle">100% maza • 0% investment • 0% scam</p>
 
@@ -380,7 +396,7 @@
 <div class="modal" id="requestModal" hidden>
   <div class="sheet modal-sheet-request">
     <button class="x" type="button" data-close aria-label="Close modal">×</button>
-    <div class="modal-badge-icon">🎵🤝✨</div>
+    <div class="modal-badge-icon">🎵</div>
     <h2>Connect with Umair</h2>
     <p class="joke-subtitle">Add • Remove • Feedback — direct line, 24h reply, no reports</p>
 
@@ -435,9 +451,14 @@
       <div class="success-icon">✅</div>
       <h3 id="successTitle">Request received!</h3>
       <p id="successSummary">Thank you! Your request is with Umair.</p>
+      <p class="success-sub">Request saved locally. Tap one of the options below to deliver it:</p>
       <div class="success-actions">
-        <button class="btn btn-primary" id="copyReqBtn" type="button">📋 Copy request</button>
-        <button class="btn btn-secondary" id="againReqBtn" type="button">Send another</button>
+        <a class="btn btn-primary" id="emailReqBtn" href="mailto:?subject=TCS%20Radio%20Request" target="_blank" rel="noopener">📧 Email Umair</a>
+        <button class="btn btn-secondary" id="copyReqBtn" type="button">📋 Copy request</button>
+      </div>
+      <div class="success-actions success-actions-row">
+        <button class="btn btn-ghost" id="waReqBtn" type="button">💬 Send via WhatsApp</button>
+        <button class="btn btn-ghost" id="againReqBtn" type="button">Send another</button>
       </div>
     </div>
 
