@@ -194,7 +194,7 @@ const FAQ_DATA = [
   ["What is TCS Radio?",
    "A free, fan-made radio by Umair for 2000s Bollywood, Indipop, highway, auto, monsoon, and chai-tapri moods. No account is needed."],
   ["How do I choose a playlist or song?",
-   "Tap the ☰ Playlist button on the player deck to open the sidebar. Select a station tab, then choose a song from its list — the hero stays focused on the music."],
+   "Tap the ☰ Playlist button on the player deck to open the sidebar. Tap a station tab to switch stations — the music and artwork change right away — then tap a song to jump straight to it."],
   ["Where are the playback buttons?",
    "Always visible on the player deck — play or pause, skip, shuffle, seek, volume and the 📺 video toggle are ready from the moment the page loads."],
   ["Will the music continue to the next playlist?",

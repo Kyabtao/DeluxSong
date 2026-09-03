@@ -663,8 +663,16 @@ const PlayerEngine = (function () {
       btn.innerHTML = `<span class="drawer-tab-name">${p.name}</span><small>${p.tracks.length} tracks</small>`;
       btn.title = `${p.name} • ${p.tracks.length} tracks`;
       btn.onclick = () => {
-        activeDrawerFilter = key;
-        syncDrawerState(true);
+        if (key === currentPlaylistKey) {
+          // Re-browsing the live station just re-syncs the sidebar to it.
+          activeDrawerFilter = key;
+          syncDrawerState(true);
+          return;
+        }
+        // Tuning to a different station switches the playlist immediately —
+        // music, badge, accent and the hero backdrop all follow together.
+        switchPlaylist(key, true);
+        Modals.toast(`📻 Switched to ${p.name} Mode`);
       };
       container.appendChild(btn);
     });

@@ -147,19 +147,19 @@ ok('switchPlaylist refreshes the sidebar track list',
 
 const latestTab = doc.querySelector('.drawer-tab[data-filter="latest"]');
 latestTab.click();
-ok('browsing drawer tabs updates the sidebar heading',
+ok('clicking a drawer tab switches the live station',
+  doc.querySelector('.station-btn.active') && doc.querySelector('.station-btn.active').dataset.playlist === 'latest');
+ok('clicking a drawer tab updates the sidebar heading',
   doc.querySelector('#drawerStnLabel').textContent === 'Latest Hits');
-ok('browsing drawer tabs updates the sidebar track list',
+ok('clicking a drawer tab refreshes the sidebar track list',
   doc.querySelectorAll('#tracks li').length === window.PLAYLISTS.latest.tracks.length,
   `${doc.querySelectorAll('#tracks li').length} tracks`);
-ok('browsing a drawer tab does not immediately change the live station',
-  doc.querySelector('.station-btn.active') && doc.querySelector('.station-btn.active').dataset.playlist === 'monsoon');
 
 const firstLatestTrack = window.PLAYLISTS.latest.tracks[0];
 doc.querySelector('#tracks li').click();
-ok('clicking a track in another drawer playlist activates that playlist',
+ok('clicking a track in the live playlist keeps that playlist active',
   doc.querySelector('.station-btn.active') && doc.querySelector('.station-btn.active').dataset.playlist === 'latest');
-ok('clicking a track in another drawer playlist keeps the top-bar status removed',
+ok('clicking a track keeps the top-bar status removed',
   !doc.querySelector('.nav-status'));
 ok('clicked track becomes the now-playing title',
   doc.querySelector('#npTitle').textContent === firstLatestTrack.title,
@@ -179,6 +179,15 @@ const visibleBg = () => (bgA.classList.contains('in') ? bgA : bgB).getAttribute(
 const shownLayers = () => [bgA, bgB].filter((el) => el.classList.contains('in')).length;
 
 ok('exactly one backdrop layer is ever faded in',
+  shownLayers() === 1, `${shownLayers()} layer(s) visible`);
+
+/* Switching stations from the sidebar (drawer tab) must update the backdrop —
+   this is the listener-facing path that used to leave the hero stuck. */
+const officeTab = doc.querySelector('.drawer-tab[data-filter="office"]');
+officeTab.click();
+ok('switching stations from a drawer tab changes the hero backdrop',
+  visibleBg() === window.PLAYLISTS.office.bg, visibleBg());
+ok('switching stations from a drawer tab still shows exactly one layer',
   shownLayers() === 1, `${shownLayers()} layer(s) visible`);
 
 window.PlayerEngine.switchPlaylist('monsoon', false);
