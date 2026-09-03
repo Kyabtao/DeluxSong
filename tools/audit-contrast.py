@@ -9,6 +9,8 @@ on screen:
     ink on a filled accent chip            on  the accent itself
     accent (links, badges, eyebrow)        on  page background
     hero headline                          on  the darkest hero scrim stop
+    amber LCD readout                      on  the player deck's darkest glass
+    key faces / meta lines                 on  the player deck's wood shell
 
 Reports AA (4.5:1) for normal text and flags anything under 3:1 as a failure.
 """
@@ -23,7 +25,11 @@ ns = {'__file__': str(ROOT / 'tools' / 'audit-render.py')}
 exec(compile(src, 'audit-render', 'exec'), ns)
 Resolver, parse_color = ns['Resolver'], ns['parse_color']
 
+# variables.css owns the palette; the player deck scopes its own --deck-* ramp
+# on .player. Resolver keeps the first declaration of a name, so appending the
+# deck layer adds the new tokens without disturbing any root value.
 variables = (ROOT / 'public/css/variables.css').read_text()
+variables += '\n' + (ROOT / 'public/css/player-redesign.css').read_text()
 
 # token -> what it is used for
 PAIRS = [
@@ -38,6 +44,13 @@ PAIRS = [
     ('--chip-text',   '--bg',            'accent-tinted small copy on background'),
     ('--danger-text', '--bg',            'error text on background'),
     ('--ok-text',     '--bg',            'success text on background'),
+    # Player deck — the LCD resolves to its darkest glass stop and the shell to
+    # its lightest, which is the conservative end of each gradient.
+    ('--deck-ink',      '--deck-lcd',    'deck LCD headline on amber glass'),
+    ('--deck-ink-hi',   '--deck-lcd',    'deck LCD accent markers on glass'),
+    ('--deck-ink-meta', '--deck-lcd',    'deck LCD credit line on glass'),
+    ('--text',          '--deck-shell',  'transport key labels on deck wood'),
+    ('--text-soft',     '--deck-shell',  'baarish mixer label on deck wood'),
 ]
 
 

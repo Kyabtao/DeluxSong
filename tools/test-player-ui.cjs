@@ -24,9 +24,33 @@ window.BackgroundAudio = {
   setPositionState() {}
 };
 window.Modals = { toast() {} };
+/* A stub rich enough to report a real transport state. The old empty stub
+   never fired onReady/onStateChange, so nothing below the click handlers was
+   ever exercised — the deck's spin hooks and seek fill went untested. */
 window.YT = {
-  Player: function () {},
-  PlayerState: { UNSTARTED: -1, ENDED: 0, PLAYING: 1, PAUSED: 2, CUED: 5 }
+  Player: function (el, opts) {
+    this._opts = opts;
+    this._state = -1;
+    opts.events.onReady({ target: this });
+  },
+  PlayerState: { UNSTARTED: -1, ENDED: 0, PLAYING: 1, PAUSED: 2, BUFFERING: 3, CUED: 5 }
+};
+window.YT.Player.prototype = {
+  _emit(state) {
+    this._state = state;
+    this._opts.events.onStateChange({ target: this, data: state });
+  },
+  playVideo() { this._emit(1); },
+  pauseVideo() { this._emit(2); },
+  getPlayerState() { return this._state; },
+  getDuration() { return 252; },
+  getCurrentTime() { return 63; },
+  seekTo() {},
+  setVolume() {},
+  mute() {},
+  unMute() {},
+  loadVideoById() {},
+  cueVideoById() {}
 };
 window.Image = class FakeImage {
   set src(v) {
@@ -128,5 +152,64 @@ ok('clicked track becomes the now-playing title',
 ok('clicked track is highlighted in the refreshed sidebar',
   !!doc.querySelector('#tracks li.active'));
 
-console.log(failures === 0 ? '\n✓ playlist UI tests passed' : `\n✗ ${failures} failure(s)`);
-process.exit(failures ? 1 : 0);
+/* ==========================================================================
+   PLAYER DECK — the "Golden Hour cassette deck" redesign
+   ========================================================================== */
+const player = doc.querySelector('#player');
+
+ok('deck fascia carries the record emblem, brand and live station chip',
+  !!player.querySelector('.player-fascia #disc') &&
+  !!player.querySelector('.player-fascia .player-brand-name') &&
+  player.querySelector('.player-fascia #stationBadge') === player.querySelector('.player-station-chip'));
+
+ok('deck cassette window ships the two take-up reels the engine spins',
+  player.querySelectorAll('.cassette-well .reel').length === 2 &&
+  !!player.querySelector('#reelA') && !!player.querySelector('#reelB'));
+
+ok('deck now-playing LCD keeps every engine hook (title, credit, counter)',
+  !!player.querySelector('.np-text #npTitle') &&
+  !!player.querySelector('.np-text #npCredit') &&
+  !!player.querySelector('.np-text #trackCounter'));
+
+ok('deck markup carries no inline style attributes (all styling is tokenised CSS)',
+  player.querySelectorAll('[style]').length === 0,
+  player.querySelectorAll('[style]').length === 0 ? '' : `${player.querySelectorAll('[style]').length} found`);
+
+ok('deck stylesheet is imported through style.css, not linked ad hoc',
+  src('style.css').includes('css/player-redesign.css') &&
+  !/<link[^>]+player-redesign\.css/.test(html));
+
+/* Transport state: pressing play must spin the record emblem and BOTH reels.
+   These are the only on-screen proof that a track is running. */
+const disc = player.querySelector('#disc');
+ok('record emblem is still before playback', !disc.classList.contains('spin'));
+player.querySelector('#play').click();
+ok('pressing play spins the record emblem and both take-up reels',
+  disc.classList.contains('spin') &&
+  player.querySelector('#reelA').classList.contains('spin') &&
+  player.querySelector('#reelB').classList.contains('spin'));
+ok('pressing play marks the key as playing',
+  player.querySelector('#play').classList.contains('playing'));
+
+/* The seek fill reads --seek-pct off #seek; without it the gradient paints an
+   empty track however far in the song you are. */
+(async () => {
+  await new Promise((r) => setTimeout(r, 700)); // one 500ms tick
+  const seek = player.querySelector('#seek');
+  ok('the seek bar reports a live fill percentage for the deck gradient',
+    seek.style.getPropertyValue('--seek-pct') === '25%' && seek.value === '250',
+    `--seek-pct:${seek.style.getPropertyValue('--seek-pct') || '(none)'} value:${seek.value}`);
+  ok('the tape counter shows the reported position and duration',
+    player.querySelector('#cur').textContent === '1:03' &&
+    player.querySelector('#dur').textContent === '4:12',
+    `${player.querySelector('#cur').textContent} / ${player.querySelector('#dur').textContent}`);
+
+  player.querySelector('#play').click();
+  ok('pausing stops the reels and the record emblem',
+    !disc.classList.contains('spin') &&
+    !player.querySelector('#reelA').classList.contains('spin') &&
+    !player.querySelector('#play').classList.contains('playing'));
+
+  console.log(failures === 0 ? '\n✓ playlist UI tests passed' : `\n✗ ${failures} failure(s)`);
+  process.exit(failures ? 1 : 0);
+})();

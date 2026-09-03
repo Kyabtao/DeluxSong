@@ -1,514 +1,785 @@
 /* ==========================================================================
-   PLAYER — RETRO BOOMBOX / CASSETTE DECK REDESIGN (v3)
-   Loaded after player.css & redesign.css. A warm, wood + chrome deck with
-   two spinning tape reels, an LCD display, chrome buttons and a big orange
-   play key. Each playlist tints the deck accent.
+   PLAYER — "GOLDEN HOUR CASSETTE DECK"
+   Loaded last (see public/style.css), so it re-skins the deck without
+   touching the guarded component sheets.
+
+   The deck keeps the physical-radio idea — a mahogany fascia, a cassette
+   window with two take-up reels, an LCD readout and a row of transport
+   keys — but every colour now resolves through css/variables.css instead of
+   hand-pasted hexes. That gives the player the same three signature moves
+   the rest of the app uses (see css/redesign.css):
+
+     • the gold "beam" hairline across the top of the panel
+     • ticket-style dashed dividers between the deck's zones
+     • one shared hover grammar — lift −2px, gold border, warm glow
+
+   Because nothing is hardcoded, the classic Retro Gold palette stays exact
+   and the per-station `--pl-glow` / `--pl-accent` that player.js writes on
+   .hero still reach the deck, so switching stations warms the whole fascia.
    ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   0. DECK-SCOPED TOKENS — all derived from the palette in variables.css
+   -------------------------------------------------------------------------- */
 .player {
-  --deck-wood: linear-gradient(160deg, #3a2212 0%, #22140a 55%, #180e06 100%);
-  --deck-chrome: linear-gradient(180deg, #efe8dc 0%, #c8bda8 45%, #8a7d68 52%, #b5a98f 100%);
-  --deck-chrome-soft: linear-gradient(180deg, #d8cfbd 0%, #a89c87 50%, #7a6e5a 100%);
-  --deck-screw: radial-gradient(circle at 35% 30%, #fff5e1 0%, #b9ac94 35%, #5a4d39 70%, #2a2014 100%);
-  --deck-lcd: #0d1b0f;
-  --deck-lcd-text: #7dff9c;
-  --deck-lcd-dim: #2e5438;
+  /* Warm mahogany shell + a barely-there grain so it reads as wood, not glass */
+  --deck-shell:
+    linear-gradient(165deg, var(--surface-rgb-92) 0%, var(--surface-2-rgb-92) 54%, var(--deep-rgb-94) 100%);
+  --deck-grain: repeating-linear-gradient(
+    93deg,
+    var(--paper-rgb-04) 0 1px,
+    transparent 1px 8px
+  );
+  --deck-rim: var(--paper-rgb-18);
+
+  /* Sunken zones — cassette window, seek well, volume well */
+  --deck-well: linear-gradient(170deg, var(--shade-rgb-90) 0%, var(--surface-3-rgb-92) 100%);
+
+  /* Amber-phosphor LCD. The 2000s walkman screen was backlit gold, never
+     green — this is what keeps the deck inside the Retro Gold palette. */
+  --deck-lcd: linear-gradient(168deg, var(--shade-rgb-98) 0%, var(--surface-3-rgb-92) 100%);
+  --deck-ink: var(--chip-light);        /* headline readout — 13.9:1 on the LCD */
+  --deck-ink-hi: var(--accent);         /* station credit, active markers */
+  --deck-ink-meta: var(--text-dim);     /* meta lines */
+  --deck-ink-glow: var(--accent-rgb-45);
+
+  /* Transport keys — warm paper faces, gold when armed */
+  --deck-key: linear-gradient(145deg, var(--paper-rgb-11), var(--paper-rgb-04));
+  --deck-key-hi: linear-gradient(145deg, var(--accent-rgb-25), var(--accent-rgb-10));
+}
+
+/* --------------------------------------------------------------------------
+   1. SHELL — beam, halo, rim, grain
+   -------------------------------------------------------------------------- */
+.player {
   position: relative;
   width: min(760px, 100%);
   margin-top: 8px;
-  padding: 26px 24px 20px;
-  border-radius: 32px;
+  padding: 24px 24px 20px;
+  border-radius: var(--rd-radius-panel);
+  border: 1px solid var(--deck-rim);
   background:
+    var(--deck-grain),
     radial-gradient(120% 70% at 50% 0%, var(--accent-rgb-10) 0%, transparent 55%),
-    var(--deck-wood);
-  border: 1px solid #0b0604;
+    var(--deck-shell);
   box-shadow:
-    0 34px 80px rgba(0,0,0,0.75),
-    0 0 0 3px #2b1709,
-    0 0 0 5px #130903,
-    inset 0 2px 0 rgba(255, 210, 140, 0.12),
-    inset 0 -2px 0 rgba(0,0,0,0.6),
-    0 0 90px var(--accent-rgb-08);
+    0 34px 80px var(--black-rgb-70),
+    0 0 0 1px var(--shade-rgb-98),
+    0 0 0 4px var(--accent-rgb-08),
+    inset 0 1px 0 var(--white-rgb-10),
+    inset 0 -1px 0 var(--black-rgb-45);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Decorative corner screws */
-.player::before,
+/* Signature gold beam — restored (the old deck hid it under a fake screw). */
+.player::before {
+  background: var(--rd-beam);
+  opacity: 0.85;
+}
+
+/* Station-aware halo: --pl-glow is written on .hero by player.js and inherits
+   down here, so the whole fascia warms when you switch stations. */
 .player::after {
-  content: "";
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--deck-screw);
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,0.4),
-    0 1px 2px rgba(0,0,0,0.6);
-  z-index: 2;
+  background: radial-gradient(closest-side, var(--pl-glow), transparent);
+  filter: blur(20px);
+  opacity: 0.9;
+  z-index: 0;
 }
-.player::before  { top: 12px; left: 12px; }
-.player::after   { top: 12px; right: 12px; }
 
-/* Top brand strip with ON-AIR lamp */
-.player-top-strip {
+/* Everything the listener touches sits above the halo */
+.yt-holder,
+.player-fascia,
+.cassette-well,
+.seek,
+.controls,
+.rainrow {
+  position: relative;
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   2. FASCIA — brand wordmark, spinning record emblem, on-air lamp, chip
+   -------------------------------------------------------------------------- */
+.player-fascia {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 4px 4px 14px;
-  margin-bottom: 4px;
-  border-bottom: 1px dashed rgba(255, 210, 140, 0.18);
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px dashed var(--paper-rgb-22);
 }
 
 .player-brand {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #f0d49a;
-  text-shadow: 0 1px 0 #000, 0 0 18px var(--accent-rgb-40);
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
 }
 
-.player-brand .brand-dot {
-  width: 8px;
-  height: 8px;
+/* The #disc hook drives .spin from player.js — parked here as a miniature
+   record that turns only while a track is actually playing. */
+.player-brand .disc {
+  display: block;   /* it is a <span> in the markup — do not rely on flex blockification */
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-width: 2px;
+  animation-duration: 3.4s;
+  box-shadow:
+    0 3px 9px var(--black-rgb-60),
+    0 0 10px var(--accent-rgb-22),
+    inset 0 0 5px var(--black-rgb-80);
+}
+
+.player-brand .disc-hole {
+  width: 9px;
+  height: 9px;
+}
+
+.player-brand-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: linear-gradient(180deg, var(--chip-light) 0%, var(--accent) 58%, var(--chip-dark) 118%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--accent); /* fallback for engines without background-clip:text */
+  filter: drop-shadow(0 0 14px var(--accent-rgb-35));
+}
+
+.player-brand-name em {
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+/* On-air lamp — the palette's own red, not an imported #e53935 */
+.player-lamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--red-rgb-38);
+  background: var(--red-rgb-08);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--danger-text);
+  white-space: nowrap;
+}
+
+.player-lamp i {
+  display: block;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #ffb7a8, #e53935 60%);
-  box-shadow: 0 0 10px rgba(229, 57, 53, 0.85);
-  animation: deck-onair 1.6s ease-in-out infinite;
+  background: var(--red);
+  box-shadow: 0 0 8px var(--red-rgb-65);
+  animation: deck-onair 1.8s ease-in-out infinite;
 }
 
 .player-station-chip {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 5px 14px;
-  border-radius: 999px;
+  gap: 6px;
+  padding: 6px 15px;
+  border-radius: var(--radius-pill);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  white-space: nowrap;
   color: var(--on-accent);
-  background: linear-gradient(135deg, var(--chip-light), var(--accent) 60%, var(--chip-dark));
+  background: var(--chip-grad);
   border: 1px solid var(--chip-border);
-  box-shadow: 0 4px 14px var(--accent-rgb-40), inset 0 1px 1px rgba(255,255,255,0.5);
+  box-shadow: 0 4px 14px var(--accent-rgb-40), inset 0 1px 1px var(--white-rgb-50);
 }
 
-/* ==================== CASSETTE WELL ==================== */
+/* --------------------------------------------------------------------------
+   3. CASSETTE WINDOW — two take-up reels under a cream tape label
+   -------------------------------------------------------------------------- */
 .cassette-well {
-  position: relative;
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 18px;
-  align-items: center;
-  padding: 16px 18px;
-  background:
-    linear-gradient(180deg, #1a0f07 0%, #2a1a0f 100%);
-  border: 2px solid #0a0603;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+  padding: 14px 16px;
+  margin-bottom: 12px;
   border-radius: 18px;
+  border: 1px solid var(--paper-rgb-12);
+  background:
+    linear-gradient(120deg, var(--accent-rgb-06), transparent 42%),
+    var(--deck-well);
   box-shadow:
-    inset 0 2px 6px rgba(0,0,0,0.8),
-    inset 0 -1px 0 rgba(255,200,130,0.08),
-    0 6px 14px rgba(0,0,0,0.5);
-  margin-bottom: 14px;
+    inset 0 2px 8px var(--black-rgb-60),
+    inset 0 -1px 0 var(--paper-rgb-075);
   overflow: hidden;
 }
 
-.cassette-well::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(45deg,
-    rgba(255,255,255,0.015) 0 2px,
-    transparent 2px 6px);
-  pointer-events: none;
+.cassette {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 12px 14px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--paper-rgb-09);
+  background:
+    linear-gradient(160deg, var(--surface-rgb-85), var(--surface-3-rgb-92));
+  box-shadow: inset 0 1px 0 var(--white-rgb-08), 0 4px 12px var(--black-rgb-45);
 }
 
-/* Tape reels (replace the vinyl disc) */
 .reels {
   position: relative;
   display: flex;
-  gap: 22px;
   align-items: center;
+  gap: 18px;
+}
+
+/* Tape running between the two spools */
+.reels::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  right: 30px;
+  height: 2px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-rgb-25), var(--accent-rgb-08), var(--accent-rgb-25));
+  box-shadow: 0 1px 0 var(--black-rgb-45);
+  pointer-events: none;
 }
 
 .reel {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background:
-    repeating-radial-gradient(circle at 50% 50%, #1a1007 0 3px, #2d1e10 3px 6px),
-    #120a04;
-  border: 3px solid #5a4730;
-  box-shadow:
-    0 4px 12px rgba(0,0,0,0.7),
-    inset 0 0 0 2px #0a0603,
-    inset 0 0 12px rgba(0,0,0,0.8);
   position: relative;
-  animation: reel-spin 4s linear infinite;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-rgb-45);
+  background:
+    repeating-radial-gradient(circle at 50% 50%, var(--disc-a) 0 2.5px, var(--disc-b) 2.5px 5px);
+  box-shadow:
+    0 5px 14px var(--black-rgb-60),
+    0 0 12px var(--accent-rgb-18),
+    inset 0 0 0 2px var(--shade-rgb-80),
+    inset 0 0 10px var(--black-rgb-80);
+  animation: reel-spin 4.2s linear infinite;
   animation-play-state: paused;
 }
 
-.reel.spin { animation-play-state: running; }
+.reel.spin {
+  animation-play-state: running;
+}
 
+/* Six gold spokes — the visible proof that the transport is turning */
 .reel::after {
   content: "";
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  background:
-    conic-gradient(from 0deg, var(--accent) 0deg 60deg, transparent 60deg 120deg, var(--accent) 120deg 180deg, transparent 180deg 240deg, var(--accent) 240deg 300deg, transparent 300deg 360deg);
-  border: 2px solid #2b1c0c;
-  box-shadow: 0 0 10px var(--accent-rgb-50);
+  border: 1px solid var(--shade-rgb-80);
+  background: conic-gradient(
+    from 0deg,
+    var(--accent-rgb-65) 0deg 42deg, transparent 42deg 60deg,
+    var(--accent-rgb-65) 60deg 102deg, transparent 102deg 120deg,
+    var(--accent-rgb-65) 120deg 162deg, transparent 162deg 180deg,
+    var(--accent-rgb-65) 180deg 222deg, transparent 222deg 240deg,
+    var(--accent-rgb-65) 240deg 282deg, transparent 282deg 300deg,
+    var(--accent-rgb-65) 300deg 342deg, transparent 342deg 360deg
+  );
 }
 
+/* Brass spindle cap */
 .reel::before {
   content: "";
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #ffdca2, #7a5a2d 80%);
   z-index: 2;
-  box-shadow: 0 0 4px rgba(0,0,0,0.7);
-}
-
-/* Tape thread between reels */
-.reels::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 35px;
-  right: 35px;
-  height: 2px;
-  background: linear-gradient(90deg,
-    rgba(120, 80, 40, 0.8) 0%,
-    rgba(80, 50, 20, 0.5) 50%,
-    rgba(120, 80, 40, 0.8) 100%);
-  transform: translateY(-50%);
-  box-shadow: 0 1px 0 rgba(0,0,0,0.6);
-  pointer-events: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, var(--chip-border), var(--chip-dark) 82%);
+  box-shadow: 0 0 5px var(--accent-rgb-50), 0 1px 2px var(--black-rgb-70);
 }
 
 @keyframes reel-spin {
   to { transform: rotate(360deg); }
 }
 
-/* Hide original vinyl disc */
-.disc { display: none; }
-
-/* LCD info panel */
-.np-text {
-  position: relative;
-  background: var(--deck-lcd);
-  border: 2px solid #061008;
-  border-radius: 10px;
-  padding: 10px 14px;
-  box-shadow:
-    inset 0 2px 8px rgba(0,0,0,0.9),
-    inset 0 0 0 1px rgba(125, 255, 156, 0.08);
+/* The hand-written tape label every cassette had */
+.cassette-label {
+  padding: 2px 10px;
+  border-radius: 4px;
+  border: 1px dashed var(--paper-rgb-22);
+  background: var(--paper-rgb-06);
   font-family: var(--font-mono);
-  min-height: 74px;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--deck-ink-meta);
+  white-space: nowrap;
 }
 
+/* --------------------------------------------------------------------------
+   4. LCD NOW-PLAYING READOUT — amber phosphor, faint scanlines
+   -------------------------------------------------------------------------- */
+/* The cassette well is a two-column grid with stretch, so the LCD column
+   flexes to fill it instead of leaving a gap under the readout. */
+.np {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  border: 0;
+  border-left: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.np-text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-height: 82px;
+  padding: 11px 15px;
+  border-radius: 12px;
+  border: 1px solid var(--paper-rgb-09);
+  border-left: 3px solid var(--accent-rgb-60);
+  background:
+    linear-gradient(120deg, var(--accent-rgb-06), transparent 45%),
+    var(--deck-lcd);
+  box-shadow: inset 0 2px 8px var(--black-rgb-60), 0 0 18px var(--accent-rgb-06);
+  overflow: hidden;
+}
+
+/* Phosphor scanlines — low enough to texture the glass, never to dim the ink */
 .np-text::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(0deg,
-    rgba(125,255,156,0.05) 0 1px,
-    transparent 1px 3px);
+  border-radius: 11px;
+  background: repeating-linear-gradient(0deg, var(--accent-rgb-05) 0 1px, transparent 1px 3px);
   pointer-events: none;
-  border-radius: 8px;
 }
 
 .np-badge-row {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 10px;
+  margin-bottom: 5px;
 }
 
-.np-badge {
+.np-deck-label {
   font-family: var(--font-mono);
-  background: transparent;
-  border: 1px solid var(--deck-lcd-dim);
-  color: var(--deck-lcd-text);
-  padding: 1px 7px;
-  border-radius: 4px;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-shadow: 0 0 6px rgba(125, 255, 156, 0.5);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--deck-ink-hi);
+  text-shadow: 0 0 8px var(--deck-ink-glow);
+  white-space: nowrap;
 }
 
 .np-track-counter {
   font-family: var(--font-mono);
-  color: var(--deck-lcd-text);
-  opacity: 0.9;
   font-size: 10px;
-  text-shadow: 0 0 6px rgba(125, 255, 156, 0.5);
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--accent-rgb-25);
+  background: var(--accent-rgb-08);
+  color: var(--deck-ink-hi);
+  opacity: 1;
+  white-space: nowrap;
 }
 
 .np-title {
-  color: var(--deck-lcd-text);
-  font-family: var(--font-mono);
-  font-size: 15px;
+  font-family: var(--font-display);
+  font-size: 16px;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  text-shadow: 0 0 8px rgba(125, 255, 156, 0.7);
-  margin-top: 4px;
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+  color: var(--deck-ink);
+  text-shadow: 0 0 12px var(--deck-ink-glow);
 }
 
 .np-credit {
+  margin-top: 3px;
   font-family: var(--font-mono);
-  color: var(--deck-lcd-text);
-  opacity: 0.7;
-  font-size: 11px;
-  margin-top: 2px;
-  text-shadow: 0 0 5px rgba(125, 255, 156, 0.4);
+  font-size: 10.5px;
+  color: var(--deck-ink-meta);
+  opacity: 0.9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .np-credit span {
-  color: var(--deck-lcd-text);
+  color: var(--deck-ink-hi);
+  font-weight: 600;
   opacity: 1;
 }
 
-/* ==================== SEEK BAR (TAPE COUNTER) ==================== */
+/* --------------------------------------------------------------------------
+   5. TAPE COUNTER / SEEK
+   -------------------------------------------------------------------------- */
 .seek {
-  margin-top: 10px;
-  padding: 8px 12px;
-  background: linear-gradient(180deg, #1a0f07 0%, #231509 100%);
-  border: 1px solid #0a0603;
-  border-radius: 12px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.7);
+  margin-top: 0;
+  padding: 9px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--paper-rgb-09);
+  background: var(--deck-well);
+  box-shadow: inset 0 2px 6px var(--black-rgb-60);
 }
 
 .time {
-  font-family: var(--font-mono);
-  color: var(--deck-lcd-text);
-  font-size: 12px;
-  text-shadow: 0 0 6px rgba(125, 255, 156, 0.6);
-  background: var(--deck-lcd);
-  padding: 4px 8px;
-  border-radius: 4px;
-  border: 1px solid #061008;
-  min-width: 50px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
+  min-width: 48px;
+  padding: 3px 9px;
+  border-radius: 8px;
+  border: 1px solid var(--accent-rgb-22);
+  background: var(--shade-rgb-80);
+  color: var(--deck-ink);
+  box-shadow: inset 0 1px 3px var(--black-rgb-45), 0 0 8px var(--accent-rgb-06);
+  text-shadow: 0 0 7px var(--deck-ink-glow);
 }
 
+/* Filled portion tracks --seek-pct, which player.js writes inline every tick */
 input[type="range"] {
-  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-rgb-35) var(--seek-pct, 0%), #3a2a18 var(--seek-pct, 0%), #1c1209 100%);
   height: 8px;
-  border-radius: 4px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg,
+      var(--accent) 0%,
+      var(--accent-rgb-80) var(--seek-pct, 0%),
+      var(--shade-rgb-80) var(--seek-pct, 0%),
+      var(--surface-3-rgb-92) 100%);
+  box-shadow: inset 0 1px 3px var(--black-rgb-60), 0 0 10px var(--accent-rgb-06);
 }
 
+input[type="range"]:hover {
+  background:
+    linear-gradient(90deg,
+      var(--accent-light) 0%,
+      var(--accent) var(--seek-pct, 0%),
+      var(--shade-rgb-80) var(--seek-pct, 0%),
+      var(--surface-3-rgb-92) 100%);
+}
+
+/* Kept as two rules on purpose: each engine rejects the pseudo-element it does
+   not implement, and one unsupported selector in a list invalidates the whole
+   rule — so a combined selector would drop the gold thumb everywhere. */
 input[type="range"]::-webkit-slider-thumb {
-  width: 18px;
-  height: 18px;
-  background: var(--deck-chrome);
-  border: 1px solid #5a4d39;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.4);
+  width: 17px;
+  height: 17px;
+  border: 2px solid var(--on-accent-2);
+  background: var(--chip-grad);
+  box-shadow: 0 2px 8px var(--black-rgb-60), 0 0 10px var(--accent-glow);
 }
 
 input[type="range"]::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  background: var(--deck-chrome);
-  border: 1px solid #5a4d39;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.4);
+  width: 17px;
+  height: 17px;
+  border: 2px solid var(--on-accent-2);
+  background: var(--chip-grad);
+  box-shadow: 0 2px 8px var(--black-rgb-60), 0 0 10px var(--accent-glow);
 }
 
-/* ==================== CONTROLS (CHROME KEYS) ==================== */
+/* --------------------------------------------------------------------------
+   6. TRANSPORT KEYS — warm paper faces on a dashed ticket divider
+   The chrome bar is gone: keys are the same warm faces the rest of the app
+   uses, so they take the shared hover grammar and the station tint.
+   -------------------------------------------------------------------------- */
 .controls {
   margin-top: 14px;
-  padding: 12px 14px;
-  gap: 10px;
-  background: linear-gradient(180deg, #d7ccb8 0%, #8e8069 48%, #5f5340 52%, #a89a82 100%);
-  border: 2px solid #2a1e10;
-  border-radius: 16px;
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,0.35),
-    inset 0 -3px 6px rgba(0,0,0,0.4),
-    0 6px 14px rgba(0,0,0,0.5);
-  justify-content: center;
+  padding-top: 15px;
+  padding-bottom: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  gap: 11px;
 }
 
 .ctl {
-  background: var(--deck-chrome-soft);
-  border: 1px solid #3a2f20;
-  color: #1a1208;
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
+  width: 45px;
+  height: 45px;
+  border-radius: 14px;
+  border-color: var(--paper-rgb-22);
+  background: var(--deck-key);
+  color: var(--text);
   font-size: 15px;
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,0.4),
-    inset 0 -2px 3px rgba(0,0,0,0.3),
-    0 2px 4px rgba(0,0,0,0.4);
-  text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+  text-shadow: none;
+  box-shadow: 0 4px 12px var(--black-rgb-35), inset 0 1px 1px var(--white-rgb-14);
 }
 
 .ctl:hover {
-  background: linear-gradient(180deg, #efeadb 0%, #b4a78f 100%);
-  color: #0a0603;
-  transform: translateY(-1px);
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,0.55),
-    inset 0 -2px 3px rgba(0,0,0,0.3),
-    0 4px 8px rgba(0,0,0,0.4);
+  background: var(--deck-key-hi);
+  border-color: var(--accent-rgb-65);
+  color: var(--text-hi);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 20px var(--accent-rgb-28), inset 0 1px 1px var(--white-rgb-25);
 }
 
 .ctl:active {
-  transform: translateY(2px);
-  box-shadow:
-    inset 0 2px 4px rgba(0,0,0,0.4),
-    0 0 2px rgba(0,0,0,0.4);
+  transform: translateY(1px) scale(0.95);
+  box-shadow: 0 2px 6px var(--black-rgb-50), inset 0 2px 3px var(--black-rgb-40);
 }
 
 .ctl.small {
-  width: 38px;
-  height: 38px;
-  font-size: 13px;
-  border-radius: 6px;
+  width: 39px;
+  height: 39px;
+  font-size: 14px;
+  border-radius: 12px;
 }
 
-/* Play key — big orange / amber key */
+/* Armed key (shuffle on, video shown) — the app's chip treatment */
+.ctl.on {
+  background: var(--chip-grad);
+  border-color: var(--chip-border);
+  color: var(--on-accent);
+  text-shadow: none;
+  box-shadow: 0 0 16px var(--accent-rgb-50), inset 0 1px 2px var(--white-rgb-50);
+}
+
+.ctl.on:hover {
+  filter: brightness(1.08);
+  color: var(--on-accent);
+}
+
+/* The play key is the same gold as every other primary action in the app */
 .ctl.play {
-  width: 68px;
-  height: 54px;
-  border-radius: 10px;
-  font-size: 22px;
-  background: linear-gradient(180deg, #ffb347 0%, #ff7a1a 55%, #c94b00 100%);
-  color: #fff;
-  border: 1px solid #7a2a00;
-  text-shadow: 0 -1px 0 rgba(0,0,0,0.3);
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  font-size: 23px;
+  background: var(--key-grad);
+  border-color: var(--key-border);
+  color: var(--on-accent);
+  text-shadow: none;
   box-shadow:
-    inset 0 2px 0 rgba(255,220,160,0.5),
-    inset 0 -3px 4px rgba(0,0,0,0.3),
-    0 6px 14px rgba(255,100,0,0.45),
-    0 2px 4px rgba(0,0,0,0.5);
+    0 0 0 5px var(--accent-rgb-14),
+    0 8px 26px var(--accent-rgb-45),
+    0 2px 4px var(--black-rgb-40),
+    inset 0 2px 2px var(--white-rgb-60),
+    inset 0 -2px 3px var(--black-rgb-25);
 }
 
 .ctl.play:hover {
-  background: linear-gradient(180deg, #ffc468 0%, #ff8f30 55%, #d85700 100%);
-  transform: translateY(-2px);
-  filter: brightness(1.05);
+  transform: translateY(-3px) scale(1.07);
+  filter: brightness(1.06);
+  box-shadow:
+    0 0 0 7px var(--accent-rgb-18),
+    0 12px 34px var(--accent-rgb-65),
+    0 4px 8px var(--black-rgb-40),
+    inset 0 2px 2px var(--white-rgb-70);
 }
 
 .ctl.play:active {
-  transform: translateY(3px);
-  box-shadow:
-    inset 0 3px 6px rgba(0,0,0,0.45),
-    0 1px 2px rgba(0,0,0,0.4);
+  transform: translateY(1px) scale(0.96);
+  box-shadow: 0 3px 10px var(--accent-rgb-40), inset 0 2px 4px var(--black-rgb-30);
 }
 
 .ctl.play.playing {
-  animation: deck-pulse-play 2.2s ease-in-out infinite;
+  animation: deck-pulse-play 2.8s ease-in-out infinite;
 }
 
 @keyframes deck-pulse-play {
-  0%, 100% { box-shadow: inset 0 2px 0 rgba(255,220,160,0.5), inset 0 -3px 4px rgba(0,0,0,0.3), 0 6px 14px var(--accent-rgb-45); }
-  50%      { box-shadow: inset 0 2px 0 rgba(255,220,160,0.5), inset 0 -3px 4px rgba(0,0,0,0.3), 0 6px 22px var(--accent-rgb-70); }
+  0%, 100% {
+    box-shadow:
+      0 0 0 5px var(--accent-rgb-14),
+      0 8px 24px var(--accent-rgb-40),
+      inset 0 2px 2px var(--white-rgb-60);
+  }
+  50% {
+    box-shadow:
+      0 0 0 7px var(--accent-rgb-18),
+      0 8px 34px var(--accent-rgb-75),
+      0 0 18px var(--accent-rgb-40),
+      inset 0 2px 2px var(--white-rgb-60);
+  }
 }
 
-.ctl.on {
-  background: linear-gradient(180deg, var(--accent) 0%, #c38012 100%);
-  color: #fff;
-  border-color: #5a3500;
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,0.4),
-    inset 0 -2px 3px rgba(0,0,0,0.4),
-    0 0 12px var(--accent-rgb-55);
-}
-
-/* Volume slider well */
+/* --------------------------------------------------------------------------
+   7. VOLUME WELL & BAARISH MIXER
+   -------------------------------------------------------------------------- */
 .vol {
-  background: linear-gradient(180deg, #1a0f07, #231509);
-  border: 1px solid #0a0603;
-  border-radius: 10px;
-  padding: 6px 10px;
-  width: 132px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.7);
+  width: 146px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--paper-rgb-18);
+  background:
+    linear-gradient(120deg, var(--accent-rgb-05), transparent 55%),
+    var(--well);
+  box-shadow: inset 0 1px 3px var(--black-rgb-45);
 }
 
-.vol-btn { color: var(--deck-lcd-text); font-size: 14px; text-shadow: 0 0 5px rgba(125,255,156,0.5); }
+.vol-btn {
+  color: var(--deck-ink);
+  font-size: 15px;
+  text-shadow: 0 0 6px var(--deck-ink-glow);
+}
 
-/* Rain row */
 .rainrow {
-  margin-top: 12px;
-  padding: 10px 14px;
-  background: linear-gradient(180deg, rgba(26,15,7,0.9), rgba(35,21,9,0.9));
-  border: 1px solid #0a0603;
-  border-radius: 12px;
-  color: var(--deck-lcd-text);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  text-shadow: 0 0 5px rgba(125,255,156,0.5);
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.7);
-}
-
-.rainrow span { opacity: 1; color: var(--deck-lcd-text); }
-
-.rainrow input[type="range"] {
-  background: linear-gradient(90deg, #6ea8ff, #6ea8ff33 50%, #1c1209 50%);
-}
-
-/* Video holder chrome frame when open */
-.yt-holder {
-  border: 3px solid #0a0603;
+  margin-top: 13px;
+  padding: 11px 14px;
+  border: 1px solid var(--accent-rgb-18);
   border-radius: 14px;
-  background: #000;
-  box-shadow: 0 10px 26px rgba(0,0,0,0.7), inset 0 2px 0 rgba(255,210,140,0.12);
+  border-top: 1px dashed var(--accent-rgb-38);
+  background:
+    linear-gradient(120deg, var(--accent-rgb-05), transparent 55%),
+    var(--well);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--text-soft);
+  text-shadow: none;
+  box-shadow: inset 0 1px 3px var(--black-rgb-40);
+}
+
+.rainrow span {
+  color: var(--deck-ink-hi);
+  font-weight: 600;
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   8. VIDEO WELL — framed like the rest of the deck
+   -------------------------------------------------------------------------- */
+.yt-holder {
   margin-bottom: 14px;
+  border: 1px solid var(--paper-rgb-18);
+  border-radius: 18px;
+  background: var(--media-bg);
+  box-shadow: 0 14px 34px var(--black-rgb-65), inset 0 1px 0 var(--white-rgb-08);
 }
 
-/* Remove the redesign.css top gold beam inside the deck (we're wooden now) */
-.player::before { top: 12px; left: 12px; } /* reset to screw */
-.player::after { /* kill the redesign accent halo */
-  content: "";
-  position: absolute;
-  top: -60px;
-  left: 50%;
-  width: 400px;
-  height: 180px;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: radial-gradient(closest-side, var(--accent-rgb-18), transparent);
-  filter: blur(22px);
-  pointer-events: none;
-  opacity: 0.55;
-}
-
-/* Responsive scaling */
+/* --------------------------------------------------------------------------
+   9. RESPONSIVE & MOTION
+   -------------------------------------------------------------------------- */
 @media (max-width: 560px) {
   .player {
-    padding: 22px 14px 16px;
+    padding: 20px 14px 15px;
     border-radius: 24px;
+  }
+  .player-fascia {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-bottom: 11px;
+    margin-bottom: 11px;
+  }
+  .player-brand-name {
+    font-size: 12.5px;
+    letter-spacing: 0.12em;
+  }
+  .player-station-chip {
+    font-size: 10px;
+    padding: 5px 11px;
   }
   .cassette-well {
     grid-template-columns: 1fr;
     gap: 12px;
     padding: 12px;
   }
-  .reels { justify-content: center; gap: 26px; }
-  .reel { width: 58px; height: 58px; }
-  .controls { gap: 6px; padding: 10px 8px; flex-wrap: wrap; }
-  .ctl { width: 38px; height: 38px; font-size: 13px; }
-  .ctl.small { width: 34px; height: 34px; font-size: 12px; }
-  .ctl.play { width: 56px; height: 48px; font-size: 18px; }
-  .vol { width: 110px; padding: 5px 8px; }
-  .np-title { font-size: 13.5px; }
-  .player-brand { font-size: 12px; letter-spacing: 0.16em; }
+  .cassette {
+    padding: 10px 12px 8px;
+  }
+  .reels {
+    justify-content: center;
+    gap: 24px;
+  }
+  .reels::after {
+    left: 34px;
+    right: 34px;
+  }
+  .reel {
+    width: 52px;
+    height: 52px;
+  }
+  .reel::after {
+    width: 22px;
+    height: 22px;
+  }
+  .controls {
+    gap: 7px;
+    padding-top: 12px;
+    flex-wrap: wrap;
+  }
+  .ctl {
+    width: 41px;
+    height: 41px;
+    font-size: 14px;
+  }
+  .ctl.small {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+  .ctl.play {
+    width: 58px;
+    height: 58px;
+    font-size: 20px;
+  }
+  .vol {
+    width: 118px;
+    padding: 5px 10px;
+  }
+  .np-title {
+    font-size: 14px;
+  }
+  .np-text {
+    min-height: 74px;
+  }
+}
+
+@media (max-width: 380px) {
+  .player-lamp {
+    display: none; /* the fascia keeps brand + station chip readable */
+  }
+  .player-brand .disc {
+    width: 26px;
+    height: 26px;
+    flex-basis: 26px;
+  }
+  .player-brand .disc-hole {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel,
+  .player-brand .disc {
+    animation: none;
+  }
+  .player-lamp i {
+    animation: none;
+    opacity: 1;
+  }
+  .ctl.play.playing {
+    animation: none;
+  }
 }
 
 @keyframes deck-onair {
-  0%, 100% { opacity: 1; box-shadow: 0 0 10px rgba(229,57,53,0.9); }
-  50%      { opacity: 0.3; box-shadow: 0 0 4px rgba(229,57,53,0.4); }
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--red-rgb-65); }
+  50%      { opacity: 0.32; box-shadow: 0 0 3px var(--red-rgb-38); }
 }

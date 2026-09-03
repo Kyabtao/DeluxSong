@@ -18,7 +18,6 @@
 <link rel="preconnect" href="https://www.youtube.com" />
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
-<link rel="stylesheet" href="css/player-redesign.css" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 </head>
 <body>
@@ -132,26 +131,34 @@
         <div class="yt-slot" id="ytSlotB"><div id="ytplayerB"></div></div>
       </div>
 
-      <!-- Top strip: brand + live lamp + station chip -->
-      <div class="player-top-strip">
-        <div class="player-brand"><span class="brand-dot" aria-hidden="true"></span>टीसीएस • BOOMBOX</div>
+      <!-- Fascia: brand wordmark, the record emblem that turns while a track
+           plays, the on-air lamp, and the live station chip -->
+      <div class="player-fascia">
+        <div class="player-brand">
+          <span class="disc" id="disc" title="Spinning retro vinyl record">
+            <span class="disc-hole"></span>
+          </span>
+          <span class="player-brand-name">टीसीएस <em>Deck</em></span>
+          <span class="player-lamp" aria-hidden="true"><i></i>on air</span>
+        </div>
         <span class="player-station-chip" id="stationBadge">🏢 TCS Office Mode</span>
       </div>
 
-      <!-- Cassette well: spinning reels + LCD info -->
+      <!-- Cassette window: two take-up reels beside the amber LCD readout -->
       <div class="cassette-well">
-        <div class="reels" aria-hidden="true">
-          <div class="reel" id="reelA"></div>
-          <div class="reel" id="reelB"></div>
-        </div>
-        <div class="np">
-          <div class="disc" id="disc" title="Spinning retro vinyl record">
-            <div class="disc-hole"></div>
+        <div class="cassette" aria-hidden="true">
+          <div class="reels">
+            <div class="reel" id="reelA"></div>
+            <div class="reel" id="reelB"></div>
           </div>
+          <span class="cassette-label">TCS Radio · Side A</span>
+        </div>
+
+        <div class="np">
           <div class="np-text">
             <div class="np-badge-row">
+              <span class="np-deck-label">◉ now playing</span>
               <span class="np-track-counter" id="trackCounter">Track 1 / 7</span>
-              <span class="np-deck-label" style="font-family:var(--font-mono);font-size:9px;color:var(--deck-lcd-dim);letter-spacing:.2em;text-transform:uppercase">◉ PLAYING</span>
             </div>
             <div class="np-title" id="npTitle">Nostalgia Loading...</div>
             <div class="np-credit">Credits: <span id="npCredit">YouTube</span></div>
