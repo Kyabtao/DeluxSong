@@ -1,25 +1,31 @@
 /* ==========================================================================
-   PLAYER — "GOLDEN HOUR CASSETTE DECK"
+   PLAYER — "POCKET CASSETTE" MICRO DECK
    Loaded last (see public/style.css), so it re-skins the deck without
    touching the guarded component sheets.
 
-   The deck keeps the physical-radio idea — a mahogany fascia, a cassette
-   window with two take-up reels, an LCD readout and a row of transport
-   keys — but every colour now resolves through css/variables.css instead of
-   hand-pasted hexes. That gives the player the same three signature moves
-   the rest of the app uses (see css/redesign.css):
+   The brief for this skin: make the deck's smallest possible footprint
+   *actually small*. The old golden-hour deck stacked a full fascia, a
+   62px-reel cassette window, a fat seek well and 45px transport keys —
+   roughly 380px of hero. This skin keeps every signature element
+   (gold beam, cassette reels, amber LCD, on-air lamp, transport keys)
+   but compresses each zone into ONE slim row:
 
-     • the gold "beam" hairline across the top of the panel
-     • ticket-style dashed dividers between the deck's zones
-     • one shared hover grammar — lift −2px, gold border, warm glow
+     • fascia  → a 14px micro strip (record emblem, wordmark, lamp, chip)
+     • window  → one-line LCD bar: title · credit · counter, with the two
+                 reels shrunk to 18px spools beside it
+     • seek    → a hairline 4px tape track between mono clock digits
+     • keys    → 26px transport keys around a 32px play key
 
-   Because nothing is hardcoded, the classic Retro Gold palette stays exact
-   and the per-station `--pl-glow` / `--pl-accent` that player.js writes on
-   .hero still reach the deck, so switching stations warms the whole fascia.
+   Result: ~140px of deck (was ~380px) and a 560px max width (was 760px).
+   Every engine hook is untouched — .spin, .playing, .on, .mini and the
+   --seek-pct fill all still work, and all colours still resolve through
+   css/variables.css, so the per-station --pl-glow / --pl-accent tint
+   player.js writes on .hero keeps warming the fascia.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   0. DECK-SCOPED TOKENS — all derived from the palette in variables.css
+   0. DECK-SCOPED TOKENS — unchanged from the golden-hour deck.
+   audit-contrast.py resolves these against the palette; keep the values.
    -------------------------------------------------------------------------- */
 .player {
   /* Warm mahogany shell + a barely-there grain so it reads as wood, not glass */
@@ -49,29 +55,29 @@
 }
 
 /* --------------------------------------------------------------------------
-   1. SHELL — beam, halo, rim, grain
+   1. SHELL — as narrow and as short as the content allows
    -------------------------------------------------------------------------- */
 .player {
   position: relative;
-  width: min(760px, 100%);
-  margin-top: 8px;
-  padding: 24px 24px 20px;
-  border-radius: var(--rd-radius-panel);
+  width: min(560px, 100%);
+  margin-top: 6px;
+  padding: 9px 11px;
+  border-radius: 16px;
   border: 1px solid var(--deck-rim);
   background:
     var(--deck-grain),
     radial-gradient(120% 70% at 50% 0%, var(--accent-rgb-10) 0%, transparent 55%),
     var(--deck-shell);
   box-shadow:
-    0 34px 80px var(--black-rgb-70),
+    0 18px 44px var(--black-rgb-70),
     0 0 0 1px var(--shade-rgb-98),
-    0 0 0 4px var(--accent-rgb-08),
+    0 0 0 3px var(--accent-rgb-08),
     inset 0 1px 0 var(--white-rgb-10),
     inset 0 -1px 0 var(--black-rgb-45);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Signature gold beam — restored (the old deck hid it under a fake screw). */
+/* Signature gold beam — kept, just trimmed to the slimmer fascia */
 .player::before {
   background: var(--rd-beam);
   opacity: 0.85;
@@ -99,50 +105,51 @@
 }
 
 /* --------------------------------------------------------------------------
-   2. FASCIA — brand wordmark, spinning record emblem, on-air lamp, chip
+   2. FASCIA — one 14px-high strip: emblem · wordmark · lamp · station chip
    -------------------------------------------------------------------------- */
 .player-fascia {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  padding-bottom: 14px;
-  margin-bottom: 14px;
+  gap: 3px 8px;
+  padding-bottom: 4px;
+  margin-bottom: 4px;
   border-bottom: 1px dashed var(--paper-rgb-22);
 }
 
 .player-brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   min-width: 0;
 }
 
-/* The #disc hook drives .spin from player.js — parked here as a miniature
-   record that turns only while a track is actually playing. */
+/* The #disc hook drives .spin from player.js — a shirt-button record that
+   turns only while a track is actually playing. */
 .player-brand .disc {
   display: block;   /* it is a <span> in the markup — do not rely on flex blockification */
-  width: 30px;
-  height: 30px;
-  flex: 0 0 30px;
-  border-width: 2px;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  border-width: 1px;
   animation-duration: 3.4s;
   box-shadow:
-    0 3px 9px var(--black-rgb-60),
-    0 0 10px var(--accent-rgb-22),
-    inset 0 0 5px var(--black-rgb-80);
+    0 1px 4px var(--black-rgb-60),
+    0 0 5px var(--accent-rgb-22),
+    inset 0 0 2px var(--black-rgb-80);
 }
 
 .player-brand .disc-hole {
-  width: 9px;
-  height: 9px;
+  width: 4px;
+  height: 4px;
 }
 
 .player-brand-name {
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 9px;
   font-weight: 800;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   white-space: nowrap;
   background: linear-gradient(180deg, var(--chip-light) 0%, var(--accent) 58%, var(--chip-dark) 118%);
@@ -150,7 +157,7 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: var(--accent); /* fallback for engines without background-clip:text */
-  filter: drop-shadow(0 0 14px var(--accent-rgb-35));
+  filter: drop-shadow(0 0 8px var(--accent-rgb-35));
 }
 
 .player-brand-name em {
@@ -163,15 +170,15 @@
 .player-lamp {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 3px 10px;
+  gap: 4px;
+  padding: 1px 6px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--red-rgb-38);
   background: var(--red-rgb-08);
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: 7.5px;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--danger-text);
   white-space: nowrap;
@@ -179,64 +186,62 @@
 
 .player-lamp i {
   display: block;
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: var(--red);
-  box-shadow: 0 0 8px var(--red-rgb-65);
+  box-shadow: 0 0 5px var(--red-rgb-65);
   animation: deck-onair 1.8s ease-in-out infinite;
 }
 
 .player-station-chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 15px;
+  gap: 4px;
+  padding: 2px 8px;
   border-radius: var(--radius-pill);
-  font-size: 11px;
+  font-size: 8.5px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
   color: var(--on-accent);
   background: var(--chip-grad);
   border: 1px solid var(--chip-border);
-  box-shadow: 0 4px 14px var(--accent-rgb-40), inset 0 1px 1px var(--white-rgb-50);
+  box-shadow: 0 2px 8px var(--accent-rgb-40), inset 0 1px 1px var(--white-rgb-50);
 }
 
 /* --------------------------------------------------------------------------
-   3. AUTO-START PROMPT
-   Visible only while a browser is holding the audio back: the song is already
-   running muted, this is the one tap that lets it be heard.
+   3. AUTO-START PROMPT — a one-line amber strip, not a banner
    -------------------------------------------------------------------------- */
 .deck-unmute {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
+  gap: 6px;
   width: 100%;
-  margin: 0 0 13px;
-  padding: 11px 16px;
-  border-radius: 14px;
+  margin: 0 0 4px;
+  padding: 5px 10px;
+  border-radius: 9px;
   border: 1px solid var(--accent-rgb-45);
   border-left: 3px solid var(--accent);
   background: linear-gradient(120deg, var(--accent-rgb-18), var(--accent-rgb-05));
   color: var(--deck-ink);
   font-family: var(--font-body);
-  font-size: 12.5px;
+  font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 0.01em;
   text-align: center;
   cursor: pointer;
-  box-shadow: 0 6px 18px var(--accent-rgb-18), inset 0 1px 0 var(--white-rgb-14);
+  box-shadow: 0 3px 10px var(--accent-rgb-18), inset 0 1px 0 var(--white-rgb-14);
   animation: deck-unmute-in 0.4s var(--ease);
   transition: transform 0.2s var(--ease), box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .deck-unmute:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   border-color: var(--accent-rgb-65);
-  box-shadow: 0 10px 26px var(--accent-rgb-28), inset 0 1px 0 var(--white-rgb-20);
+  box-shadow: 0 6px 16px var(--accent-rgb-28), inset 0 1px 0 var(--white-rgb-20);
 }
 
 .deck-unmute:active {
@@ -245,7 +250,7 @@
 
 .deck-unmute-ico {
   flex: 0 0 auto;
-  font-size: 15px;
+  font-size: 11px;
   line-height: 1;
   animation: deck-unmute-pulse 1.6s ease-in-out infinite;
 }
@@ -257,7 +262,7 @@
 }
 
 @keyframes deck-unmute-in {
-  from { opacity: 0; transform: translateY(-6px); }
+  from { opacity: 0; transform: translateY(-4px); }
 }
 
 @keyframes deck-unmute-pulse {
@@ -266,45 +271,43 @@
 }
 
 /* --------------------------------------------------------------------------
-   4. CASSETTE WINDOW — two take-up reels under a cream tape label
+   4. CASSETTE WINDOW — one slim bar: two 18px spools + a one-line LCD
    -------------------------------------------------------------------------- */
 .cassette-well {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 16px;
-  align-items: stretch;
-  padding: 14px 16px;
-  margin-bottom: 12px;
-  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 7px;
+  margin-bottom: 4px;
+  border-radius: 10px;
   border: 1px solid var(--paper-rgb-12);
   background:
     linear-gradient(120deg, var(--accent-rgb-06), transparent 42%),
     var(--deck-well);
   box-shadow:
-    inset 0 2px 8px var(--black-rgb-60),
+    inset 0 1px 4px var(--black-rgb-60),
     inset 0 -1px 0 var(--paper-rgb-075);
   overflow: hidden;
 }
 
 .cassette {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 9px;
-  padding: 12px 14px 10px;
-  border-radius: 14px;
+  gap: 5px;
+  padding: 3px 5px;
+  border-radius: 7px;
   border: 1px solid var(--paper-rgb-09);
   background:
     linear-gradient(160deg, var(--surface-rgb-85), var(--surface-3-rgb-92));
-  box-shadow: inset 0 1px 0 var(--white-rgb-08), 0 4px 12px var(--black-rgb-45);
+  box-shadow: inset 0 1px 0 var(--white-rgb-08), 0 1px 5px var(--black-rgb-45);
 }
 
 .reels {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 10px;
 }
 
 /* Tape running between the two spools */
@@ -312,9 +315,9 @@
   content: "";
   position: absolute;
   top: 50%;
-  left: 30px;
-  right: 30px;
-  height: 2px;
+  left: 10px;
+  right: 10px;
+  height: 1.5px;
   transform: translateY(-50%);
   border-radius: 999px;
   background: linear-gradient(90deg, var(--accent-rgb-25), var(--accent-rgb-08), var(--accent-rgb-25));
@@ -324,17 +327,16 @@
 
 .reel {
   position: relative;
-  width: 62px;
-  height: 62px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  border: 2px solid var(--accent-rgb-45);
+  border: 1px solid var(--accent-rgb-45);
   background:
-    repeating-radial-gradient(circle at 50% 50%, var(--disc-a) 0 2.5px, var(--disc-b) 2.5px 5px);
+    repeating-radial-gradient(circle at 50% 50%, var(--disc-a) 0 1.5px, var(--disc-b) 1.5px 3px);
   box-shadow:
-    0 5px 14px var(--black-rgb-60),
-    0 0 12px var(--accent-rgb-18),
-    inset 0 0 0 2px var(--shade-rgb-80),
-    inset 0 0 10px var(--black-rgb-80);
+    0 1px 4px var(--black-rgb-60),
+    0 0 5px var(--accent-rgb-18),
+    inset 0 0 0 1px var(--shade-rgb-80);
   animation: reel-spin 4.2s linear infinite;
   animation-play-state: paused;
 }
@@ -349,8 +351,8 @@
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 26px;
-  height: 26px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   border: 1px solid var(--shade-rgb-80);
   background: conic-gradient(
@@ -371,40 +373,31 @@
   inset: 0;
   margin: auto;
   z-index: 2;
-  width: 9px;
-  height: 9px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: radial-gradient(circle at 32% 28%, var(--chip-border), var(--chip-dark) 82%);
-  box-shadow: 0 0 5px var(--accent-rgb-50), 0 1px 2px var(--black-rgb-70);
+  box-shadow: 0 0 3px var(--accent-rgb-50);
 }
 
 @keyframes reel-spin {
   to { transform: rotate(360deg); }
 }
 
-/* The hand-written tape label every cassette had */
+/* The tape label is the one piece of dressing the micro deck gives up */
 .cassette-label {
-  padding: 2px 10px;
-  border-radius: 4px;
-  border: 1px dashed var(--paper-rgb-22);
-  background: var(--paper-rgb-06);
-  font-family: var(--font-mono);
-  font-size: 8.5px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--deck-ink-meta);
-  white-space: nowrap;
+  display: none;
 }
 
 /* --------------------------------------------------------------------------
-   5. LCD NOW-PLAYING READOUT — amber phosphor, faint scanlines
+   5. LCD NOW-PLAYING READOUT — one line: title · credit · counter
    -------------------------------------------------------------------------- */
-/* The cassette well is a two-column grid with stretch, so the LCD column
-   flexes to fill it instead of leaving a gap under the readout. */
+/* The LCD column flexes to fill the slim bar; the old 82px min-height is
+   gone, so the readout is exactly as tall as its single line of type. */
 .np {
   display: flex;
-  flex-direction: column;
+  flex: 1;
+  min-width: 0;
   gap: 0;
   padding: 0;
   border: 0;
@@ -417,18 +410,20 @@
 .np-text {
   position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
   flex: 1;
-  min-height: 82px;
-  padding: 11px 15px;
-  border-radius: 12px;
+  min-width: 0;
+  min-height: 0;
+  padding: 4px 8px;
+  border-radius: 7px;
   border: 1px solid var(--paper-rgb-09);
-  border-left: 3px solid var(--accent-rgb-60);
+  border-left: 2px solid var(--accent-rgb-60);
   background:
     linear-gradient(120deg, var(--accent-rgb-06), transparent 45%),
     var(--deck-lcd);
-  box-shadow: inset 0 2px 8px var(--black-rgb-60), 0 0 18px var(--accent-rgb-06);
+  box-shadow: inset 0 1px 4px var(--black-rgb-60);
   overflow: hidden;
 }
 
@@ -437,59 +432,46 @@
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 11px;
+  border-radius: 6px;
   background: repeating-linear-gradient(0deg, var(--accent-rgb-05) 0 1px, transparent 1px 3px);
   pointer-events: none;
 }
 
+/* Unwrap the badge row so its counter joins the one-line readout */
 .np-badge-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 5px;
+  display: contents;
 }
 
+/* "◉ now playing" is dropped — the LCD position says it already */
 .np-deck-label {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--deck-ink-hi);
-  text-shadow: 0 0 8px var(--deck-ink-glow);
-  white-space: nowrap;
+  display: none;
 }
 
-.np-track-counter {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 600;
-  padding: 2px 9px;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--accent-rgb-25);
-  background: var(--accent-rgb-08);
-  color: var(--deck-ink-hi);
-  opacity: 1;
-  white-space: nowrap;
-}
-
+/* One-line order: title | credit | counter. The 96px basis is what keeps the
+   triple on ONE line down to ~360px — narrower and the meta pair simply
+   wraps under the title instead of overflowing. */
 .np-title {
+  order: 1;
+  flex: 1 1 96px;
+  min-width: 0;
   font-family: var(--font-display);
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: -0.005em;
-  line-height: 1.3;
+  line-height: 1.25;
   color: var(--deck-ink);
-  text-shadow: 0 0 12px var(--deck-ink-glow);
+  text-shadow: 0 0 10px var(--deck-ink-glow);
 }
 
 .np-credit {
-  margin-top: 3px;
+  order: 2;
+  flex: 0 1 auto;
+  max-width: 42%;
+  margin-top: 0;
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: 8.5px;
+  line-height: 1.25;
   color: var(--deck-ink-meta);
-  opacity: 0.9;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -498,43 +480,65 @@
 .np-credit span {
   color: var(--deck-ink-hi);
   font-weight: 600;
-  opacity: 1;
+}
+
+.np-track-counter {
+  order: 3;
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--accent-rgb-25);
+  background: var(--accent-rgb-08);
+  color: var(--deck-ink-hi);
+  white-space: nowrap;
 }
 
 /* --------------------------------------------------------------------------
-   6. TAPE COUNTER / SEEK
+   6. TAPE COUNTER / SEEK — hairline track between mono clock digits
    -------------------------------------------------------------------------- */
 .seek {
   margin-top: 0;
-  padding: 9px 12px;
-  border-radius: 14px;
+  gap: 6px;
+  padding: 2px 6px;
+  border-radius: 8px;
   border: 1px solid var(--paper-rgb-09);
   background: var(--deck-well);
-  box-shadow: inset 0 2px 6px var(--black-rgb-60);
+  box-shadow: inset 0 1px 3px var(--black-rgb-60);
 }
 
 .time {
-  min-width: 48px;
-  padding: 3px 9px;
-  border-radius: 8px;
+  min-width: 30px;
+  padding: 1px 4px;
+  border-radius: 5px;
   border: 1px solid var(--accent-rgb-22);
   background: var(--shade-rgb-80);
   color: var(--deck-ink);
-  box-shadow: inset 0 1px 3px var(--black-rgb-45), 0 0 8px var(--accent-rgb-06);
-  text-shadow: 0 0 7px var(--deck-ink-glow);
+  box-shadow: inset 0 1px 2px var(--black-rgb-45);
+  text-shadow: 0 0 6px var(--deck-ink-glow);
 }
 
-/* Filled portion tracks --seek-pct, which player.js writes inline every tick */
+/* The track paints as a 4px hairline inside a 16px touch target, so the
+   deck stays slim without making the thumb a needle to hit.
+   Filled portion tracks --seek-pct, which player.js writes every tick.
+   background-size/position/repeat are restated after each background
+   shorthand — the shorthand alone would reset them. */
 input[type="range"] {
-  height: 8px;
+  height: 16px;
   border-radius: 999px;
+  box-shadow: none; /* redesign.css rings the full hit-box — the visible track is the 4px strip */
+  min-width: 0;     /* range inputs carry an intrinsic width that would bulge the slim vol pill */
   background:
     linear-gradient(90deg,
       var(--accent) 0%,
       var(--accent-rgb-80) var(--seek-pct, 0%),
       var(--shade-rgb-80) var(--seek-pct, 0%),
       var(--surface-3-rgb-92) 100%);
-  box-shadow: inset 0 1px 3px var(--black-rgb-60), 0 0 10px var(--accent-rgb-06);
+  background-size: 100% 4px;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 input[type="range"]:hover {
@@ -544,73 +548,79 @@ input[type="range"]:hover {
       var(--accent) var(--seek-pct, 0%),
       var(--shade-rgb-80) var(--seek-pct, 0%),
       var(--surface-3-rgb-92) 100%);
+  background-size: 100% 5px;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* Kept as two rules on purpose: each engine rejects the pseudo-element it does
    not implement, and one unsupported selector in a list invalidates the whole
    rule — so a combined selector would drop the gold thumb everywhere. */
 input[type="range"]::-webkit-slider-thumb {
-  width: 17px;
-  height: 17px;
-  border: 2px solid var(--on-accent-2);
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid var(--on-accent-2);
   background: var(--chip-grad);
-  box-shadow: 0 2px 8px var(--black-rgb-60), 0 0 10px var(--accent-glow);
+  box-shadow: 0 1px 4px var(--black-rgb-60), 0 0 6px var(--accent-glow);
 }
 
 input[type="range"]::-moz-range-thumb {
-  width: 17px;
-  height: 17px;
-  border: 2px solid var(--on-accent-2);
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid var(--on-accent-2);
   background: var(--chip-grad);
-  box-shadow: 0 2px 8px var(--black-rgb-60), 0 0 10px var(--accent-glow);
+  box-shadow: 0 1px 4px var(--black-rgb-60), 0 0 6px var(--accent-glow);
 }
 
 /* --------------------------------------------------------------------------
-   7. TRANSPORT KEYS — warm paper faces on a dashed ticket divider
-   The chrome bar is gone: keys are the same warm faces the rest of the app
-   uses, so they take the shared hover grammar and the station tint.
+   7. TRANSPORT KEYS — 26px faces, 32px play, one tight row
    -------------------------------------------------------------------------- */
 .controls {
-  margin-top: 14px;
-  padding-top: 15px;
-  padding-bottom: 0;
+  margin-top: 4px;
+  padding-top: 0;
   border: 0;
   border-radius: 0;
   background: none;
   box-shadow: none;
-  gap: 11px;
+  gap: 6px;
+}
+
+/* The app-wide hairline above the keys is dropped — the fascia already
+   carries the deck's one dashed ticket divider. */
+.controls::before {
+  display: none;
 }
 
 .ctl {
-  width: 45px;
-  height: 45px;
-  border-radius: 14px;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
   border-color: var(--paper-rgb-22);
   background: var(--deck-key);
   color: var(--text);
-  font-size: 15px;
+  font-size: 11px;
   text-shadow: none;
-  box-shadow: 0 4px 12px var(--black-rgb-35), inset 0 1px 1px var(--white-rgb-14);
+  box-shadow: 0 2px 6px var(--black-rgb-35), inset 0 1px 1px var(--white-rgb-14);
 }
 
 .ctl:hover {
   background: var(--deck-key-hi);
   border-color: var(--accent-rgb-65);
   color: var(--text-hi);
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 8px 20px var(--accent-rgb-28), inset 0 1px 1px var(--white-rgb-25);
+  transform: translateY(-1px) scale(1.04);
+  box-shadow: 0 4px 10px var(--accent-rgb-28), inset 0 1px 1px var(--white-rgb-25);
 }
 
 .ctl:active {
   transform: translateY(1px) scale(0.95);
-  box-shadow: 0 2px 6px var(--black-rgb-50), inset 0 2px 3px var(--black-rgb-40);
+  box-shadow: 0 1px 4px var(--black-rgb-50), inset 0 1px 2px var(--black-rgb-40);
 }
 
 .ctl.small {
-  width: 39px;
-  height: 39px;
-  font-size: 14px;
-  border-radius: 12px;
+  width: 22px;
+  height: 22px;
+  font-size: 9.5px;
+  border-radius: 7px;
 }
 
 /* Armed key (shuffle on, video shown) — the app's chip treatment */
@@ -619,7 +629,7 @@ input[type="range"]::-moz-range-thumb {
   border-color: var(--chip-border);
   color: var(--on-accent);
   text-shadow: none;
-  box-shadow: 0 0 16px var(--accent-rgb-50), inset 0 1px 2px var(--white-rgb-50);
+  box-shadow: 0 0 10px var(--accent-rgb-50), inset 0 1px 1px var(--white-rgb-50);
 }
 
 .ctl.on:hover {
@@ -629,35 +639,35 @@ input[type="range"]::-moz-range-thumb {
 
 /* The play key is the same gold as every other primary action in the app */
 .ctl.play {
-  width: 66px;
-  height: 66px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  font-size: 23px;
+  font-size: 13px;
   background: var(--key-grad);
   border-color: var(--key-border);
   color: var(--on-accent);
   text-shadow: none;
   box-shadow:
-    0 0 0 5px var(--accent-rgb-14),
-    0 8px 26px var(--accent-rgb-45),
-    0 2px 4px var(--black-rgb-40),
-    inset 0 2px 2px var(--white-rgb-60),
-    inset 0 -2px 3px var(--black-rgb-25);
+    0 0 0 3px var(--accent-rgb-14),
+    0 4px 12px var(--accent-rgb-45),
+    0 1px 3px var(--black-rgb-40),
+    inset 0 1px 1px var(--white-rgb-60),
+    inset 0 -1px 1px var(--black-rgb-25);
 }
 
 .ctl.play:hover {
-  transform: translateY(-3px) scale(1.07);
+  transform: translateY(-2px) scale(1.06);
   filter: brightness(1.06);
   box-shadow:
-    0 0 0 7px var(--accent-rgb-18),
-    0 12px 34px var(--accent-rgb-65),
-    0 4px 8px var(--black-rgb-40),
-    inset 0 2px 2px var(--white-rgb-70);
+    0 0 0 4px var(--accent-rgb-18),
+    0 6px 16px var(--accent-rgb-65),
+    0 2px 5px var(--black-rgb-40),
+    inset 0 1px 1px var(--white-rgb-70);
 }
 
 .ctl.play:active {
   transform: translateY(1px) scale(0.96);
-  box-shadow: 0 3px 10px var(--accent-rgb-40), inset 0 2px 4px var(--black-rgb-30);
+  box-shadow: 0 2px 6px var(--accent-rgb-40), inset 0 1px 2px var(--black-rgb-30);
 }
 
 .ctl.play.playing {
@@ -667,54 +677,56 @@ input[type="range"]::-moz-range-thumb {
 @keyframes deck-pulse-play {
   0%, 100% {
     box-shadow:
-      0 0 0 5px var(--accent-rgb-14),
-      0 8px 24px var(--accent-rgb-40),
-      inset 0 2px 2px var(--white-rgb-60);
+      0 0 0 3px var(--accent-rgb-14),
+      0 4px 10px var(--accent-rgb-40),
+      inset 0 1px 1px var(--white-rgb-60);
   }
   50% {
     box-shadow:
-      0 0 0 7px var(--accent-rgb-18),
-      0 8px 34px var(--accent-rgb-75),
-      0 0 18px var(--accent-rgb-40),
-      inset 0 2px 2px var(--white-rgb-60);
+      0 0 0 5px var(--accent-rgb-18),
+      0 4px 16px var(--accent-rgb-75),
+      0 0 10px var(--accent-rgb-40),
+      inset 0 1px 1px var(--white-rgb-60);
   }
 }
 
 /* --------------------------------------------------------------------------
-   8. VOLUME WELL & BAARISH MIXER
+   8. VOLUME WELL & BAARISH MIXER — pill-sized
    -------------------------------------------------------------------------- */
 .vol {
-  width: 146px;
-  padding: 6px 12px;
+  width: 92px;
+  padding: 2px 7px;
+  gap: 6px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--paper-rgb-18);
   background:
     linear-gradient(120deg, var(--accent-rgb-05), transparent 55%),
     var(--well);
-  box-shadow: inset 0 1px 3px var(--black-rgb-45);
+  box-shadow: inset 0 1px 2px var(--black-rgb-45);
 }
 
 .vol-btn {
   color: var(--deck-ink);
-  font-size: 15px;
-  text-shadow: 0 0 6px var(--deck-ink-glow);
+  font-size: 10px;
+  text-shadow: 0 0 5px var(--deck-ink-glow);
 }
 
 .rainrow {
-  margin-top: 13px;
-  padding: 11px 14px;
+  margin-top: 4px;
+  gap: 8px;
+  padding: 4px 8px;
   border: 1px solid var(--accent-rgb-18);
-  border-radius: 14px;
+  border-radius: 9px;
   border-top: 1px dashed var(--accent-rgb-38);
   background:
     linear-gradient(120deg, var(--accent-rgb-05), transparent 55%),
     var(--well);
   font-family: var(--font-mono);
-  font-size: 11.5px;
+  font-size: 9.5px;
   letter-spacing: 0.04em;
   color: var(--text-soft);
   text-shadow: none;
-  box-shadow: inset 0 1px 3px var(--black-rgb-40);
+  box-shadow: inset 0 1px 2px var(--black-rgb-40);
 }
 
 .rainrow span {
@@ -724,91 +736,111 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* --------------------------------------------------------------------------
-   9. VIDEO WELL — framed like the rest of the deck
+   9. VIDEO WELL — framed like the rest of the deck (only when .mini is off)
    -------------------------------------------------------------------------- */
 .yt-holder {
-  margin-bottom: 14px;
+  margin-bottom: 4px;
   border: 1px solid var(--paper-rgb-18);
-  border-radius: 18px;
+  border-radius: 12px;
   background: var(--media-bg);
-  box-shadow: 0 14px 34px var(--black-rgb-65), inset 0 1px 0 var(--white-rgb-08);
+  box-shadow: 0 8px 20px var(--black-rgb-65), inset 0 1px 0 var(--white-rgb-08);
 }
 
 /* --------------------------------------------------------------------------
-   10. RESPONSIVE & MOTION
+   10. RESPONSIVE & MOTION — the deck keeps shrinking down to 320px
    -------------------------------------------------------------------------- */
 @media (max-width: 560px) {
   .player {
-    padding: 20px 14px 15px;
-    border-radius: 24px;
+    padding: 8px 9px;
+    border-radius: 13px;
   }
   .player-fascia {
-    flex-wrap: wrap;
-    gap: 10px;
-    padding-bottom: 11px;
-    margin-bottom: 11px;
+    gap: 6px;
+    padding-bottom: 3px;
+    margin-bottom: 4px;
+  }
+  .player-brand {
+    gap: 5px;
+  }
+  .player-brand .disc {
+    width: 12px;
+    height: 12px;
+    flex-basis: 12px;
+  }
+  .player-brand .disc-hole {
+    width: 3.5px;
+    height: 3.5px;
   }
   .player-brand-name {
-    font-size: 12.5px;
-    letter-spacing: 0.12em;
+    font-size: 8px;
+    letter-spacing: 0.1em;
   }
   .player-station-chip {
-    font-size: 10px;
-    padding: 5px 11px;
+    font-size: 8px;
+    padding: 2px 6px;
   }
   .cassette-well {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 12px;
+    gap: 6px;
+    padding: 3px 5px;
   }
   .cassette {
-    padding: 10px 12px 8px;
+    padding: 2px 4px;
   }
   .reels {
-    justify-content: center;
-    gap: 24px;
+    gap: 8px;
   }
   .reels::after {
-    left: 34px;
-    right: 34px;
+    left: 8px;
+    right: 8px;
   }
   .reel {
-    width: 52px;
-    height: 52px;
+    width: 16px;
+    height: 16px;
   }
   .reel::after {
-    width: 22px;
-    height: 22px;
-  }
-  .controls {
-    gap: 7px;
-    padding-top: 12px;
-    flex-wrap: wrap;
-  }
-  .ctl {
-    width: 41px;
-    height: 41px;
-    font-size: 14px;
-  }
-  .ctl.small {
-    width: 36px;
-    height: 36px;
-    font-size: 13px;
-  }
-  .ctl.play {
-    width: 58px;
-    height: 58px;
-    font-size: 20px;
-  }
-  .vol {
-    width: 118px;
-    padding: 5px 10px;
-  }
-  .np-title {
-    font-size: 14px;
+    width: 6px;
+    height: 6px;
   }
   .np-text {
-    min-height: 74px;
+    padding: 3px 7px;
+    gap: 3px 5px;
+  }
+  .np-title {
+    font-size: 11px;
+    flex-basis: 80px;
+  }
+  .np-credit,
+  .np-track-counter {
+    font-size: 8px;
+  }
+  .seek {
+    padding: 2px 5px;
+  }
+  .time {
+    font-size: 8px;
+    min-width: 27px;
+  }
+  .controls {
+    gap: 5px;
+  }
+  .ctl {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+  .ctl.small {
+    width: 21px;
+    height: 21px;
+    font-size: 9px;
+  }
+  .ctl.play {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+  .vol {
+    width: 76px;
+    padding: 2px 6px;
   }
 }
 
@@ -816,14 +848,52 @@ input[type="range"]::-moz-range-thumb {
   .player-lamp {
     display: none; /* the fascia keeps brand + station chip readable */
   }
-  .player-brand .disc {
-    width: 26px;
-    height: 26px;
-    flex-basis: 26px;
+  .player-brand-name {
+    font-size: 7.5px;
   }
-  .player-brand .disc-hole {
-    width: 8px;
-    height: 8px;
+  .player-brand .disc {
+    width: 11px;
+    height: 11px;
+    flex-basis: 11px;
+  }
+  .player-station-chip {
+    font-size: 7.5px;
+    letter-spacing: 0.05em;
+  }
+  .reel {
+    width: 14px;
+    height: 14px;
+  }
+  .reel::after {
+    width: 5px;
+    height: 5px;
+  }
+  .np-title {
+    font-size: 10.5px;
+  }
+  .np-credit {
+    max-width: 34%;
+  }
+  .ctl {
+    width: 23px;
+    height: 23px;
+  }
+  .ctl.small {
+    width: 20px;
+    height: 20px;
+    font-size: 8.5px;
+  }
+  .ctl.play {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+  .vol {
+    width: 62px;
+  }
+  .time {
+    font-size: 7.5px;
+    min-width: 24px;
   }
 }
 
