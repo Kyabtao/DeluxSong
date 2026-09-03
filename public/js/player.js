@@ -795,6 +795,25 @@ const PlayerEngine = (function () {
       Modals.toast(mini ? "Video hidden — audio-only radio mode 📻" : "Video player visible 📺");
     };
 
+    // Deck size toggle: collapse the whole deck into a one-line micro bar.
+    // Only the .dock class flips — every zone stays in the DOM, so the spin
+    // hooks, the seek fill and the video slots keep working while docked.
+    const setDock = (dock, announce) => {
+      $("#player").classList.toggle("dock", dock);
+      const btn = $("#dockBtn");
+      btn.classList.toggle("on", dock);
+      btn.textContent = dock ? "🎛️" : "📻";
+      btn.title = dock ? "Expand Player (D)" : "Minimize Player (D)";
+      btn.setAttribute("aria-label", dock ? "Expand the player" : "Minimize the player to a micro bar");
+      btn.setAttribute("aria-expanded", dock ? "false" : "true");
+      if (announce) {
+        storageSet("tcs_dock", dock ? "1" : "0");
+        Modals.toast(dock ? "Deck minimized — micro radio bar 📻" : "Full deck restored 🎛️");
+      }
+    };
+    setDock(storageGet("tcs_dock") === "1", false);
+    $("#dockBtn").onclick = () => setDock($("#player").classList.toggle("dock"), true);
+
     // Hero station switchers
     document.querySelectorAll(".station-btn").forEach((btn) => {
       btn.onclick = () => {

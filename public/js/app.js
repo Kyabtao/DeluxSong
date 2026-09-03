@@ -55,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "s" || e.key === "S") $("#shuffle").click();
     if (e.key === "r" || e.key === "R") $("#rainBtn").click();
     if (e.key === "a" || e.key === "A") { if (airBtn) airBtn.click(); }
+    if (e.key === "d" || e.key === "D") { const dockBtn = $("#dockBtn"); if (dockBtn) dockBtn.click(); }
   });
 
   // Share Button
