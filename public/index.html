@@ -144,6 +144,14 @@
         <span class="player-station-chip" id="stationBadge">🏢 TCS Office Mode</span>
       </div>
 
+      <!-- The opening song starts on arrival. Browsers hold back *audible*
+           media until the first touch, so when that happens the deck runs the
+           song muted and offers sound here instead of sitting silent. -->
+      <button class="deck-unmute" id="unmuteBtn" type="button" hidden>
+        <span class="deck-unmute-ico" aria-hidden="true">🔊</span>
+        <span class="deck-unmute-text">Radio is on — tap anywhere for sound</span>
+      </button>
+
       <!-- Cassette window: two take-up reels beside the amber LCD readout -->
       <div class="cassette-well">
         <div class="cassette" aria-hidden="true">
@@ -276,6 +284,10 @@
     <details>
       <summary>How do I choose a playlist or song?</summary>
       <p>Tap the ☰ Playlist button on the player deck to open the sidebar. Select a station tab, then choose a song from its list — the hero stays focused on the music.</p>
+    </details>
+    <details>
+      <summary>Does the radio start on its own?</summary>
+      <p>Yes — the station begins as soon as the page opens. No browser lets a website start <em>audible</em> sound before you touch the page, so when that happens TCS Radio keeps the song running muted and shows a <strong>🔊 tap anywhere for sound</strong> strip on the deck. One tap, anywhere on the page, turns the volume on.</p>
     </details>
     <details>
       <summary>Where are the playback buttons?</summary>

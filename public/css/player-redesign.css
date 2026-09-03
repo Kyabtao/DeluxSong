@@ -89,6 +89,7 @@
 /* Everything the listener touches sits above the halo */
 .yt-holder,
 .player-fascia,
+.deck-unmute,
 .cassette-well,
 .seek,
 .controls,
@@ -204,7 +205,68 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. CASSETTE WINDOW — two take-up reels under a cream tape label
+   3. AUTO-START PROMPT
+   Visible only while a browser is holding the audio back: the song is already
+   running muted, this is the one tap that lets it be heard.
+   -------------------------------------------------------------------------- */
+.deck-unmute {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  margin: 0 0 13px;
+  padding: 11px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--accent-rgb-45);
+  border-left: 3px solid var(--accent);
+  background: linear-gradient(120deg, var(--accent-rgb-18), var(--accent-rgb-05));
+  color: var(--deck-ink);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px var(--accent-rgb-18), inset 0 1px 0 var(--white-rgb-14);
+  animation: deck-unmute-in 0.4s var(--ease);
+  transition: transform 0.2s var(--ease), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.deck-unmute:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-rgb-65);
+  box-shadow: 0 10px 26px var(--accent-rgb-28), inset 0 1px 0 var(--white-rgb-20);
+}
+
+.deck-unmute:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.deck-unmute-ico {
+  flex: 0 0 auto;
+  font-size: 15px;
+  line-height: 1;
+  animation: deck-unmute-pulse 1.6s ease-in-out infinite;
+}
+
+/* A flex item defaults to min-width:auto, which lets a long line push the icon
+   out of the deck on narrow phones. */
+.deck-unmute-text {
+  min-width: 0;
+}
+
+@keyframes deck-unmute-in {
+  from { opacity: 0; transform: translateY(-6px); }
+}
+
+@keyframes deck-unmute-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+/* --------------------------------------------------------------------------
+   4. CASSETTE WINDOW — two take-up reels under a cream tape label
    -------------------------------------------------------------------------- */
 .cassette-well {
   display: grid;
@@ -336,7 +398,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   4. LCD NOW-PLAYING READOUT — amber phosphor, faint scanlines
+   5. LCD NOW-PLAYING READOUT — amber phosphor, faint scanlines
    -------------------------------------------------------------------------- */
 /* The cassette well is a two-column grid with stretch, so the LCD column
    flexes to fill it instead of leaving a gap under the readout. */
@@ -440,7 +502,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   5. TAPE COUNTER / SEEK
+   6. TAPE COUNTER / SEEK
    -------------------------------------------------------------------------- */
 .seek {
   margin-top: 0;
@@ -504,7 +566,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* --------------------------------------------------------------------------
-   6. TRANSPORT KEYS — warm paper faces on a dashed ticket divider
+   7. TRANSPORT KEYS — warm paper faces on a dashed ticket divider
    The chrome bar is gone: keys are the same warm faces the rest of the app
    uses, so they take the shared hover grammar and the station tint.
    -------------------------------------------------------------------------- */
@@ -619,7 +681,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* --------------------------------------------------------------------------
-   7. VOLUME WELL & BAARISH MIXER
+   8. VOLUME WELL & BAARISH MIXER
    -------------------------------------------------------------------------- */
 .vol {
   width: 146px;
@@ -662,7 +724,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* --------------------------------------------------------------------------
-   8. VIDEO WELL — framed like the rest of the deck
+   9. VIDEO WELL — framed like the rest of the deck
    -------------------------------------------------------------------------- */
 .yt-holder {
   margin-bottom: 14px;
@@ -673,7 +735,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* --------------------------------------------------------------------------
-   9. RESPONSIVE & MOTION
+   10. RESPONSIVE & MOTION
    -------------------------------------------------------------------------- */
 @media (max-width: 560px) {
   .player {
@@ -767,7 +829,9 @@ input[type="range"]::-moz-range-thumb {
 
 @media (prefers-reduced-motion: reduce) {
   .reel,
-  .player-brand .disc {
+  .player-brand .disc,
+  .deck-unmute,
+  .deck-unmute-ico {
     animation: none;
   }
   .player-lamp i {

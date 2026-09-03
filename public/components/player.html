@@ -21,6 +21,14 @@
     <span class="player-station-chip" id="stationBadge">🏢 TCS Office Mode</span>
   </div>
 
+  <!-- The opening song starts on arrival. Browsers hold back *audible*
+       media until the first touch, so when that happens the deck runs the
+       song muted and offers sound here instead of sitting silent. -->
+  <button class="deck-unmute" id="unmuteBtn" type="button" hidden>
+    <span class="deck-unmute-ico" aria-hidden="true">🔊</span>
+    <span class="deck-unmute-text">Radio is on — tap anywhere for sound</span>
+  </button>
+
   <!-- Cassette window: two take-up reels beside the amber LCD readout -->
   <div class="cassette-well">
     <div class="cassette" aria-hidden="true">

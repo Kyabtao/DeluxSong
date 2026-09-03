@@ -1,4 +1,4 @@
-const CACHE = 'tcs-radio-v13';
+const CACHE = 'tcs-radio-v14';
 const BASE = new URL('./', self.registration.scope).pathname;
 const ASSETS = [
   BASE,
@@ -49,11 +49,12 @@ self.addEventListener('fetch', e => {
   const u = new URL(e.request.url);
   if (e.request.method !== 'GET' || u.origin !== location.origin) return;
 
-  /* Stylesheets go network-first: a new deploy is visible on the very next
-     reload instead of one visit later, while offline still falls back to the
-     cached copy. (Cache-first here is what made freshly deployed designs
-     invisible to returning visitors until a second refresh.) */
-  if (u.pathname.endsWith('.css')) {
+  /* Stylesheets and scripts go network-first: a new deploy is visible on the
+     very next reload instead of one visit later, while offline still falls
+     back to the cached copy. (Cache-first here is what made freshly deployed
+     designs invisible to returning visitors until a second refresh — and it
+     would have kept the old player.js, without auto-start, pinned in cache.) */
+  if (u.pathname.endsWith('.css') || u.pathname.endsWith('.js')) {
     e.respondWith(
       fetch(e.request).then(res => {
         const copy = res.clone();

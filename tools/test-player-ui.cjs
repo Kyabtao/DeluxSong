@@ -17,41 +17,56 @@ const doc = window.document;
 
 window.localStorage.clear();
 window.requestAnimationFrame = window.requestAnimationFrame || ((cb) => cb());
-window.BackgroundAudio = {
-  setupActionHandlers() {},
-  updateMediaSession() {},
-  setPlaybackState() {},
-  setPositionState() {}
-};
-window.Modals = { toast() {} };
 /* A stub rich enough to report a real transport state. The old empty stub
    never fired onReady/onStateChange, so nothing below the click handlers was
-   ever exercised — the deck's spin hooks and seek fill went untested. */
-window.YT = {
-  Player: function (el, opts) {
-    this._opts = opts;
-    this._state = -1;
-    opts.events.onReady({ target: this });
-  },
-  PlayerState: { UNSTARTED: -1, ENDED: 0, PLAYING: 1, PAUSED: 2, BUFFERING: 3, CUED: 5 }
-};
-window.YT.Player.prototype = {
-  _emit(state) {
-    this._state = state;
-    this._opts.events.onStateChange({ target: this, data: state });
-  },
-  playVideo() { this._emit(1); },
-  pauseVideo() { this._emit(2); },
-  getPlayerState() { return this._state; },
-  getDuration() { return 252; },
-  getCurrentTime() { return 63; },
-  seekTo() {},
-  setVolume() {},
-  mute() {},
-  unMute() {},
-  loadVideoById() {},
-  cueVideoById() {}
-};
+   ever exercised — the deck's spin hooks and seek fill went untested.
+
+   `autoplay.allowed` models the browser: when false, loadVideoById/playVideo
+   refuse to start audible media exactly as Chrome/Safari/Firefox do before a
+   user gesture, and only a muted playVideo() gets through. */
+function installStubs(win, autoplay) {
+  win.__autoplay = autoplay;
+  win.BackgroundAudio = {
+    setupActionHandlers() {},
+    updateMediaSession() {},
+    setPlaybackState() {},
+    setPositionState() {}
+  };
+  win.Modals = { toast() {} };
+  win.YT = {
+    Player: function (el, opts) {
+      this._opts = opts;
+      this._state = -1;
+      opts.events.onReady({ target: this });
+    },
+    PlayerState: { UNSTARTED: -1, ENDED: 0, PLAYING: 1, PAUSED: 2, BUFFERING: 3, CUED: 5 }
+  };
+  win.YT.Player.prototype = {
+    _emit(state) {
+      this._state = state;
+      this._opts.events.onStateChange({ target: this, data: state });
+    },
+    // An audible start only happens when the browser allows it; a muted start
+    // always does. Either way the call is recorded so tests can see the ask.
+    _tryStart() {
+      autoplay.attempts++;
+      if (autoplay.allowed || autoplay.muted) this._emit(1);
+    },
+    playVideo() { this._tryStart(); },
+    loadVideoById() { this._tryStart(); },
+    pauseVideo() { this._emit(2); },
+    getPlayerState() { return this._state; },
+    getDuration() { return 252; },
+    getCurrentTime() { return 63; },
+    seekTo() {},
+    setVolume() {},
+    mute() { autoplay.muted = true; },
+    unMute() { autoplay.muted = false; },
+    cueVideoById() {}
+  };
+}
+
+installStubs(window, { allowed: false, muted: false, attempts: 0 });
 window.Image = class FakeImage {
   set src(v) {
     this._src = v;
@@ -179,21 +194,64 @@ ok('deck stylesheet is imported through style.css, not linked ad hoc',
   src('style.css').includes('css/player-redesign.css') &&
   !/<link[^>]+player-redesign\.css/.test(html));
 
-/* Transport state: pressing play must spin the record emblem and BOTH reels.
-   These are the only on-screen proof that a track is running. */
+/* ==========================================================================
+   AUTO-START ON ARRIVAL — the browser here refuses audible media
+   ========================================================================== */
 const disc = player.querySelector('#disc');
-ok('record emblem is still before playback', !disc.classList.contains('spin'));
-player.querySelector('#play').click();
-ok('pressing play spins the record emblem and both take-up reels',
-  disc.classList.contains('spin') &&
-  player.querySelector('#reelA').classList.contains('spin') &&
-  player.querySelector('#reelB').classList.contains('spin'));
-ok('pressing play marks the key as playing',
-  player.querySelector('#play').classList.contains('playing'));
+const unmuteBtn = player.querySelector('#unmuteBtn');
 
-/* The seek fill reads --seek-pct off #seek; without it the gradient paints an
-   empty track however far in the song you are. */
+ok('the tap-for-sound prompt exists and starts hidden',
+  !!unmuteBtn && unmuteBtn.hidden === true);
+ok('the prompt itself is wired as a mute-lift control',
+  typeof unmuteBtn.onclick === 'function');
+
 (async () => {
+  /* Let the engine reach onReady (one deferred turn) before judging the boot. */
+  await new Promise((r) => setTimeout(r, 60));
+  ok('the radio requests its opening song on load, with no click',
+    window.__autoplay.attempts > 0 && !disc.classList.contains('spin'),
+    `${window.__autoplay.attempts} start request(s) issued during boot`);
+
+  /* Past AUTOSTART_GRACE the engine must notice the refusal and start the
+     song muted rather than leave the listener in silence. */
+  await new Promise((r) => setTimeout(r, 1900));
+  ok('a refused audible start falls back to muted playback instead of silence',
+    window.__autoplay.muted === true &&
+    disc.classList.contains('spin') &&
+    player.querySelector('#play').classList.contains('playing'),
+    `muted:${window.__autoplay.muted} spinning:${disc.classList.contains('spin')}`);
+  ok('a refused audible start offers sound on the deck',
+    unmuteBtn.hidden === false);
+
+  /* Any real gesture unlocks audio in every browser — so from here the stub
+     grants audible starts, which is what a real browser does post-gesture. */
+  window.dispatchEvent(new window.Event('pointerdown'));
+  window.__autoplay.allowed = true;
+  ok('the first gesture anywhere lifts the mute',
+    window.__autoplay.muted === false,
+    `muted:${window.__autoplay.muted}`);
+  ok('the first gesture anywhere retires the prompt',
+    unmuteBtn.hidden === true);
+
+  /* ------------------------------------------------------------------------
+     DECK TRANSPORT — pressing play must spin the emblem and BOTH reels
+     ------------------------------------------------------------------------ */
+  player.querySelector('#play').click();
+  ok('pressing play while running pauses the deck',
+    !disc.classList.contains('spin') &&
+    !player.querySelector('#reelA').classList.contains('spin') &&
+    !player.querySelector('#reelB').classList.contains('spin') &&
+    !player.querySelector('#play').classList.contains('playing'));
+
+  player.querySelector('#play').click();
+  ok('pressing play again spins the record emblem and both take-up reels',
+    disc.classList.contains('spin') &&
+    player.querySelector('#reelA').classList.contains('spin') &&
+    player.querySelector('#reelB').classList.contains('spin') &&
+    player.querySelector('#play').classList.contains('playing'));
+
+  /* The seek fill reads --seek-pct off #seek; without it the gradient paints an
+     empty track however far in the song you are. */
   await new Promise((r) => setTimeout(r, 700)); // one 500ms tick
   const seek = player.querySelector('#seek');
   ok('the seek bar reports a live fill percentage for the deck gradient',
@@ -204,11 +262,54 @@ ok('pressing play marks the key as playing',
     player.querySelector('#dur').textContent === '4:12',
     `${player.querySelector('#cur').textContent} / ${player.querySelector('#dur').textContent}`);
 
-  player.querySelector('#play').click();
-  ok('pausing stops the reels and the record emblem',
-    !disc.classList.contains('spin') &&
-    !player.querySelector('#reelA').classList.contains('spin') &&
-    !player.querySelector('#play').classList.contains('playing'));
+  /* ==========================================================================
+     Second boot, with a browser that DOES allow audible auto-start
+     ========================================================================== */
+  const dom2 = new JSDOM(html, {
+    url: 'http://localhost:3000/',
+    runScripts: 'outside-only',
+    pretendToBeVisual: true
+  });
+  const win2 = dom2.window;
+  win2.localStorage.clear();
+  win2.requestAnimationFrame = win2.requestAnimationFrame || ((cb) => cb());
+  win2.Image = class FakeImage {
+    set src(v) { this._src = v; if (typeof this.onload === 'function') this.onload(); }
+    get src() { return this._src; }
+  };
+  installStubs(win2, { allowed: true, muted: false, attempts: 0 });
+  win2.eval([
+    src('js/playlists-data.js'),
+    src('js/player.js'),
+    'window.PLAYLISTS = PLAYLISTS;',
+    'window.PlayerEngine = PlayerEngine;',
+    'window.$ = $;'
+  ].join('\n;'));
+  win2.PlayerEngine.init();
+
+  const doc2 = win2.document;
+  const disc2 = doc2.querySelector('#disc');
+  const prompt2 = doc2.querySelector('#unmuteBtn');
+  await new Promise((r) => setTimeout(r, 60)); // one deferred turn to onReady
+  ok('a browser that allows audible auto-start plays out loud on arrival',
+    win2.__autoplay.attempts > 0 &&
+    disc2.classList.contains('spin') &&
+    win2.__autoplay.muted === false,
+    `attempts:${win2.__autoplay.attempts} muted:${win2.__autoplay.muted}`);
+
+  await new Promise((r) => setTimeout(r, 1900));
+  ok('no needless tap-for-sound prompt when audio was never held back',
+    prompt2.hidden === true && win2.__autoplay.muted === false);
+
+  /* The gesture listener is still armed here, so this is the case where an
+     over-eager auto-start would fight the listener. */
+  doc2.querySelector('#play').click();               // pause on purpose
+  ok('the pause key stops an auto-started station',
+    !disc2.classList.contains('spin'));
+  win2.dispatchEvent(new win2.Event('pointerdown'));
+  ok('a stray tap after a deliberate pause does not restart the station',
+    !disc2.classList.contains('spin') &&
+    !doc2.querySelector('#play').classList.contains('playing'));
 
   console.log(failures === 0 ? '\n✓ playlist UI tests passed' : `\n✗ ${failures} failure(s)`);
   process.exit(failures ? 1 : 0);
