@@ -13,6 +13,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize Audio Player Engine
   PlayerEngine.init();
 
+  // TCS AIR button — live broadcast indicator toggle (left of Baarish?)
+  const airBtn = $("#airBtn");
+  if (airBtn) {
+    // Start "on" by default so the station feels live
+    airBtn.classList.add("on");
+    airBtn.setAttribute("aria-pressed", "true");
+    airBtn.onclick = () => {
+      const isOn = airBtn.classList.toggle("on");
+      airBtn.setAttribute("aria-pressed", String(isOn));
+      Modals.toast(isOn ? "📻 TCS AIR is live — broadcasting now!" : "TCS AIR off");
+    };
+  }
+
   // Monsoon Baarish Ambience Controls (sound + on-screen rain)
   RainVisual.setIntensity($("#rainVol").value / 100);
   $("#rainBtn").onclick = (e) => {
@@ -41,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "m" || e.key === "M") $("#volBtn").click();
     if (e.key === "s" || e.key === "S") $("#shuffle").click();
     if (e.key === "r" || e.key === "R") $("#rainBtn").click();
+    if (e.key === "a" || e.key === "A") { if (airBtn) airBtn.click(); }
   });
 
   // Share Button

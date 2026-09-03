@@ -1,6 +1,8 @@
 /* ==========================================================================
    TCS RADIO - PLAYLISTS & CONTENT DATABASE
    Developed by Umair
+   NOTE: Tracks have been de-duplicated across playlists so each station
+         feels like a distinct course (no repeats as you switch).
    ========================================================================== */
 
 const PLAYLISTS = {
@@ -53,11 +55,7 @@ const PLAYLISTS = {
       { id: "PUO7_Gi6ipg", title: "Baazigar O Baazigar | Baazigar | Shahrukh Khan, Kajol", credit: "Ishtar Music" },
       { id: "x_a2ZVkYw_o", title: "Tumse Milne Ki Tamanna Hai | Saajan | S P Balasubramaniam", credit: "Ishtar Music" },
       { id: "thjRNwjmAdQ", title: "Tumse Milne Ki Tamanna (Duet) | Saajan | Salman Khan, Madhuri", credit: "Ishtar Music" },
-      { id: "_YjSmLlmqLM", title: "Aisi Deewangi | Deewana | Shahrukh Khan, Divya Bharti", credit: "Ishtar Music" },
-      { id: "ioWh9vMixyw", title: "Tu Shayar Hai Main Teri Shayari | Saajan | Alka Yagnik", credit: "Ishtar Music" },
-      { id: "plB0ytzIlqI", title: "Paas Woh Aane Lage | Main Khiladi Tu Anari | Kumar Sanu", credit: "Ishtar Music" },
-      { id: "qGOTe3KmCdY", title: "Kitna Haseen Chehra | Dilwale | Kumar Sanu", credit: "Ishtar Music" },
-      { id: "KGn-erOG-Bs", title: "Laal Pari | Housefull 5 | Yo Yo Honey Singh", credit: "T-Series" }
+      { id: "qGOTe3KmCdY", title: "Kitna Haseen Chehra | Dilwale | Kumar Sanu", credit: "Ishtar Music" }
     ],
     quotes: [
       "मीटर से चलोगे भैया? 'नहीं साहेब, ₹30 एक्स्ट्रा लगेगा!'",
@@ -83,11 +81,6 @@ const PLAYLISTS = {
       { id: "_rGz16v3CUM", title: "Gur Nalon Ishq Mitha | Bally Sagoo ft. Malkit Singh", credit: "Universal Music India" },
       { id: "PQmrmVs10X8", title: "Chaiyya Chaiyya | Dil Se | Sukhwinder Singh, Sapna Awasthi", credit: "Ishtar Music" },
       { id: "vTIIMJ9tUc8", title: "Tunak Tunak Tun | Daler Mehndi", credit: "Daler Mehndi Official" },
-      { id: "Yqj1_V90KJo", title: "Chura Ke Dil Mera | Main Khiladi Tu Anari | Kumar Sanu", credit: "Ishtar Music" },
-      { id: "PUO7_Gi6ipg", title: "Baazigar O Baazigar | Baazigar | Shahrukh Khan, Kajol", credit: "Ishtar Music" },
-      { id: "bBjVLCAAM1A", title: "Dekha Hai Pehli Baar | Saajan | Alka Yagnik, SPB", credit: "Ishtar Music" },
-      { id: "qGOTe3KmCdY", title: "Kitna Haseen Chehra | Dilwale | Ajay Devgan", credit: "Ishtar Music" },
-      { id: "mNSYPtzpfd4", title: "Jab Koi Baat Bigad Jaaye | Jurm | Kumar Sanu, Sadhna", credit: "Ishtar Music" },
       { id: "nYLkyW2dDXU", title: "Bijuria | Sunny Sanskari Ki Tulsi Kumari | Sonu Nigam, Asees Kaur", credit: "Sony Music India" }
     ],
     quotes: [
@@ -111,14 +104,7 @@ const PLAYLISTS = {
       { id: "-JF3JM6_Yh4", title: "Ghanan Ghanan | Lagaan | Udit Narayan, Sukhwinder Singh", credit: "Sony Music India" },
       { id: "fC3MT7S7C8Y", title: "Chaand Taare | Yes Boss | Abhijeet", credit: "Ishtar Music" },
       { id: "asw-wTDzGUQ", title: "Barso Re | Guru | Shreya Ghoshal", credit: "Sony Music India" },
-      { id: "1wc0o9lMjUU", title: "Kuchh Na Kaho | 1942: A Love Story | Kumar Sanu", credit: "Saregama" },
-      { id: "_YjSmLlmqLM", title: "Aisi Deewangi | Deewana | Shahrukh Khan, Divya Bharti", credit: "Ishtar Music" },
-      { id: "bBjVLCAAM1A", title: "Dekha Hai Pehli Baar | Saajan | Alka Yagnik, SPB", credit: "Ishtar Music" },
-      { id: "PqiddY3o3aY", title: "Dil Kehta Hai | Akele Hum Akele Tum | Kumar Sanu", credit: "Ishtar Music" },
-      { id: "LtIJuk5te9E", title: "Pehli Baar Mile Hain | Saajan | S P Balasubramaniam", credit: "Ishtar Music" },
-      { id: "mNSYPtzpfd4", title: "Jab Koi Baat Bigad Jaaye | Jurm | Kumar Sanu, Sadhna", credit: "Ishtar Music" },
-      { id: "ioWh9vMixyw", title: "Tu Shayar Hai Main Teri Shayari | Saajan | Alka Yagnik", credit: "Ishtar Music" },
-      { id: "plB0ytzIlqI", title: "Paas Woh Aane Lage | Main Khiladi Tu Anari | Kumar Sanu", credit: "Ishtar Music" }
+      { id: "1wc0o9lMjUU", title: "Kuchh Na Kaho | 1942: A Love Story | Kumar Sanu", credit: "Saregama" }
     ],
     quotes: [
       "बारिश की बूँदें, गरम चाय और 90s के रोमांटिक नगमे!",
@@ -140,14 +126,7 @@ const PLAYLISTS = {
       { id: "VxuhxfZPOU0", title: "Aankhon Ki Gustakhiyan | Hum Dil De Chuke Sanam | Kumar Sanu, Kavita Krishnamurthy", credit: "T-Series" },
       { id: "7TManB-eG_g", title: "Saat Samundar Paar | Vishwatma | Udit Narayan, Jolly Mukherjee", credit: "Saregama" },
       { id: "nT-DPEMZvsU", title: "Chand Sifarish | Fanaa | Shaan, Kailash Kher", credit: "YRF" },
-      { id: "OT3ganL9mjQ", title: "Pardesi Pardesi | Raja Hindustani | Udit Narayan, Alka Yagnik", credit: "Tips Music" },
-      { id: "mNSYPtzpfd4", title: "Jab Koi Baat Bigad Jaaye | Jurm | Kumar Sanu, Sadhna", credit: "Ishtar Music" },
-      { id: "PqiddY3o3aY", title: "Dil Kehta Hai | Akele Hum Akele Tum | Kumar Sanu", credit: "Ishtar Music" },
-      { id: "x_a2ZVkYw_o", title: "Tumse Milne Ki Tamanna Hai | Saajan | S P B", credit: "Ishtar Music" },
-      { id: "qGOTe3KmCdY", title: "Kitna Haseen Chehra | Dilwale | Kumar Sanu", credit: "Ishtar Music" },
-      { id: "LtIJuk5te9E", title: "Pehli Baar Mile Hain | Saajan | S P B", credit: "Ishtar Music" },
-      { id: "_YjSmLlmqLM", title: "Aisi Deewangi | Deewana | Alka Yagnik", credit: "Ishtar Music" },
-      { id: "Yqj1_V90KJo", title: "Chura Ke Dil Mera | Main Khiladi Tu Anari | Kumar Sanu", credit: "Ishtar Music" }
+      { id: "OT3ganL9mjQ", title: "Pardesi Pardesi | Raja Hindustani | Udit Narayan, Alka Yagnik", credit: "Tips Music" }
     ],
     quotes: [
       "एक कटिंग चाय, दो पारले-जी और रेडियो पर सदाबहार तराने।",
@@ -170,13 +149,7 @@ const PLAYLISTS = {
       { id: "rII0ikL9cdQ", title: "Dhoom Pichuck | Euphoria", credit: "The Orchard" },
       { id: "p9r2GxMlRD4", title: "Meri Chunar Udd Udd Jaye | Falguni Pathak", credit: "Falguni Pathak" },
       { id: "-LESbtPT8uw", title: "Kaho Naa Pyaar Hai (Title) | KNPH | Alka Yagnik, Udit Narayan", credit: "Zee Music Company" },
-      { id: "mgF6SGtEr6g", title: "Dil Chahta Hai (Title) | Dil Chahta Hai | Shankar Mahadevan", credit: "T-Series" },
-      { id: "PUO7_Gi6ipg", title: "Baazigar O Baazigar | Baazigar | Shahrukh Khan, Kajol", credit: "Ishtar Music" },
-      { id: "PQmrmVs10X8", title: "Chaiyya Chaiyya | Dil Se | Sukhwinder Singh", credit: "Ishtar Music" },
-      { id: "vTIIMJ9tUc8", title: "Tunak Tunak Tun | Daler Mehndi", credit: "Daler Mehndi Official" },
-      { id: "Yqj1_V90KJo", title: "Chura Ke Dil Mera | Main Khiladi Tu Anari | Kumar Sanu", credit: "Ishtar Music" },
-      { id: "_YjSmLlmqLM", title: "Aisi Deewangi | Deewana | Shahrukh Khan", credit: "Ishtar Music" },
-      { id: "thjRNwjmAdQ", title: "Tumse Milne Ki Tamanna Hai | Saajan | Salman Khan", credit: "Ishtar Music" }
+      { id: "mgF6SGtEr6g", title: "Dil Chahta Hai (Title) | Dil Chahta Hai | Shankar Mahadevan", credit: "T-Series" }
     ],
     quotes: [
       "2000s के वो कॉलेज के दिन और कैसेट वाले पॉप गाने!",

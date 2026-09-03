@@ -479,6 +479,31 @@
   margin-top: 8px;
 }
 
+.success-sub {
+  font-size: 12px !important;
+  opacity: 0.75 !important;
+  margin-top: -2px !important;
+}
+
+.success-actions-row {
+  margin-top: 2px;
+  gap: 8px;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px dashed var(--paper-rgb-25);
+  box-shadow: none;
+}
+
+.btn-ghost:hover {
+  color: var(--accent);
+  border-color: var(--accent-rgb-50);
+  background: var(--accent-rgb-08);
+  transform: translateY(-2px);
+}
+
 @media (min-width: 420px) {
   .success-actions {
     flex-direction: row;
