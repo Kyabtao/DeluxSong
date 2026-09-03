@@ -186,6 +186,13 @@
   text-align: center;
 }
 
+/* Seek fill percentage. player.js writes the live value inline on #seek every
+   tick; the declaration here keeps the token resolvable from the very first
+   paint, before the engine has reported a duration. */
+#seek {
+  --seek-pct: 0%;
+}
+
 /* Range Sliders */
 input[type="range"] {
   -webkit-appearance: none;

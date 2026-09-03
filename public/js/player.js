@@ -38,6 +38,17 @@ const PlayerEngine = (function () {
   let lastVol = 70;
   let activeDrawerFilter = currentPlaylistKey;
 
+  /* ---------- Auto-start on arrival ----------
+     The radio begins by itself as soon as the deck is ready. Browsers refuse
+     to start *audible* media before the listener has touched the page, but
+     they always allow muted media — so if the audible attempt is refused we
+     start the song silently and lift the mute on the very first tap. The
+     music is running from the first paint either way. */
+  let autoStartArmed = true;   // we still owe the listener their first song
+  let startedMuted = false;    // the browser held the audio back
+  let autoStartCheck = null;
+  const AUTOSTART_GRACE = 1600; // ms to wait for an audible start before falling back
+
   /* ---------- Tiny slot helpers ---------- */
   const standbySlot = () => (activeSlot === "a" ? "b" : "a");
   const active = () => players[activeSlot];
@@ -171,6 +182,66 @@ const PlayerEngine = (function () {
   }
 
   /* ==================================================================
+     AUTO-START ON ARRIVAL
+     ================================================================== */
+
+  // The deck's "tap for sound" prompt. Only ever visible while the browser is
+  // holding the audio back — never when the listener muted it themselves.
+  function setUnmutePrompt(on) {
+    const btn = $("#unmuteBtn");
+    if (btn) btn.hidden = !on;
+  }
+
+  // Called once the active slot is live. If the browser let the song start out
+  // loud, stand down. If it did not, fall back to muted playback — always
+  // permitted — and offer sound on the first gesture.
+  function scheduleAutoStartCheck() {
+    clearTimeout(autoStartCheck);
+    autoStartCheck = setTimeout(() => {
+      if (!autoStartArmed) return;
+      let state = null;
+      try { state = active().getPlayerState(); } catch (_) { return; }
+      if (state === YT.PlayerState.PLAYING) {
+        autoStartArmed = false;      // audible auto-start worked — nothing to do
+        return;
+      }
+      startedMuted = true;
+      try { active().mute(); active().playVideo(); } catch (_) {}
+      setUnmutePrompt(true);
+    }, AUTOSTART_GRACE);
+  }
+
+  // Any real gesture unlocks audible media in every browser.
+  function onFirstGesture() {
+    clearTimeout(autoStartCheck);
+    const wasMuted = startedMuted;
+    autoStartArmed = false;
+    startedMuted = false;
+    if (wasMuted) {
+      setUnmutePrompt(false);
+      applyVolumeTo("a");
+      applyVolumeTo("b");
+    }
+    // Only push play while the listener still wants music. Without this guard a
+    // stray tap after a deliberate pause would restart the station.
+    if (!userPaused) play();
+  }
+
+  function armAutoStart() {
+    wantPlay = true;   // onSlotReady turns this into loadTrack(pos, true)
+
+    const EVENTS = ["pointerdown", "touchstart", "keydown"];
+    const unarm = () => {
+      EVENTS.forEach((ev) => window.removeEventListener(ev, unarm));
+      onFirstGesture();
+    };
+    EVENTS.forEach((ev) => window.addEventListener(ev, unarm, { passive: true }));
+
+    const btn = $("#unmuteBtn");
+    if (btn) btn.onclick = unarm;
+  }
+
+  /* ==================================================================
      YOUTUBE DUAL-BUFFER CORE
      ================================================================== */
   function initYouTubePlayer() {
@@ -214,6 +285,16 @@ const PlayerEngine = (function () {
   }
 
   function onSlotReady(slot) {
+    /* The IFrame API can fire onReady from inside the YT.Player constructor
+       (warm cache / already-embedded iframe), i.e. before `players[slot]` has
+       been assigned. Carrying on there would make activeReady() false, so the
+       opening song would be *cued* instead of played and the radio would sit
+       silent with nothing on screen to explain why. Defer one turn instead. */
+    if (!players[slot]) {
+      setTimeout(() => onSlotReady(slot), 0);
+      return;
+    }
+
     slotReady[slot] = true;
     applyVolumeTo(slot);
 
@@ -222,6 +303,9 @@ const PlayerEngine = (function () {
       const play = wantPlay;
       wantPlay = false;
       loadTrack(pos, play);
+      // The opening song was requested before the listener touched anything,
+      // so watch whether the browser actually let it start out loud.
+      if (play && autoStartArmed) scheduleAutoStartCheck();
     } else {
       // Standby woke up later — give it the next track to pre-buffer
       preloadNext();
@@ -600,6 +684,11 @@ const PlayerEngine = (function () {
     if (bgLayers.b) bgLayers.b.dataset.src = bgLayers.b.getAttribute("src") || "";
     applyBackground(currentPlaylistKey);
     setTimeout(preloadBackgrounds, 600);
+
+    // Arm the auto-start before the API loads — loadYouTubeAPI() can fire
+    // onReady synchronously on a warm cache, and wantPlay must already be set
+    // by then for the opening song to be requested.
+    armAutoStart();
 
     initYouTubePlayer();
     loadYouTubeAPI();

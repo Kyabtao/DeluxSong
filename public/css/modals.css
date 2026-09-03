@@ -493,7 +493,7 @@
 .btn-ghost {
   background: transparent;
   color: var(--text-dim);
-  border: 1px dashed var(--paper-rgb-25);
+  border: 1px dashed var(--paper-rgb-22);
   box-shadow: none;
 }
 

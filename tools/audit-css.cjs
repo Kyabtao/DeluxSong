@@ -85,7 +85,34 @@ if (missing.length) {
 // 4. tokens declared but never used (informational)
 const unused = [...defined.keys()].filter(t => !used.has(t) && !JS_OWNED.has(t)).sort();
 
+// 5. token purity — every colour in a component sheet must resolve through
+//    variables.css. A hardcoded hex is exactly how an off-theme palette slips
+//    past the other audits: the render audit only reads the guarded sheets and
+//    the token audit only checks that var() resolves, so a pasted-in #7dff9c
+//    green LCD would have passed both. These sheets are token-only by contract.
+const TOKEN_DRIVEN = new Set([
+  'base.css', 'drawer.css', 'modals.css', 'player.css',
+  'player-redesign.css', 'playlist-selector.css', 'redesign.css'
+]);
+const literals = [];
+for (const fp of files) {
+  const name = path.basename(fp);
+  if (!TOKEN_DRIVEN.has(name)) continue;
+  const body = fs.readFileSync(fp, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+  body.split('\n').forEach((line, i) => {
+    for (const m of line.matchAll(/#[0-9a-fA-F]{3,8}\b|rgba?\(\s*[\d.]/g)) {
+      literals.push(`${name}:${i + 1}  ${line.trim().slice(0, 80)}`);
+    }
+  });
+}
+if (literals.length) {
+  console.log(`✗ ${literals.length} hardcoded colour literal(s) in token-driven sheets:`);
+  literals.forEach(s => console.log('   ' + s));
+  problems += literals.length;
+}
+
 console.log(`\n${defined.size} tokens declared, ${used.size} referenced.`);
 if (unused.length) console.log(`Declared-but-unused (${unused.length}): ${unused.join(', ')}`);
+if (!literals.length) console.log(`Token purity: ${TOKEN_DRIVEN.size} component sheets carry no hardcoded colours.`);
 console.log(problems === 0 ? '\n✓ no token errors' : `\n✗ ${problems} problem(s)`);
 process.exit(problems === 0 ? 0 : 1);
