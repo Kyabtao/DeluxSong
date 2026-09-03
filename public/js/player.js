@@ -54,9 +54,15 @@ const PlayerEngine = (function () {
   const active = () => players[activeSlot];
   const activeReady = () => !!(players[activeSlot] && slotReady[activeSlot]);
 
-  /* ---------- Per-playlist hero backdrop (crossfading layers) ---------- */
+  /* ---------- Per-playlist hero backdrop (crossfading layers) ----------
+     Two <img> layers crossfade. Every request is stamped with a token so a
+     slow-loading backdrop that arrives after a newer station change can never
+     paint over it — that stale-load race is what used to leave the hero stuck
+     on the previous playlist's artwork when stations were switched quickly. */
   const bgLayers = { a: null, b: null };
   let bgNow = "a";
+  let bgWanted = null;   // the backdrop the current station wants on screen
+  let bgToken = 0;       // increments on every request; only the latest wins
 
   // Set playlist artwork + accent glow on the hero, crossfading between layers.
   function applyBackground(key) {
@@ -71,28 +77,38 @@ const PlayerEngine = (function () {
 
     const url = pl.bg;
     if (!url || !bgLayers.a || !bgLayers.b) return;
-    const showLayer = bgLayers[bgNow];
-    if (showLayer.dataset.src === url) return; // already showing this backdrop
 
-    const toShow = bgLayers[bgNow === "a" ? "b" : "a"];
-    const toHide = bgLayers[bgNow];
+    // Already showing (or already on its way to showing) this backdrop.
+    if (bgWanted === url) return;
+    bgWanted = url;
 
-    const warm = new Image();
+    const token = ++bgToken;
     const swap = () => {
+      if (token !== bgToken) return; // a newer station change has taken over
+
+      // Resolve the layers at paint time, not at request time, so overlapping
+      // requests always crossfade from whatever is actually on screen now.
+      const toHide = bgLayers[bgNow];
+      const toShow = bgLayers[bgNow === "a" ? "b" : "a"];
+
       toShow.src = url;
       toShow.dataset.src = url;
-      requestAnimationFrame(() => {
-        toShow.classList.add("in");
-        toHide.classList.remove("in");
-        bgNow = bgNow === "a" ? "b" : "a";
-      });
+      toShow.classList.add("in");
+      toHide.classList.remove("in");
+      toHide.dataset.src = toHide.getAttribute("src") || "";
+      bgNow = bgNow === "a" ? "b" : "a";
     };
+
+    const warm = new Image();
     warm.onload = swap;
     warm.onerror = swap; // even if a frame fails, keep the UI moving
     warm.src = url;
+    // Cached images can resolve before the handlers are attached in some
+    // engines — paint immediately when the decode is already done.
+    if (warm.complete) swap();
   }
 
-  // Warm the other five playlist backdrops so switching is instant.
+  // Warm the other playlist backdrops so switching stations is instant.
   function preloadBackgrounds() {
     Object.keys(PLAYLISTS).forEach((key) => {
       const url = PLAYLISTS[key].bg;
@@ -682,6 +698,9 @@ const PlayerEngine = (function () {
       bgNow = bgLayers.a.classList.contains("in") ? "a" : "b";
     }
     if (bgLayers.b) bgLayers.b.dataset.src = bgLayers.b.getAttribute("src") || "";
+    // Whatever the markup ships as the visible layer is the backdrop we are
+    // already showing, so a same-station boot does not fade to itself.
+    bgWanted = bgLayers[bgNow] ? bgLayers[bgNow].dataset.src || null : null;
     applyBackground(currentPlaylistKey);
     setTimeout(preloadBackgrounds, 600);
 
