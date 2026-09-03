@@ -168,6 +168,64 @@ ok('clicked track is highlighted in the refreshed sidebar',
   !!doc.querySelector('#tracks li.active'));
 
 /* ==========================================================================
+   HERO BACKDROP — the artwork must follow the live station
+   ========================================================================== */
+const heroEl = doc.querySelector('.hero');
+const bgA = doc.getElementById('bgA');
+const bgB = doc.getElementById('bgB');
+// Whichever of the two crossfading layers currently carries the .in class is
+// the artwork the listener actually sees.
+const visibleBg = () => (bgA.classList.contains('in') ? bgA : bgB).getAttribute('src');
+const shownLayers = () => [bgA, bgB].filter((el) => el.classList.contains('in')).length;
+
+ok('exactly one backdrop layer is ever faded in',
+  shownLayers() === 1, `${shownLayers()} layer(s) visible`);
+
+window.PlayerEngine.switchPlaylist('monsoon', false);
+ok('changing the station changes the hero backdrop image',
+  visibleBg() === window.PLAYLISTS.monsoon.bg, visibleBg());
+ok('changing the station retints the hero glow for that station',
+  heroEl.style.getPropertyValue('--pl-glow').trim() === window.PLAYLISTS.monsoon.glow,
+  heroEl.style.getPropertyValue('--pl-glow'));
+
+window.PlayerEngine.switchPlaylist('truck', false);
+ok('a second station change crossfades onto the other layer',
+  visibleBg() === window.PLAYLISTS.truck.bg && shownLayers() === 1, visibleBg());
+
+/* Every station in turn — no key may get stuck on a neighbour's artwork. */
+const stuck = Object.keys(window.PLAYLISTS).filter((key) => {
+  window.PlayerEngine.switchPlaylist(key, false);
+  return visibleBg() !== window.PLAYLISTS[key].bg;
+});
+ok('every playlist shows its own backdrop when selected',
+  stuck.length === 0, stuck.length ? `stuck on: ${stuck.join(', ')}` : 'all 7 stations');
+
+/* Slow network: a backdrop that finishes loading AFTER a newer station change
+   must never paint over the newer artwork. */
+const queued = [];
+const RealImage = window.Image;
+window.Image = class SlowImage {
+  set src(v) { this._src = v; queued.push(() => this.onload && this.onload()); }
+  get src() { return this._src; }
+};
+window.PlayerEngine.switchPlaylist('auto', false);
+window.PlayerEngine.switchPlaylist('indipop', false);
+window.PlayerEngine.switchPlaylist('latest', false);
+queued.reverse().forEach((fire) => fire()); // loads land out of order
+window.Image = RealImage;
+ok('a late-arriving backdrop cannot overwrite a newer station change',
+  visibleBg() === window.PLAYLISTS.latest.bg && shownLayers() === 1, visibleBg());
+
+window.PlayerEngine.switchPlaylist('office', false);
+ok('the backdrop recovers after the out-of-order loads',
+  visibleBg() === window.PLAYLISTS.office.bg, visibleBg());
+
+/* Hand the deck back exactly as the drawer left it — a chosen station that
+   still wants to play — so the auto-start checks below judge the boot and not
+   the silent station-hopping this backdrop section just did. */
+window.PlayerEngine.switchPlaylist('latest', true);
+
+/* ==========================================================================
    PLAYER DECK — the "Golden Hour cassette deck" redesign
    ========================================================================== */
 const player = doc.querySelector('#player');
