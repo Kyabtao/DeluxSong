@@ -323,14 +323,56 @@
   }
 }
 
-/* Only the compact rain/share utilities remain in the top bar. */
+/* Only the compact rain/share utilities remain in the top bar.
+   nowrap keeps TCS AIR, Baarish? and Share on ONE row so the Share
+   button never drops to a second line. */
 .topbar-tools {
   margin-left: auto;
   justify-content: flex-end;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
 }
 
 @media (max-width: 720px) {
+  /* Single centered row of the three pills; no wrapping. */
+  .topbar {
+    justify-content: center;
+    padding: 12px 10px;
+  }
   .topbar-tools {
-    flex: 1 1 100%;
+    flex: 1 1 auto;
+    margin-left: 0;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .topbar-tools::-webkit-scrollbar {
+    display: none;
+  }
+  .pill {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 380px) {
+  /* Tiny phones: tighten the pills so the whole row still fits. */
+  .topbar {
+    gap: 6px;
+    padding: 10px 8px;
+  }
+  .topbar-tools {
+    gap: 6px;
+  }
+  .pill {
+    padding: 7px 10px;
+    font-size: 12px;
+    gap: 6px;
+  }
+  .pill .pill-icon {
+    font-size: 13px;
   }
 }
