@@ -187,12 +187,151 @@ const PLAYLISTS = {
       "Reels mein 15 second suna tha? Yahan poora gana suno!",
       "Charts badalte rehte hain, ye station hamesha fresh rehta hai."
     ]
+  },
+  love: {
+    id: "love",
+    name: "Love Songs",
+    badge: "❤️ Love Songs Forever",
+    desc: "Romantic Hits & Soulful Duets",
+    bg: "img/hero-love.jpg",
+    accent: "#ff6b9d",
+    glow: "rgba(255, 107, 157, 0.18)",
+    tracks: [
+      { id: "mt9xg0mmt28", title: "Tum Se Hi | Jab We Met | Mohit Chauhan", credit: "T-Series" },
+      { id: "QIQSQWvt4-M", title: "Tera Hone Laga Hoon | Ajab Prem Ki Ghazab Kahani | Atif Aslam, Alisha Chinai", credit: "Tips Music" },
+      { id: "FA_J8XwpCaQ", title: "Tu Jaane Na | Ajab Prem Ki Ghazab Kahani | Atif Aslam", credit: "Tips Music" },
+      { id: "kw_FEnJrnds", title: "Pee Loon | Once Upon a Time in Mumbaai | Mohit Chauhan", credit: "T-Series" },
+      { id: "JBCx0QyP8VQ", title: "Pehli Nazar Mein | Race | Atif Aslam", credit: "Tips Music" },
+      { id: "Gh5wHtqW9Ek", title: "Tujhe Bhula Diya | Anjaana Anjaani | Mohit Chauhan, Shruti Pathak", credit: "T-Series" },
+      { id: "voxzKOoudpc", title: "Tum Dil Ki Dhadkan Mein | Dhadkan | Kumar Sanu", credit: "Ishtar Music" },
+      { id: "S9DsCP9Th7Y", title: "Kuch Kuch Hota Hai (Title) | KKHH | Udit Narayan, Alka Yagnik", credit: "Sony Music India" },
+      { id: "LH9REAV5UzU", title: "Maula Mere Maula | Anwar | Roop Kumar Rathod", credit: "Saregama" },
+      { id: "gJLVTKhTnog", title: "Husn | Anuv Jain", credit: "Anuv Jain" },
+      { id: "f419vqAt8PU", title: "Ishq | Lost;Found | Faheem Abdullah, Rauhan Malik", credit: "Faheem Abdullah" }
+    ],
+    quotes: [
+      "दिल को छू लेने वाले गाने — लव सॉन्ग्स की अलग ही महफ़िल है! ❤️",
+      "Pyaar ka matlab = purane love songs aur ek cutting chai ☕",
+      "सच्चा प्यार वही है जो लव सॉन्ग्स को रिपीट पर सुनने जैसा है।",
+      "Tum se hi din chadhta hai... love songs on, duniya off 💕",
+      "First crush, first cassette, first love — sab isi station par!"
+    ]
+  },
+  kk: {
+    id: "kk",
+    name: "K.K. Special",
+    badge: "🎙️ K.K. Special",
+    desc: "The Voice of 2000s & Emraan Hits",
+    bg: "img/hero-kk.jpg",
+    accent: "#5ec8ff",
+    glow: "rgba(94, 200, 255, 0.18)",
+    tracks: [
+      { id: "ywk4puRqaEY", title: "Alvida | Life in a Metro | K.K.", credit: "Sony Music India" },
+      { id: "cmMiyZaSELo", title: "Khuda Jaane | Bachna Ae Haseeno | K.K., Shilpa Rao", credit: "YRF" },
+      { id: "-PDFj1Lm7r0", title: "Zara Sa | Jannat | K.K.", credit: "Sony Music India" },
+      { id: "Ha4BUOcLQE4", title: "Aankhon Mein Teri | Om Shanti Om | K.K.", credit: "T-Series" },
+      { id: "cGNcjqXe87U", title: "Tu Hi Meri Shab Hai | Gangster | K.K.", credit: "Sony Music India" },
+      { id: "vT5VCRp4FZ4", title: "Labon Ko | Bhool Bhulaiyaa | K.K.", credit: "T-Series" },
+      { id: "s641QVbuOfw", title: "O Meri Jaan | Life in a Metro | K.K.", credit: "Sony Music India" },
+      { id: "qE3DfF66DNA", title: "Dus Bahane | Dus | K.K., Shaan", credit: "T-Series" },
+      { id: "LCfvYo3ILG0", title: "Yaaron | Pal | K.K.", credit: "Sony Music India" }
+    ],
+    quotes: [
+      "K.K. ki awaaz = 2000s ki poori feeling ek hi station par 🎙️",
+      "Emraan Hashmi movies + K.K. ki voice = pure nostalgia!",
+      "खुदा जाने... K.K. के गाने आज भी दिल के सबसे करीब हैं।",
+      "Campus ke woh din, K.K. ke woh gaane — kash woh laut aayein ❤️",
+      "K.K. is not gone — he lives in every note. 🎧"
+    ]
+  },
+  sonu: {
+    id: "sonu",
+    name: "Sonu Nigam Special",
+    badge: "🌟 Sonu Nigam Special",
+    desc: "Golden Voice Across Generations",
+    bg: "img/hero-sonu.jpg",
+    accent: "#ffd166",
+    glow: "rgba(255, 209, 102, 0.18)",
+    tracks: [
+      { id: "g0eO74UmRBs", title: "Kal Ho Naa Ho (Title) | KHNH | Sonu Nigam", credit: "Sony Music India" },
+      { id: "sAjDONNZp_0", title: "Main Agar Kahoon | Om Shanti Om | Sonu Nigam, Shreya Ghoshal", credit: "T-Series" },
+      { id: "AdY_KpBmi6k", title: "Abhi Mujh Mein Kahin | Agneepath | Sonu Nigam", credit: "Sony Music India" },
+      { id: "L0zKs8i7Nc8", title: "Suraj Hua Maddham | Kabhi Khushi Kabhie Gham | Sonu Nigam, Alka Yagnik", credit: "Sony Music India" },
+      { id: "MqGVFL24_8E", title: "Main Hoon Na (Title) | Main Hoon Na | Sonu Nigam, Shreya Ghoshal", credit: "T-Series" },
+      { id: "T4wr-y_bqB8", title: "Yeh Dil Deewana | Pardes | Sonu Nigam", credit: "Tips Music" },
+      { id: "z3ZduZd0cGk", title: "Deewana Tera | Deewana Album | Sonu Nigam", credit: "T-Series" },
+      { id: "dvRUnGYta0k", title: "Do Pal | Veer-Zaara | Sonu Nigam, Lata Mangeshkar", credit: "YRF" },
+      { id: "xo8JU-Vc1C0", title: "Sau Dard | Jaan-E-Mann | Sonu Nigam", credit: "T-Series" }
+    ],
+    quotes: [
+      "Sonu Nigam ki surili awaaz — har generation ki pasand! 🌟",
+      "Kal Ho Naa Ho... par Sonu ke gaane hamesha saath hain.",
+      "90s ka deewana, 2000s ka king — Sonu is the voice!",
+      "कान खोलकर सुनिए — सोनू निगम का सुर कोई और नहीं गा सकता।",
+      "Headphones on, Sonu Nigam on — bas yahi chahiye!"
+    ]
+  },
+  arijit: {
+    id: "arijit",
+    name: "Arijit Singh Special",
+    badge: "🎤 Arijit Singh Special",
+    desc: "Today's Biggest Voice, Biggest Hits",
+    bg: "img/hero-arijit.jpg",
+    accent: "#a78bfa",
+    glow: "rgba(167, 139, 250, 0.18)",
+    tracks: [
+      { id: "81qmmlsIE3k", title: "Tum Hi Ho | Aashiqui 2 | Arijit Singh", credit: "T-Series" },
+      { id: "z-diRlyLGzo", title: "Channa Mereya | Ae Dil Hai Mushkil | Arijit Singh", credit: "Sony Music India" },
+      { id: "xRb8hxwN5zc", title: "Agar Tum Saath Ho | Tamasha | Arijit Singh, Alka Yagnik", credit: "T-Series" },
+      { id: "_Olt3tqwjuE", title: "Muskurane | CityLights | Arijit Singh", credit: "Sony Music India" },
+      { id: "HDVw7Y6uAws", title: "Raabta | Agent Vinod | Arijit Singh", credit: "T-Series" },
+      { id: "RazuWp5kSHk", title: "Kabhi Jo Baadal Barse | Jackpot | Arijit Singh", credit: "T-Series" },
+      { id: "Ic2HO9bAJJM", title: "Samjhawan | Humpty Sharma Ki Dulhania | Arijit Singh, Shreya Ghoshal", credit: "Sony Music India" },
+      { id: "40ZVxZjCPcE", title: "Hawayein | Jab Harry Met Sejal | Arijit Singh", credit: "Sony Music India" },
+      { id: "wx89ZdkwtS8", title: "Ae Dil Hai Mushkil (Title) | ADHM | Arijit Singh", credit: "Sony Music India" },
+      { id: "9-AKLAfpjrI", title: "Khairiyat | Chhichhore | Arijit Singh", credit: "T-Series" },
+      { id: "lpdRqn6xwiM", title: "Zaalima | Raees | Arijit Singh, Harshdeep Kaur", credit: "Zee Music Company" },
+      { id: "enjkcCdAlXc", title: "Aavan Jaavan | War 2 | Arijit Singh, Nikhita Gandhi", credit: "YRF" }
+    ],
+    quotes: [
+      "Arijit Singh ka ek gaana = 100 memories 💫",
+      "Tum Hi Ho se Aavan Jaavan tak — Arijit ne dil pe raaj kiya hai!",
+      "Har dukh ka ilaaj, har khushi ka soundtrack — Arijit Singh 🎤",
+      "आरिजीत की आवाज़ में वो बात है जो शब्दों में नहीं।",
+      "Playlist par Arijit, dil par full feel — enjoy!"
+    ]
+  },
+  new: {
+    id: "new",
+    name: "New Songs",
+    badge: "🆕 Brand New Songs",
+    desc: "Fresh Drops & Trending Now",
+    bg: "img/hero-new.jpg",
+    accent: "#2dd4bf",
+    glow: "rgba(45, 212, 191, 0.18)",
+    tracks: [
+      { id: "XO8wew38VM8", title: "Millionaire | Glory | Yo Yo Honey Singh", credit: "T-Series" },
+      { id: "n2dVFdqMYGA", title: "Sahiba | Aditya Rikhari", credit: "T-Series" },
+      { id: "3Cp2QTBZAFQ", title: "Finding Her | Kushagra, Bharath", credit: "UR Debut" },
+      { id: "C3njz8sf4aM", title: "Ehsaas | Faheem Abdullah", credit: "Universal Music India" },
+      { id: "f_OZkQV0LHQ", title: "Tumhare Hi Rahenge Hum | Stree 2 | Varun Jain, Shilpa Rao", credit: "Saregama Music" },
+      { id: "OgRoRBLZbUQ", title: "Angaaron | Pushpa 2 | Shreya Ghoshal", credit: "T-Series" },
+      { id: "-2RAq5o5pwc", title: "Jhol | Coke Studio Pakistan | Maanu, Annural Khalid", credit: "Coke Studio" },
+      { id: "ilNt2bikxDI", title: "Jo Tum Mere Ho | Anuv Jain", credit: "Anuv Jain" }
+    ],
+    quotes: [
+      "बिल्कुल नए गाने — जो अभी charts पर छाए हुए हैं! 🆕",
+      "Reels pe viral, ab TCS Radio pe — fresh drops only!",
+      "Naya gaana har hafte, wahi purana radio feel.",
+      "Saiyaara se Sahiba tak — abhi ki sabse badi hits!",
+      "Trending now: ye station, ye gaane, aur aap ☕"
+    ]
   }
 };
 
 const FAQ_DATA = [
   ["What is TCS Radio?",
-   "A free, fan-made radio by Umair for 2000s Bollywood, Indipop, highway, auto, monsoon, and chai-tapri moods. No account is needed."],
+   "A free, fan-made radio by Umair for 2000s Bollywood, Indipop, love songs, K.K. / Sonu Nigam / Arijit Singh specials, brand-new hits, highway, auto, monsoon and chai-tapri moods. No account is needed."],
   ["How do I choose a playlist or song?",
    "Tap the ☰ Playlist button on the player deck to open the sidebar. Tap a station tab to switch stations — the music and artwork change right away — then tap a song to jump straight to it."],
   ["Where are the playback buttons?",

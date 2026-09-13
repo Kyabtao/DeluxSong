@@ -100,7 +100,7 @@ public/css/player-redesign.css  Player deck layer (imported last) — the casset
 public/css/rain.css          On-screen monsoon rain overlay
 public/js/rain-ambient.js    Web Audio baarish synthesizer (rain + thunder)
 public/js/rain-visual.js     Canvas rain overlay — drops, splashes, lightning
-public/js/playlists-data.js  Song database: 7 playlists × 12–13 tracks, quotes, per-playlist hero artwork
+public/js/playlists-data.js  Song database: 12 playlists, tracks, quotes, per-playlist hero artwork
 public/js/player.js          Player engine, auto-start on arrival, auto-advance, backdrop crossfade
 public/sw.js                 Service worker
 public/img/hero-*.jpg        Per-playlist hero background artwork (office/auto/truck/monsoon/tapri/indipop/latest)
