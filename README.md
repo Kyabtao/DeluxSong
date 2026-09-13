@@ -100,10 +100,10 @@ public/css/player-redesign.css  Player deck layer (imported last) — the casset
 public/css/rain.css          On-screen monsoon rain overlay
 public/js/rain-ambient.js    Web Audio baarish synthesizer (rain + thunder)
 public/js/rain-visual.js     Canvas rain overlay — drops, splashes, lightning
-public/js/playlists-data.js  Song database: 12 playlists, tracks, quotes, per-playlist hero artwork
+public/js/playlists-data.js  Song database: 17 playlists, tracks, quotes, per-playlist hero artwork
 public/js/player.js          Player engine, auto-start on arrival, auto-advance, backdrop crossfade
 public/sw.js                 Service worker
-public/img/hero-*.jpg        Per-playlist hero background artwork (office/auto/truck/monsoon/tapri/indipop/latest)
+public/img/hero-*.jpg        Per-playlist hero background artwork (office/auto/truck/monsoon/tapri/indipop/latest/love/kk/sonu/arijit/kumar/udit/shreya/atif/new/old)
 public/manifest.webmanifest
 public/img/                  Banner artwork (tcs-banner.jpg), app icons (tcs-icon.png)
 tools/                       The audits behind `npm run check`

@@ -301,6 +301,106 @@ const PLAYLISTS = {
       "Playlist par Arijit, dil par full feel — enjoy!"
     ]
   },
+  kumar: {
+    id: "kumar",
+    name: "Kumar Sanu Special",
+    badge: "👑 Kumar Sanu Special",
+    desc: "90s Melody King Classics",
+    bg: "img/hero-kumar.jpg",
+    accent: "#4ade80",
+    glow: "rgba(74, 222, 128, 0.16)",
+    tracks: [
+      { id: "rXHY4Cv9cA8", title: "Ab Tere Bin | Aashiqui | Kumar Sanu", credit: "T-Series" },
+      { id: "epUMTkG5pGk", title: "Dheere Dheere Se | Aashiqui | Kumar Sanu, Anuradha Paudwal", credit: "T-Series" },
+      { id: "j1fWRA-z20g", title: "Sochenge Tumhe Pyaar | Deewana | Kumar Sanu", credit: "Shemaroo" },
+      { id: "58VwkROgWGI", title: "Mera Dil Bhi Kitna Pagal Hai | Saajan | Kumar Sanu, Alka Yagnik", credit: "Ishtar Music" },
+      { id: "vMV7Vel0dPk", title: "Ek Ladki Ko Dekha | 1942: A Love Story | Kumar Sanu", credit: "Saregama" },
+      { id: "KC-DuX51NY0", title: "Yeh Kaali Kaali Aankhen | Baazigar | Kumar Sanu", credit: "Ishtar Music" },
+      { id: "WkfcHsPKwds", title: "Meri Mehbooba | Pardes | Kumar Sanu, Alka Yagnik", credit: "Tips Music" },
+      { id: "5SvIuD6wJRI", title: "Do Dil Mil Rahe Hain | Pardes | Kumar Sanu", credit: "Tips Music" },
+      { id: "XWmon1qR6pM", title: "Saajanji Ghar Aaye | Kuch Kuch Hota Hai | Kumar Sanu, Alka Yagnik", credit: "Sony Music India" }
+    ],
+    quotes: [
+      "Kumar Sanu ki awaaz = 90s ki pehli love story 👑",
+      "आशिक़ी का वो दौर... कुमार सानु के साथ वापस चलें!",
+      "Melody king ke gaane — dil ke sabse kareeb.",
+      "Cassette ke zamane ka sabse bada voice, aaj phir se!",
+      "Nazar ke saamne, dil ke paas — K.S. forever 💚"
+    ]
+  },
+  udit: {
+    id: "udit",
+    name: "Udit Narayan Special",
+    badge: "🌞 Udit Narayan Special",
+    desc: "90s–2000s Superhit Voice",
+    bg: "img/hero-udit.jpg",
+    accent: "#60a5fa",
+    glow: "rgba(96, 165, 250, 0.16)",
+    tracks: [
+      { id: "m6Y8xEfyXTs", title: "Main Yahaan Hoon | Veer-Zaara | Udit Narayan", credit: "YRF" },
+      { id: "-1J1XqOKnuw", title: "Bholi Si Surat | Dil To Pagal Hai | Udit Narayan, Lata Mangeshkar", credit: "YRF" },
+      { id: "OTaYCjy9vXg", title: "Radha Kaise Na Jale | Lagaan | Udit Narayan, Asha Bhosle", credit: "Sony Music India" },
+      { id: "dOd7mmzCzpI", title: "Udja Kale Kawan | Gadar | Udit Narayan, Alka Yagnik", credit: "Zee Music Company" },
+      { id: "2knQOXevwKE", title: "Chand Chhupa Badal Mein | Hum Dil De Chuke Sanam | Udit Narayan, Alka Yagnik", credit: "T-Series" },
+      { id: "DAy1I9ScdAA", title: "Yeh Ladka Hai Deewana | Kuch Kuch Hota Hai | Udit Narayan, Alka Yagnik", credit: "Sony Music India" }
+    ],
+    quotes: [
+      "Udit Narayan = 90s ki sabse fresh aur masti bhari awaaz! 🌞",
+      "Pardesi se Gadar tak — Udit ji ka safar hi kamaal hai.",
+      "कुमार सानु के बाद अगर कोई राज करता था तो उदित जी!",
+      "KKHH, DTPH, Gadar — Udit ki awaaz har classic mein hai.",
+      "Retro romance ka full paisa-vasool station ☀️"
+    ]
+  },
+  shreya: {
+    id: "shreya",
+    name: "Shreya Ghoshal Special",
+    badge: "🎼 Shreya Ghoshal Special",
+    desc: "Melody Queen's Finest",
+    bg: "img/hero-shreya.jpg",
+    accent: "#e879f9",
+    glow: "rgba(232, 121, 249, 0.16)",
+    tracks: [
+      { id: "OQ3fxbhD-l0", title: "Teri Ore | Singh Is Kinng | Rahat Fateh Ali Khan, Shreya Ghoshal", credit: "Junglee Music" },
+      { id: "GtNrQy90Ih4", title: "Saibo | Shor in the City | Shreya Ghoshal, Tochi Raina", credit: "Sony Music India" },
+      { id: "omiswoHnoTk", title: "Sunn Raha Hai Na Tu (Female) | Aashiqui 2 | Shreya Ghoshal", credit: "T-Series" },
+      { id: "4whc8stLm8o", title: "Deewani Mastani | Bajirao Mastani | Shreya Ghoshal", credit: "Sony Music India" },
+      { id: "XoF9kwi-yHI", title: "Nagada Sang Dhol | Ram-leela | Shreya Ghoshal", credit: "Sony Music India" },
+      { id: "T1Y2fVgSKhU", title: "Yeh Ishq Hai | Jab We Met | Shreya Ghoshal", credit: "T-Series" },
+      { id: "zvHapBaPW60", title: "Saans | Jab Tak Hai Jaan | Shreya Ghoshal, Mohit Chauhan", credit: "YRF" },
+      { id: "mkOGY6_U6qI", title: "Teri Meri | Bodyguard | Rahat Fateh Ali Khan, Shreya Ghoshal", credit: "T-Series" }
+    ],
+    quotes: [
+      "Shreya Ghoshal — jinke sur mein jaan hai 🎼",
+      "Deewani Mastani se Saans tak — har gaana ek kahani.",
+      "श्रेया जी की आवाज़ सुनकर दिल पिघल जाता है ❄️",
+      "Melody Queen on loop — ears blessed!",
+      "Classic thumri feel, modern Bollywood soul — Shreya only."
+    ]
+  },
+  atif: {
+    id: "atif",
+    name: "Atif Aslam Special",
+    badge: "🎸 Atif Aslam Special",
+    desc: "Soulful 2000s Rock Ballads",
+    bg: "img/hero-atif.jpg",
+    accent: "#ef4444",
+    glow: "rgba(239, 68, 68, 0.16)",
+    tracks: [
+      { id: "mX0_1yejIQI", title: "Woh Lamhe Woh Baatein | Zeher | Atif Aslam", credit: "Sony Music India" },
+      { id: "SAcpESN_Fk4", title: "Dil Diyan Gallan | Tiger Zinda Hai | Atif Aslam", credit: "YRF" },
+      { id: "AsLPGPs5iQk", title: "Jeena Jeena | Badlapur | Atif Aslam", credit: "Sony Music India" },
+      { id: "3M3o3Ak1qBY", title: "Jeene Laga Hoon | Ramaiya Vastavaiya | Atif Aslam, Shreya Ghoshal", credit: "Tips Music" },
+      { id: "VmjynPkyLRQ", title: "Tu Chahiye | Bajrangi Bhaijaan | Atif Aslam", credit: "T-Series" }
+    ],
+    quotes: [
+      "Atif Aslam — 2000s ke har love story ka soundtrack 🎸",
+      "Woh Lamhe se Dil Diyan Gallan tak — sab Atif ne gaya hai!",
+      "आदत से लेकर Gallan तक — अतिफ़ का जादू है ये।",
+      "Rock + soul + Atif = full volume please 🤘",
+      "Jab Atif gaate hain, dil dhadakta hai — Atif era!"
+    ]
+  },
   new: {
     id: "new",
     name: "New Songs",
@@ -317,21 +417,52 @@ const PLAYLISTS = {
       { id: "f_OZkQV0LHQ", title: "Tumhare Hi Rahenge Hum | Stree 2 | Varun Jain, Shilpa Rao", credit: "Saregama Music" },
       { id: "OgRoRBLZbUQ", title: "Angaaron | Pushpa 2 | Shreya Ghoshal", credit: "T-Series" },
       { id: "-2RAq5o5pwc", title: "Jhol | Coke Studio Pakistan | Maanu, Annural Khalid", credit: "Coke Studio" },
-      { id: "ilNt2bikxDI", title: "Jo Tum Mere Ho | Anuv Jain", credit: "Anuv Jain" }
+      { id: "ilNt2bikxDI", title: "Jo Tum Mere Ho | Anuv Jain", credit: "Anuv Jain" },
+      { id: "bjfKyIAlsZs", title: "O Maahi | Dunki | Arijit Singh, Pritam", credit: "T-Series" },
+      { id: "uTuchIYZdbM", title: "Tauba Tauba | Bad Newz | Karan Aujla", credit: "Saregama Music" },
+      { id: "vKb9xwSRrsU", title: "Pasoori | Coke Studio | Ali Sethi, Shae Gill", credit: "Giraffe Pakistan" },
+      { id: "eUwS1KJhQAc", title: "Khoobsurat | Stree 2 | Vishal Mishra, Sachin-Jigar", credit: "Saregama Music" }
     ],
     quotes: [
       "बिल्कुल नए गाने — जो अभी charts पर छाए हुए हैं! 🆕",
       "Reels pe viral, ab TCS Radio pe — fresh drops only!",
       "Naya gaana har hafte, wahi purana radio feel.",
-      "Saiyaara se Sahiba tak — abhi ki sabse badi hits!",
+      "Saiyaara se Tauba Tauba tak — abhi ki sabse badi hits!",
       "Trending now: ye station, ye gaane, aur aap ☕"
+    ]
+  },
+  old: {
+    id: "old",
+    name: "Golden Oldies (60s–80s)",
+    badge: "📀 Golden Oldies (60s–80s)",
+    desc: "Kishore • Rafi • Lata • Mukesh",
+    bg: "img/hero-old.jpg",
+    accent: "#d97706",
+    glow: "rgba(217, 119, 6, 0.18)",
+    tracks: [
+      { id: "fj4MnkljFXc", title: "Lag Ja Gale | Woh Kaun Thi | Lata Mangeshkar", credit: "Saregama" },
+      { id: "_iDT9csOdeQ", title: "Mere Sapno Ki Rani | Aradhana | Kishore Kumar", credit: "Saregama" },
+      { id: "y1mXCu3y7FI", title: "Kora Kagaz Tha | Aradhana | Kishore Kumar, Lata Mangeshkar", credit: "Saregama" },
+      { id: "5lpAR0A4VHA", title: "Gaata Rahe Mera Dil | Guide | Kishore Kumar, Lata Mangeshkar", credit: "Saregama" },
+      { id: "CrnRqE8hOIc", title: "O Mere Dil Ke Chain | Mere Jeevan Saathi | Kishore Kumar", credit: "Saregama" },
+      { id: "vliT3T-uAe4", title: "Pal Pal Dil Ke Paas | Blackmail | Kishore Kumar", credit: "Universal Music India" },
+      { id: "MakNjobg9J8", title: "Kya Hua Tera Wada | Hum Kisise Kum Naheen | Mohammed Rafi", credit: "Saregama" },
+      { id: "WF0HJv-9S_4", title: "Chura Liya Hai Tumne | Yaadon Ki Baaraat | Asha Bhosle, Mohammed Rafi", credit: "Saregama" },
+      { id: "NSt6CB9f9BY", title: "Awaara Hoon | Awaara | Mukesh", credit: "Zee Music Classic" }
+    ],
+    quotes: [
+      "किशोर दा, रफ़ी साहब, लता जी — सुनहरा दौर फिर से! 📀",
+      "Gramophone ke zamane ke asli superstars.",
+      "Kishore da ka sur, Rafi sahab ki ada — kya baat hai!",
+      "60s–80s ka wo jaadu jo aaj bhi dil jeet lete hain.",
+      "Old is gold — ye station proof hai 💛"
     ]
   }
 };
 
 const FAQ_DATA = [
   ["What is TCS Radio?",
-   "A free, fan-made radio by Umair for 2000s Bollywood, Indipop, love songs, K.K. / Sonu Nigam / Arijit Singh specials, brand-new hits, highway, auto, monsoon and chai-tapri moods. No account is needed."],
+   "A free, fan-made radio by Umair for 2000s Bollywood, Indipop, love songs, singer specials (K.K., Sonu Nigam, Arijit Singh, Kumar Sanu, Udit Narayan, Shreya Ghoshal, Atif Aslam), golden oldies, brand-new hits, highway, auto, monsoon and chai-tapri moods. No account is needed."],
   ["How do I choose a playlist or song?",
    "Tap the ☰ Playlist button on the player deck to open the sidebar. Tap a station tab to switch stations — the music and artwork change right away — then tap a song to jump straight to it."],
   ["Where are the playback buttons?",
