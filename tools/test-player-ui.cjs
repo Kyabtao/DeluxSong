@@ -207,7 +207,7 @@ const stuck = Object.keys(window.PLAYLISTS).filter((key) => {
   return visibleBg() !== window.PLAYLISTS[key].bg;
 });
 ok('every playlist shows its own backdrop when selected',
-  stuck.length === 0, stuck.length ? `stuck on: ${stuck.join(', ')}` : 'all 7 stations');
+  stuck.length === 0, stuck.length ? `stuck on: ${stuck.join(', ')}` : `all ${Object.keys(window.PLAYLISTS).length} stations`);
 
 /* Slow network: a backdrop that finishes loading AFTER a newer station change
    must never paint over the newer artwork. */
