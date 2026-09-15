@@ -30,17 +30,20 @@
   <img class="hero-bg" id="bgB" src="img/hero-office.jpg" alt="" aria-hidden="true" />
   <div class="hero-shade"></div>
 
-  <!-- SECTION 1: Top Navigation Bar (public/components/topbar.html) -->
+  <!-- SECTION 1: Top Navigation Bar (public/components/topbar.html)
+       Icon-only nav: each round button explains itself via the hover tooltip
+       (title) and its accessible name (aria-label) — no text labels needed. -->
   <div class="topbar">
     <div class="topbar-right topbar-tools">
-      <button class="pill adblock-on" id="adblockBtn" title="AdBlocker — click for stats, right-click to toggle">
-        <span class="pill-icon">🛡️</span> <span>AdBlock</span> <span class="adblock-count" id="adblockCountBadge" hidden>0</span>
+      <button class="pill adblock-on" id="adblockBtn" title="AdBlocker — click for stats, right-click to toggle" aria-label="AdBlocker — click for stats, right-click to toggle">
+        <span class="pill-icon" aria-hidden="true">🛡️</span>
+        <span class="adblock-count" id="adblockCountBadge" hidden>0</span>
       </button>
-      <button class="pill" id="rainBtn" title="Toggle monsoon rain — sound + on-screen baarish">
-        <span class="pill-icon">🌧️</span> <span>Baarish?</span>
+      <button class="pill" id="rainBtn" title="Toggle monsoon rain — sound + on-screen baarish" aria-label="Toggle monsoon rain — sound and on-screen baarish">
+        <span class="pill-icon" aria-hidden="true">🌧️</span>
       </button>
-      <button class="pill" id="shareBtn" title="Share with friends">
-        <span class="pill-icon">🔗</span> <span>Share</span>
+      <button class="pill" id="shareBtn" title="Share with friends" aria-label="Share with friends">
+        <span class="pill-icon" aria-hidden="true">🔗</span>
       </button>
     </div>
 
@@ -309,7 +312,9 @@
 
 <!-- ============ MAIN CONTENT ============ -->
 <main>
-<!-- SECTION 6: About Section (public/components/about.html) -->
+<!-- SECTION 6: About Section (public/components/about.html)
+     Kept short on purpose: a quick intro plus the old FAQ as one tidy
+     bullet list. The mood cards that used to sit here were removed. -->
 <section class="about" id="about">
   <p class="eyebrow">About TCS Radio</p>
   <h2>Retro songs for modern chai breaks.</h2>
@@ -318,86 +323,18 @@
     for the office, the auto, the highway, and the chai tapri. No account needed.
   </p>
 
-  <div class="cards">
-    <article class="card">
-      <div class="ico">🏢</div>
-      <h3>Office Hours</h3>
-      <p>2000s melodies for work and chai.</p>
-    </article>
-
-    <article class="card">
-      <div class="ico">🛺</div>
-      <h3>City Rides</h3>
-      <p>Jhankar beats for busy streets.</p>
-    </article>
-
-    <article class="card">
-      <div class="ico">🚚</div>
-      <h3>Highway Mode</h3>
-      <p>Road anthems for long drives.</p>
-    </article>
-
-    <article class="card">
-      <div class="ico">🌧️</div>
-      <h3>Rain &amp; Chai</h3>
-      <p>Monsoon songs and gentle baarish.</p>
-    </article>
-  </div>
+  <!-- Quick answers (formerly the FAQ accordion) -->
+  <ul class="about-points">
+    <li><strong>Free &amp; ad-free, forever</strong> — 17 fan-made stations: Office, Auto, Truck, Monsoon, Chai Tapri, Indipop, Latest Hits, Love Songs, singer specials, New Songs and Golden Oldies.</li>
+    <li><strong>Pick a station or song</strong> — tap ☰ on the player deck to open the playlist sidebar; the music and artwork switch right away.</li>
+    <li><strong>It starts on its own</strong> — the radio plays as soon as the page opens; if the browser holds back sound, one tap anywhere turns the volume on.</li>
+    <li><strong>Nonstop flow</strong> — shuffle, skip, seek and volume stay on the deck, and when one station ends the next starts automatically.</li>
+    <li><strong>Install &amp; keep listening</strong> — use Add to Home Screen and playback continues in the background or on the lock screen.</li>
+    <li><strong>Suggest or remove a song</strong> — hit 🎵 Add / Remove Songs below; requests go straight to Umair and removals are reviewed promptly.</li>
+    <li><strong>The extras</strong> — 🌧️ Baarish adds optional rain sound &amp; on-screen rain; 🛡️ AdBlock only hides and skips ads inside your own browser, which is 100% legal.</li>
+  </ul>
 </section>
 
-<!-- SECTION 7: FAQ Section (public/components/faq.html) -->
-<!-- Questions ship as static HTML so the FAQ is never missing — even while
-     scripts are still loading or if a third-party script stalls. -->
-<section class="faq" id="faq">
-  <p class="eyebrow">FAQ</p>
-  <h2>Quick answers before you tune in.</h2>
-  <div class="acc" id="acc">
-    <details>
-      <summary>What is TCS Radio?</summary>
-      <p>A free, fan-made radio by Umair for 2000s Bollywood, Indipop, love songs, K.K. / Sonu Nigam / Arijit Singh specials, brand-new hits, highway, auto, monsoon and chai-tapri moods. No account is needed.</p>
-    </details>
-    <details>
-      <summary>How do I choose a playlist or song?</summary>
-      <p>Tap the ☰ Playlist button on the player deck to open the sidebar. Tap a station tab to switch stations — the music and artwork change right away — then tap a song to jump straight to it.</p>
-    </details>
-    <details>
-      <summary>Does the radio start on its own?</summary>
-      <p>Yes — the station begins as soon as the page opens. No browser lets a website start <em>audible</em> sound before you touch the page, so when that happens TCS Radio keeps the song running muted and shows a <strong>🔊 tap anywhere for sound</strong> strip on the deck. One tap, anywhere on the page, turns the volume on.</p>
-    </details>
-    <details>
-      <summary>Is TCS Radio free and ad-free?</summary>
-      <p>Yes. TCS Radio is 100% free and ad-free forever — a fan-made station run by Umair, kept alive by listeners sharing it with friends.</p>
-    </details>
-    <details>
-      <summary>Can I install it and listen in the background?</summary>
-      <p>Yes. Use your browser's Install / Add to Home Screen option to keep it as an app, and playback continues in the background or on the lock screen.</p>
-    </details>
-    <details>
-      <summary>Where are the playback buttons?</summary>
-      <p>Always visible on the player deck — play or pause, skip, shuffle, seek, volume and the 📺 video toggle are ready from the moment the page loads.</p>
-    </details>
-    <details>
-      <summary>Will the music continue to the next playlist?</summary>
-      <p>Yes. When the current station finishes, TCS Radio moves to the next station automatically so the listening session can keep going.</p>
-    </details>
-    <details>
-      <summary>Can I suggest a song or request removal?</summary>
-      <p>Yes. Use 🎵 Add / Remove Songs in the Support strip above the footer. Requests go directly to Umair, and removal requests are reviewed promptly.</p>
-    </details>
-    <details>
-      <summary>How can I support the station?</summary>
-      <p>Tap ❤️ Support Us in the same strip — sharing TCS Radio with a friend keeps the station free and ad-free.</p>
-    </details>
-    <details>
-      <summary>What do Baarish and TCS Careers do?</summary>
-      <p>Baarish adds optional rain sound and on-screen rain. TCS Careers opens a light-hearted hiring message — it is not a real job application or payment link.</p>
-    </details>
-    <details>
-      <summary>🛡️ How does the AdBlocker work? Is it legal?</summary>
-      <p><strong>Yes, ad blockers are 100% legal</strong> — in India, US, EU and most countries you have the right to control what loads in your browser. TCS Radio's AdBlocker uses standard browser techniques: CSS hiding for banners, fetch/XHR blocking for tracking domains, popup blocking, and YouTube ad detection via the official Player API (mute + seek to skip). It does NOT hack YouTube or bypass paywalls. Click the 🛡️ AdBlock pill in the top bar to see stats, toggle it, or learn more. Right-click the pill to quickly enable/disable.</p>
-    </details>
-  </div>
-</section>
 </main>
 
 <!-- Support & quick actions sit together immediately before the short footer.
@@ -426,8 +363,9 @@
   <p class="author-tag">Made for chai breaks by <strong>Umair</strong>.</p>
   <nav aria-label="Footer navigation">
     <a href="#about">About</a>
-    <a href="#faq">FAQ</a>
-    <a href="https://www.youtube.com/@IshtarMusic" target="_blank" rel="noopener">Music sources</a>
+    <!-- Songs stream from many different channels & playlists, so this
+         simply opens YouTube itself rather than any single channel. -->
+    <a href="https://www.youtube.com/" target="_blank" rel="noopener">Music sources</a>
   </nav>
   <p class="small">Music plays through official YouTube embeds and belongs to its respective owners.</p>
 </footer>

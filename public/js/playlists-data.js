@@ -460,23 +460,6 @@ const PLAYLISTS = {
   }
 };
 
-const FAQ_DATA = [
-  ["What is TCS Radio?",
-   "A free, fan-made radio by Umair for 2000s Bollywood, Indipop, love songs, singer specials (K.K., Sonu Nigam, Arijit Singh, Kumar Sanu, Udit Narayan, Shreya Ghoshal, Atif Aslam), golden oldies, brand-new hits, highway, auto, monsoon and chai-tapri moods. No account is needed."],
-  ["How do I choose a playlist or song?",
-   "Tap the ☰ Playlist button on the player deck to open the sidebar. Tap a station tab to switch stations — the music and artwork change right away — then tap a song to jump straight to it."],
-  ["Where are the playback buttons?",
-   "Always visible on the player deck — play or pause, skip, shuffle, seek, volume and the 📺 video toggle are ready from the moment the page loads."],
-  ["Will the music continue to the next playlist?",
-   "Yes. When the current station finishes, TCS Radio moves to the next station automatically so the listening session can keep going."],
-  ["Can I suggest a song or request removal?",
-   "Yes. Use 🎵 Add / Remove Songs in the Support strip above the footer. Requests go directly to Umair, and removal requests are reviewed promptly."],
-  ["How can I support the station?",
-   "Tap ❤️ Support Us in the same strip — sharing TCS Radio with a friend keeps the station free and ad-free."],
-  ["What do Baarish and TCS Careers do?",
-   "Baarish adds optional rain sound and on-screen rain. TCS Careers opens a light-hearted hiring message — it is not a real job application or payment link."]
-];
-
 // Helper functions
 const $ = (s) => document.querySelector(s);
 const fmt = (s) => {
