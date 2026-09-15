@@ -33,19 +33,24 @@
   font-size: 1.05em;
 }
 
+/* Blocked-count chip, pinned to the corner of the circular shield button
+   like a notification badge (the topbar button itself is icon-only). */
 .adblock-count {
+  position: absolute;
+  top: -5px;
+  right: -6px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 20px;
+  min-width: 18px;
   height: 18px;
   padding: 0 5px;
-  margin-left: 6px;
   background: linear-gradient(135deg, #48d87a 0%, #2ea85a 100%);
   color: #0a1a0f;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 800;
   border-radius: 999px;
+  border: 1px solid var(--black-rgb-40);
   line-height: 1;
   box-shadow: 0 2px 6px rgba(72, 216, 122, 0.4);
   animation: adblockPop 0.3s var(--ease);

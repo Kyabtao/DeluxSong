@@ -1,14 +1,17 @@
 <!-- ============ TOPBAR NAVIGATION SECTION ============ -->
+<!-- Icon-only nav: each round button explains itself via the hover tooltip
+     (title) and its accessible name (aria-label) — no text labels needed. -->
 <div class="topbar">
   <div class="topbar-right topbar-tools">
-    <button class="pill adblock-on" id="adblockBtn" title="AdBlocker — click for stats, right-click to toggle">
-      <span class="pill-icon">🛡️</span> <span>AdBlock</span> <span class="adblock-count" id="adblockCountBadge" hidden>0</span>
+    <button class="pill adblock-on" id="adblockBtn" title="AdBlocker — click for stats, right-click to toggle" aria-label="AdBlocker — click for stats, right-click to toggle">
+      <span class="pill-icon" aria-hidden="true">🛡️</span>
+      <span class="adblock-count" id="adblockCountBadge" hidden>0</span>
     </button>
-    <button class="pill" id="rainBtn" title="Toggle monsoon rain — sound + on-screen baarish">
-      <span class="pill-icon">🌧️</span> <span>Baarish?</span>
+    <button class="pill" id="rainBtn" title="Toggle monsoon rain — sound + on-screen baarish" aria-label="Toggle monsoon rain — sound and on-screen baarish">
+      <span class="pill-icon" aria-hidden="true">🌧️</span>
     </button>
-    <button class="pill" id="shareBtn" title="Share with friends">
-      <span class="pill-icon">🔗</span> <span>Share</span>
+    <button class="pill" id="shareBtn" title="Share with friends" aria-label="Share with friends">
+      <span class="pill-icon" aria-hidden="true">🔗</span>
     </button>
   </div>
 
