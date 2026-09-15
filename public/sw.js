@@ -1,5 +1,42 @@
-const CACHE = 'tcs-radio-v18';
+const CACHE = 'tcs-radio-v19-adblock';
 const BASE = new URL('./', self.registration.scope).pathname;
+
+// Ad domains blocked at Service Worker level (complements client-side AdBlocker)
+const AD_BLOCK_LIST = [
+  "doubleclick.net",
+  "googlesyndication.com",
+  "googleadservices.com",
+  "googletagmanager.com",
+  "google-analytics.com",
+  "adservice.google",
+  "adsystem.amazon",
+  "amazon-adsystem.com",
+  "adnxs.com",
+  "scorecardresearch.com",
+  "outbrain.com",
+  "taboola.com",
+  "criteo.com",
+  "pubmatic.com",
+  "rubiconproject.com",
+  "openx.net",
+  "adsrvr.org",
+  "moatads.com",
+  "facebook.net/tr",
+  "facebook.com/tr",
+  "connect.facebook.net",
+  "hotjar.com",
+  "adsterra.com",
+  "popads.net",
+  "propellerads.com"
+];
+
+function isAdRequest(url) {
+  try {
+    const u = url.toLowerCase();
+    return AD_BLOCK_LIST.some(d => u.includes(d));
+  } catch (_) { return false; }
+}
+
 const ASSETS = [
   BASE,
   BASE + 'index.html',
@@ -13,6 +50,7 @@ const ASSETS = [
   BASE + 'css/sections.css',
   BASE + 'css/modals.css',
   BASE + 'css/rain.css',
+  BASE + 'css/adblocker.css',
   BASE + 'css/redesign.css',
   BASE + 'css/player-redesign.css',
   BASE + 'js/playlists-data.js',
@@ -22,6 +60,7 @@ const ASSETS = [
   BASE + 'js/rain-ambient.js',
   BASE + 'js/rain-visual.js',
   BASE + 'js/modals.js',
+  BASE + 'js/adblocker.js',
   BASE + 'img/tcs-banner.jpg',
   BASE + 'img/tcs-icon.png',
   BASE + 'img/hero-office.jpg',
@@ -57,6 +96,13 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const u = new URL(e.request.url);
+
+  // Block ad/tracking requests at SW level — return empty 204
+  if (isAdRequest(e.request.url)) {
+    // Count would be done client-side; here we just block
+    return e.respondWith(new Response('', { status: 204, statusText: 'Blocked by TCS AdBlock SW' }));
+  }
+
   if (e.request.method !== 'GET' || u.origin !== location.origin) return;
 
   /* Stylesheets and scripts go network-first: a new deploy is visible on the

@@ -9,10 +9,10 @@
    lock screen — we instantly swap players, so the next song starts with no
    reload wait and no dead air.
 
-   Note on ads: this app itself serves zero ads. Any advert is injected by
-   YouTube inside its own embedded stream and cannot be removed, skipped or
-   blocked by a website (YouTube Player API ToS). Pre-buffering keeps the
-   hand-off instant whenever YouTube does not insert one.
+   AdBlocker Integration (2026):
+   - Emits tcs:trackChange with videoId so AdBlocker can detect YouTube ads
+   - Exposes active player via window.__tcs_getActivePlayer for ad skipping
+   - TCS Radio itself serves zero ads; YouTube ads are handled by AdBlocker
    ========================================================================== */
 
 const PlayerEngine = (function () {
@@ -462,6 +462,12 @@ const PlayerEngine = (function () {
     // Update Lock Screen & Control Center media metadata
     BackgroundAudio.updateMediaSession(t, PLAYLISTS[currentPlaylistKey].name);
 
+    // --- AdBlocker hook: tell blocker what video we EXPECT ---
+    try {
+      if (window.__tcs_setExpectedVideo) window.__tcs_setExpectedVideo(t.id);
+      window.dispatchEvent(new CustomEvent("tcs:trackChange", { detail: { videoId: t.id, title: t.title } }));
+    } catch (_) {}
+
     if (!activeReady()) {
       wantPlay = play;
       return;
@@ -693,7 +699,16 @@ const PlayerEngine = (function () {
     }, 350);
   }
 
+  // Expose active player for AdBlocker (global hook)
+  function _getActivePlayer() { return active(); }
+
   function init() {
+    // AdBlocker global hooks
+    try {
+      window.__tcs_getActivePlayer = _getActivePlayer;
+      window.__tcs_getPlayers = () => players;
+    } catch (_) {}
+
     buildOrder();
     buildDrawerTabs();
     updateStationButtons();
@@ -861,6 +876,9 @@ const PlayerEngine = (function () {
     nextTrack,
     prevTrack,
     seekTo,
-    switchPlaylist
+    switchPlaylist,
+    _getActivePlayer,
+    _getCurrentTrack: currentTrack,
+    _getExpectedId: () => { try { return currentTrack()?.id || null; } catch (_) { return null; } }
   };
 })();

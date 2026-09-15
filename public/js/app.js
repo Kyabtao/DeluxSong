@@ -4,6 +4,9 @@
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Initialize AdBlocker — must be first to catch early ad injections
+  if (typeof AdBlocker !== "undefined") AdBlocker.init();
+
   // Initialize Background Audio Session
   BackgroundAudio.init();
 

@@ -10,6 +10,7 @@
 @import url("css/sections.css");
 @import url("css/modals.css");
 @import url("css/rain.css");
+@import url("css/adblocker.css");
 @import url("css/redesign.css");
 /* Player deck layer — must stay last so it re-skins the guarded component
    sheets (see the header comment inside the file). */

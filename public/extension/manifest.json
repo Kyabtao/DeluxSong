@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "TCS Radio AdBlocker — Legal Shield",
+  "version": "1.0.0",
+  "description": "Legal, lightweight ad blocker — blocks banners, trackers, popups & YouTube ads. Built for TCS Radio.",
+  "permissions": ["storage"],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_title": "TCS AdBlocker — 0 blocked",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "../img/tcs-icon.png",
+      "48": "../img/tcs-icon.png",
+      "128": "../img/tcs-icon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "../img/tcs-icon.png",
+    "48": "../img/tcs-icon.png",
+    "128": "../img/tcs-icon.png"
+  }
+}
