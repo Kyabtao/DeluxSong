@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body { font-family: Inter, sans-serif; width: 280px; padding: 16px; background: #0f1a0f; color: #e8f5e8; }
+h2 { margin: 0 0 8px; color: #7cf09c; }
+.stat { background: rgba(72,216,122,0.12); border: 1px solid rgba(72,216,122,0.25); border-radius: 10px; padding: 12px; text-align: center; margin: 12px 0; }
+.num { font-size: 32px; font-weight: 800; color: #7cf09c; }
+.label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.7; }
+.legal { font-size: 11px; opacity: 0.8; line-height: 1.4; background: rgba(255,255,255,0.06); padding: 10px; border-radius: 8px; }
+button { width: 100%; padding: 10px; border: none; border-radius: 8px; background: linear-gradient(135deg,#48d87a,#2ea85a); color: #0a1a0f; font-weight: 700; cursor: pointer; margin-top: 12px; }
+</style>
+</head>
+<body>
+<h2>🛡️ TCS AdBlocker</h2>
+<div class="stat"><div class="num" id="count">0</div><div class="label">Ads Blocked</div></div>
+<div class="legal"><strong>Is it legal?</strong> Yes — US, EU, India allow ad blockers. You control your browser.</div>
+<button id="reset">Reset Counter</button>
+<script>
+chrome.storage.local.get(["blockedCount"], (r) => {
+  document.getElementById("count").textContent = r.blockedCount || 0;
+});
+document.getElementById("reset").onclick = () => {
+  chrome.storage.local.set({ blockedCount: 0 });
+  document.getElementById("count").textContent = "0";
+};
+</script>
+</body>
+</html>
